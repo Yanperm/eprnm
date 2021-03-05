@@ -108,17 +108,17 @@
                     <div class="left-sidebar-content">
                         <ul class="sidebar-elements">
                             <li class="divider">Menu</li>
-                            <li class="active"><a href="index.html"><i class="icon mdi mdi-home"></i><span>หน้าหลัก</span></a>
+                            <li class="active"><a href="<?php echo base_url();?>"><i class="icon mdi mdi-home"></i><span>หน้าหลัก</span></a>
                             </li>
                             <li class="parent"><a href="#"><i class="icon mdi mdi-face"></i><span>ผู้ป่วย</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="tables-filters-nmepr.html">การจัดการนัดหมาย</a>
+                                    <li><a href="<?php echo base_url();?>">การจัดการนัดหมาย</a>
                                     </li>
-                                    <li><a href="pages-todayque.html">เรียกคิว</a>
+                                    <li><a href="<?php echo base_url();?>">เรียกคิว</a>
                                     </li>
-                                    <li><a href="ui-panels.html">เช็คอิน</a>
+                                    <li><a href="<?php echo base_url();?>">เช็คอิน</a>
                                     </li>
-                                    <li><a href="ui-general.html">ฐานข้อมูลผู้ป่วย</a>
+                                    <li><a href="<?php echo base_url();?>">ฐานข้อมูลผู้ป่วย</a>
                                     </li>
 
 
@@ -148,25 +148,25 @@
                                 </ul>
                             </li>
 
-                            <li class="parent"><a href="charts.html"><i class="icon mdi mdi-local-hospital"></i><span>ยาและเวชภัณฑ์</span></a>
+                            <li class="parent"><a href="#"><i class="icon mdi mdi-local-hospital"></i><span>ยาและเวชภัณฑ์</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="charts-flot.html">กลุ่มยาหลัก</a>
+                                    <li><a href="<?php echo base_url();?>">กลุ่มยาหลัก</a>
                                     </li>
-                                    <li><a href="charts-sparkline.html">กลุ่มยารอง</a>
+                                    <li><a href="<?php echo base_url();?>">กลุ่มยารอง</a>
                                     </li>
-                                    <li><a href="charts-chartjs.html">เพิ่มยาใหม่</a>
+                                    <li><a href="<?php echo base_url();?>">เพิ่มยาใหม่</a>
                                     </li>
-                                    <li><a href="charts-morris.html">คลังยา</a>
+                                    <li><a href="<?php echo base_url();?>">คลังยา</a>
                                     </li>
                                 </ul>
                             </li>
                             <li class="parent"><a href="#"><i class="icon mdi mdi-eyedropper"></i><span>ห้องปฏิบัติการ</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="form-elements.html">ผู้รับตรวจ</a>
+                                    <li><a href="<?php echo base_url();?>">ผู้รับตรวจ</a>
                                     </li>
-                                    <li><a href="form-validation.html">แผนกส่งตรวจ</a>
+                                    <li><a href="<?php echo base_url();?>">แผนกส่งตรวจ</a>
                                     </li>
-                                    <li><a href="form-multiselect.html">รายการส่งตรวจ</a>
+                                    <li><a href="<?php echo base_url();?>">รายการส่งตรวจ</a>
                                     </li>
 
                                     <!-- CUT OUT
@@ -184,7 +184,7 @@
                             </li>
                             <li class="parent"><a href="#"><i class="icon mdi mdi-male"></i><span>รายการหัตถการ</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="tables-general.html">การจัดการหัตถการ</a>
+                                    <li><a href="<?php echo base_url();?>">การจัดการหัตถการ</a>
                                     </li>
 
                                     <!--<li><a href="tables-datatables.html">Data Tables</a>
@@ -197,7 +197,7 @@
 
                             <li class="parent"><a href="#"><i class="icon mdi mdi-chart"></i><span>รายงาน</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="pages-blank.html">รายงานยอดขาย</a>
+                                    <li><a href="<?php echo base_url();?>">รายงานยอดขาย</a>
                                     </li>
 
                                     <!--
@@ -249,7 +249,7 @@
                                 <ul class="sub-menu">
                                     <li><a href="<?php echo base_url('clinic')?>">จัดการข้อมูลคลินิก</a>
                                     </li>
-                                    <li><a href="email-read.html">ผู้ใช้งานระบบ</a>
+                                    <li><a href="<?php echo base_url();?>">ผู้ใช้งานระบบ</a>
                                     </li>
                                     <!--<li><a href="email-compose.html">Email Compose</a>
                                     </li>-->
@@ -257,9 +257,9 @@
                             </li>
                             <li class="parent"><a href="#"><i class="icon mdi mdi-calendar-alt"></i><span>วันและเวลา</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="layouts-primary-header.html">จัดการเวลาเปิดปิด</a>
+                                    <li><a href="<?php echo base_url();?>">จัดการเวลาเปิดปิด</a>
                                     </li>
-                                    <li><a href="layouts-success-header.html">วันหยุดคลินิก</a>
+                                    <li><a href="<?php echo base_url();?>">วันหยุดคลินิก</a>
                                     </li>
                                     <!--
                                     <li><a href="layouts-warning-header.html">Warning Header</a>

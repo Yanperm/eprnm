@@ -36,6 +36,8 @@ class Clinic extends CI_Controller {
 
     public function update()
     {
+//        echo  $this->input->post('services');
+//        exit();
         $name = $this->input->post('name');
         $line = $this->input->post('line');
         $phone = $this->input->post('phone');
@@ -44,6 +46,11 @@ class Clinic extends CI_Controller {
         $province = $this->input->post('province');
         $latitude = $this->input->post('latitude');
         $longitude = $this->input->post('longitude');
+        $doctorName = $this->input->post('doctor_name');
+        $proficient = $this->input->post('PROFICIENT');
+        $diploma = $this->input->post('DIPLOMA');
+        $services = $this->input->post('services');
+        $degree = $this->input->post('degree');
 
         $data = [
             'CLINICNAME' => $name,
@@ -52,15 +59,20 @@ class Clinic extends CI_Controller {
             'USERNAME' => $email,
             'PROVINCE' => $province,
             'LAT' => $latitude,
-            'LONG' => $longitude
+            'LONG' => $longitude,
+            'DOCTORNAME' => $doctorName,
+            'PROFICIENT' => $proficient,
+            'DIPLOMA' => $diploma,
+            'SERVICE' => $services,
+            'DEGREE' => $degree
         ];
 
         $result =  $this->ClinicModel->update($data, $this->session->userdata('id'));
 
         if($result){
-            return true;
+            echo json_encode(['result'=> true]);
         }else{
-            return false;
+            echo json_encode(['result'=> false]);
         }
 
 
