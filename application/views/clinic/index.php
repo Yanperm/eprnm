@@ -1,4 +1,5 @@
 <script src="https://unpkg.com/vue-input-tag"></script>
+<script src="https://unpkg.com/vue-picture-input"></script>
 <div class="page-head" id="top">
     <h2 class="page-head-title">จัดการข้อมูลคลินิก</h2>
     <nav aria-label="breadcrumb" role="navigation">
@@ -28,7 +29,7 @@
             </div>
         </div>
         <div class="col-lg-12">
-            <form id="form-clinic" @submit.prevent="submit">
+            <form id="form-clinic" @submit.prevent="submit" enctype="multipart/form-data">
 
                 <div class="row">
                     <div class="col-md-12">
@@ -146,6 +147,23 @@
                             <div class="card-header card-header-divider">รูปภาพ
                             </div>
                             <div class="card-body">
+                                <picture-input ref="pictureInput"
+                                               name="avatar"
+                                               width="250"
+                                               height="250"
+                                               margin="16"
+                                               accept="image/jpeg,image/png"
+                                               size="10"
+                                               :removable="true"
+                                               @remove="onRemoved"
+                                               removeButtonClass="ui red button"
+                                               button-class="btn"
+                                               :custom-strings="{
+                                                upload: '<h1>Bummer!</h1>',
+                                                drag: 'วางไฟล์ที่นี้ หรือ เลือกไฟล์'
+                                              }" @change="onChange"></picture-input>
+                                    <input type="hidden" v-model="old_avatar" name="old_image">
+
                             </div>
                         </div>
                     </div>
@@ -194,8 +212,12 @@
 </style>
 <script>
     Vue.component('input-tag', vueInputTag.default);
+
     const app = new Vue({
         el: '#app',
+        components: {
+            'picture-input': PictureInput
+        },
         data: {
             clinic: null,
             clinic_name: null,
@@ -210,7 +232,9 @@
             PROFICIENT : null,
             DIPLOMA : null,
             SERVICES : [],
-            DEGREE : []
+            DEGREE : [],
+            image1 : null,
+            old_avatar : null
         },
         mounted() {
             axios
@@ -232,6 +256,7 @@
                         this.DIPLOMA = data[0]["DIPLOMA"];
                         this.SERVICES = data[0]["SERVICE"].split(',');
                         this.DEGREE = data[0]["DEGREE"].split(',');
+                        this.old_avatar = data[0]["image"];
                     } else {
                         this.clinic = [];
                     }
@@ -250,6 +275,7 @@
                 axios.post('<?php echo base_url('clinic/update')?>', formData)
                     .then((response) => {
                         if (response.data.result) {
+                            this.old_avatar = response.data.image_path;
                             var top = $("#top").offset().top;
                             $("html, body").animate({scrollTop: top}, 1000);
                             $("#msg").removeClass("hidden").attr("aria-hidden", false);
@@ -277,7 +303,19 @@
                             $("#msg-error").fadeOut();
                         }, 5000);
                     });
-            }
+            },
+            onChange (image) {
+                console.log('New picture selected!')
+                if (image) {
+                    console.log('Picture loaded.')
+                    this.image = image
+                } else {
+                    console.log('FileReader API not supported: use the <form>, Luke!')
+                }
+            },
+            onRemoved() {
+                this.image = '';
+            },
         }
     })
 </script>

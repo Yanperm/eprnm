@@ -10,8 +10,8 @@ class Clinic extends CI_Controller {
 //        $this->load->model('MembersModel');
 //        $this->load->model('BookingModel');
 //        $this->load->library('pagination');
-//        $this->load->library('S3_upload');
-//        $this->load->library('S3');
+        $this->load->library('S3_upload');
+        $this->load->library('S3');
     }
     private function logged_in()
     {
@@ -36,6 +36,25 @@ class Clinic extends CI_Controller {
 
     public function update()
     {
+        $image = '';
+        if (!empty($_FILES["avatar"])) {
+            $dir = dirname($_FILES["avatar"]["tmp_name"]);
+            $destination = $dir . DIRECTORY_SEPARATOR . $_FILES["avatar"]["name"];
+            rename($_FILES["avatar"]["tmp_name"], $destination);
+            $image = $this->s3_upload->upload_file($destination);
+            $this->session->set_userdata('image', $image);
+
+            //remove old image S3
+            if ($this->input->post('old_image') != '') {
+                $this->s3_upload->deleteFile(basename($this->input->post('old_image')));
+            }
+        }
+
+//        echo $image;
+//        exit();
+
+
+
 //        echo  $this->input->post('services');
 //        exit();
         $name = $this->input->post('name');
@@ -52,6 +71,7 @@ class Clinic extends CI_Controller {
         $services = $this->input->post('services');
         $degree = $this->input->post('degree');
 
+
         $data = [
             'CLINICNAME' => $name,
             'LINE' => $line,
@@ -64,13 +84,14 @@ class Clinic extends CI_Controller {
             'PROFICIENT' => $proficient,
             'DIPLOMA' => $diploma,
             'SERVICE' => $services,
-            'DEGREE' => $degree
+            'DEGREE' => $degree,
+            'image' => $image
         ];
 
         $result =  $this->ClinicModel->update($data, $this->session->userdata('id'));
 
         if($result){
-            echo json_encode(['result'=> true]);
+            echo json_encode(['result'=> true,'image_path' => $image]);
         }else{
             echo json_encode(['result'=> false]);
         }
