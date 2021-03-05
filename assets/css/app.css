@@ -106,7 +106,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Mitr","Roboto", Arial, sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.428571;
@@ -229,7 +229,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: "Mitr",SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 1em;
 }
 
@@ -7121,7 +7121,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Mitr","Roboto", Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.428571;
@@ -7234,7 +7234,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Roboto", Arial, sans-serif;
+  font-family: "Mitr","Roboto", Arial, sans-serif;
   font-style: normal;
   font-weight: 400;
   line-height: 1.428571;
@@ -12601,7 +12601,7 @@ button.bg-grey:focus {
 }
 
 .text-monospace {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-family: "Mitr",SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
 
 .text-justify {

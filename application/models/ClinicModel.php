@@ -20,4 +20,24 @@ class ClinicModel extends CI_Model
 
         return false;
     }
+
+    public function getDetail($clinicId)
+    {
+        $this->db->where('IDCLINIC', $clinicId);
+
+        $query = $this->db->get('tbclinic');
+
+        if ($query->num_rows() == 1) {
+            return $query->result();
+        }
+
+        return false;
+    }
+
+    public function update($data , $clinicId){
+        $this->db->where('IDCLINIC', $clinicId);
+        $this->db->update('tbclinic', $data);
+
+        return true;
+    }
 }
