@@ -60,3 +60,8 @@ $route['logout'] = 'auth/logout';
 $route['dashboard'] = 'dashboard/index';
 
 $route['clinic'] = 'clinic/index';
+
+$route['patient/list'] = 'patient/listData';
+
+$route['close'] = 'time/close';
+$route['rest-day'] = 'time/restDay';

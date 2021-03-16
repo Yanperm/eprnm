@@ -118,7 +118,7 @@
                                     </li>
                                     <li><a href="<?php echo base_url();?>">เช็คอิน</a>
                                     </li>
-                                    <li><a href="<?php echo base_url();?>">ฐานข้อมูลผู้ป่วย</a>
+                                    <li><a href="<?php echo base_url('patient/list');?>">ฐานข้อมูลผู้ป่วย</a>
                                     </li>
 
 
@@ -257,9 +257,9 @@
                             </li>
                             <li class="parent"><a href="#"><i class="icon mdi mdi-calendar-alt"></i><span>วันและเวลา</span></a>
                                 <ul class="sub-menu">
-                                    <li><a href="<?php echo base_url();?>">จัดการเวลาเปิดปิด</a>
+                                    <li><a href="<?php echo base_url('close');?>">จัดการเวลาเปิดปิด</a>
                                     </li>
-                                    <li><a href="<?php echo base_url();?>">วันหยุดคลินิก</a>
+                                    <li><a href="<?php echo base_url('rest-day');?>">วันหยุดคลินิก</a>
                                     </li>
                                     <!--
                                     <li><a href="layouts-warning-header.html">Warning Header</a>

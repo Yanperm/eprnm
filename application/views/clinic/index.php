@@ -149,6 +149,7 @@
                             <div class="card-body">
                                 <picture-input ref="pictureInput"
                                                name="avatar"
+                                               :prefill="imageUrl"
                                                width="250"
                                                height="250"
                                                margin="16"
@@ -209,6 +210,14 @@
         font-weight: 700;
         color: #ffffff;
     }
+    .picture-preview {
+
+        /*border-radius: 50%;*/
+
+    }
+    .picture-inne {
+        border-radius: 50% !important;
+    }
 </style>
 <script>
     Vue.component('input-tag', vueInputTag.default);
@@ -234,7 +243,7 @@
             SERVICES : [],
             DEGREE : [],
             image1 : null,
-            old_avatar : null
+            old_avatar : "http://localhost/eprnm/assets/img/avatar.png"
         },
         mounted() {
             axios
@@ -316,6 +325,10 @@
             onRemoved() {
                 this.image = '';
             },
+            imageUrl(){
+                return "http://localhost/eprnm/assets/img/avatar.png";
+
+            }
         }
     })
 </script>

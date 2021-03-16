@@ -220,12 +220,16 @@
 <script src="<?php echo base_url();?>assets/lib/jqvmap/jquery.vmap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/js/app-dashboard.js" type="text/javascript"></script>
-
+<script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+<script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="assets/lib/jquery.fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="assets/js/app-page-calendar.js?v=<?=time()?>" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         //-initialize the javascript
         App.init();
-        App.dashboard();
+     //   App.dashboard();
+        App.pageCalendar();
 
     });
 </script>
