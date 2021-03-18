@@ -224,6 +224,7 @@
 <script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="assets/lib/jquery.fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
 <script src="assets/js/app-page-calendar.js?v=<?=time()?>" type="text/javascript"></script>
+
 <script type="text/javascript">
     $(document).ready(function(){
         //-initialize the javascript

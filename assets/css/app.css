@@ -13703,8 +13703,8 @@ canvas {
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .be-top-header .be-navbar-header .navbar-brand {
-    background-image: url("../img/logo-xx.png");
-    background-size: 102px 27px;
+    background-image: url("../img/nutmor_logo02.png");
+    background-size: 76px 53px;
   }
 }
 
