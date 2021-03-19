@@ -69,7 +69,6 @@ class Time extends CI_Controller {
         $w6 = $this->input->post('w6');
         $w7 = $this->input->post('w7');
 
-
         $dayOff = 7;
 
         if($w1 == ''){
@@ -83,11 +82,10 @@ class Time extends CI_Controller {
         }else if($w5 == ''){
             $dayOff = 4;
         }else if($w6 == ''){
-            $dayOff = 5;
+            $dayOff =5;
         }else if($w7 == ''){
             $dayOff = 6;
         }
-
 
         $data = [
             'TIME_OPEN' => $timeOpen,
