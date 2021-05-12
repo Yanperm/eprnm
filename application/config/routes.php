@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------------
@@ -51,7 +51,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'auth/login';
 $route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = false;
 
 
 $route['login'] = 'auth/login';
@@ -61,6 +61,7 @@ $route['dashboard'] = 'dashboard/index';
 
 $route['clinic'] = 'clinic/index';
 
+$route['patient/manage-queue'] = 'patient/manageQueue';
 $route['patient/list'] = 'patient/listData';
 
 $route['close'] = 'time/close';

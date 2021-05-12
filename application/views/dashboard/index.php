@@ -4,7 +4,7 @@
             <div class="chart sparkline" id="spark1"></div>
             <div class="data-info">
                 <div class="desc">Today Queue</div>
-                <div class="value"><span class="indicator indicator-equal mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="28">0</span>
+                <div class="value"><span class="indicator indicator-equal mdi mdi-chevron-right"></span><span class="number" data-toggle="counter" data-end="<?php echo number_format($todayBooking); ?>">0</span>
                 </div>
             </div>
         </div>
@@ -118,41 +118,20 @@
                         <th style="width:46%;">ผู้ป่วย</th>
                         <th style="width:30%;">สาเหตุที่มาพบแพทย์</th>
                         <th>วันและเวลา</th>
-                        <th class="actions"></th>
+                        <!-- <th class="actions"></th> -->
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar6.png" alt="Avatar">นางสาวสุขภาพดี รักษาสุขภาพ</td>
-                        <td>ตรวจครรภ์ ตามนัด</td>
-                        <td>2020/07/28</td>
-                        <td class="actions"><a class="icon" href="#"><i class="mdi mdi-assignment"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar4.png" alt="Avatar">นายทองหยิบ ทองหยอด</td>
-                        <td>ตรวจร่างกายทั่วไป</td>
-                        <td>2020/07/22</td>
-                        <td class="actions"><a class="icon" href="#"><i class="mdi mdi-assignment"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar5.png" alt="Avatar">นายแดง อภิมหาเศรษฐี</td>
-                        <td>ปรึกษาเรื่องเลิกบุหรี่...</td>
-                        <td>2020/07/26</td>
-                        <td class="actions"><a class="icon" href="#"><i class="mdi mdi-assignment"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar3.png" alt="Avatar">นางสุข สุขใจสุขจิต</td>
-                        <td>ปรึกษาเรื่องประจำเดือน</td>
-                        <td>2020/07/24</td>
-                        <td class="actions"><a class="icon" href="#"><i class="mdi mdi-assignment"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar6.png" alt="Avatar">นางสาวรักดี รักงามใจ</td>
-                        <td>ปรึกษามีบุตร</td>
-                        <td>2020/07/24</td>
-                        <td class="actions"><a class="icon" href="#"><i class="mdi mdi-assignment"></i></a></td>
-                    </tr>
-
+                      <?php if (!empty($listToDay)):?>
+                        <?php foreach ($listToDay as $item):?>
+                          <tr>
+                              <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar6.png" alt="Avatar"><?php echo $item['CUSTOMERNAME']; ?></td>
+                              <td><?php echo $item['DETAIL']; ?></td>
+                              <td><?php echo $item['BOOKDATE']; ?></td>
+                              <!-- <td class="actions"><a class="icon" href="#"><i class="mdi mdi-assignment"></i></a></td> -->
+                          </tr>
+                        <?php endforeach?>
+                      <?php endif;?>
                     </tbody>
                 </table>
             </div>

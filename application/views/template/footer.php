@@ -203,9 +203,13 @@
 </nav>
 </div>
 
-<script src="<?php echo base_url();?>assets/lib/jquery/jquery.min.js" type="text/javascript"></script>
+
 <script src="<?php echo base_url();?>assets/lib/perfect-scrollbar/js/perfect-scrollbar.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url();?>assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url();?>assets/lib/select2/js/select2.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url();?>assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
+
 <script src="<?php echo base_url();?>assets/js/app.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/jquery-flot/jquery.flot.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/jquery-flot/jquery.flot.pie.js" type="text/javascript"></script>
@@ -219,20 +223,36 @@
 <script src="<?php echo base_url();?>assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/jqvmap/jquery.vmap.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/js/app-dashboard.js" type="text/javascript"></script>
-<script src="assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
-<script src="assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="assets/lib/jquery.fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-<script src="assets/js/app-page-calendar.js?v=<?=time()?>" type="text/javascript"></script>
+
+
+<script src="<?php echo base_url();?>assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+
+
+<script src="<?php echo base_url();?>assets/lib/moment.js/min/moment.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url();?>assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
+
+
+<script src="<?php echo base_url();?>assets/lib/jquery.fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url();?>assets/js/app-page-calendar.js?v=<?=time()?>" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(document).ready(function(){
         //-initialize the javascript
         App.init();
-     //   App.dashboard();
-        App.pageCalendar();
+
+      //  App.pageCalendar();
 
     });
 </script>
+
+
+<?php
+if (!empty($js)):
+    foreach ($js as $item):?>
+        <script src="<?php echo $item;?>"></script>
+   <?php endforeach;
+endif;
+?>
+
 </body>
 </html>
