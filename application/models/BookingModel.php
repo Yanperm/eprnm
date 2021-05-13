@@ -15,12 +15,13 @@ class BookingModel extends CI_Model
 
     public function getDataPerpage($clinicId, $date, $condition)
     {
+        
         $query = $this->db->query(
             '
             SELECT * FROM tbbooking as booking
             INNER join tbmembers as member on member.MEMBERIDCARD = booking.MEMBERIDCARD OR member.IDCARD = booking.IDCARD
             where booking.CLINICID = "' . $clinicId . '" '.$condition.'
-            order by booking.QBER ASC
+            order by booking.BOOKDATE,booking.QBER ASC
           '
         );
 
@@ -442,6 +443,13 @@ class BookingModel extends CI_Model
 
         return true;
     }
+
+    public function updateById($data, $bookingId)
+    {
+        $this->db->where('BOOKINGID', $bookingId);
+        $this->db->update('tbbooking', $data);
+    }
+
 
     public function delete($id)
     {

@@ -50,15 +50,23 @@ class Patient extends CI_Controller
         }
 
         if (!empty($this->input->get('date'))) {
-            $form = $this->input->get('date')[0];
-            $to = $this->input->get('date')[1];
-            $condition .= ' AND (booking.BOOKDATE BETWEEN '.$form.' AND '.$to.' )';
+            $form = date('Y-m-d', strtotime( substr($this->input->get('date')[0],1,11) . " +1 days"));
+            $to = date('Y-m-d', strtotime( substr($this->input->get('date')[1],1,11) . " +1 days"));
+            $condition .= ' AND (booking.BOOKDATE BETWEEN "'.$form.'" AND "'.$to.'" )';
         } else {
             $condition .= ' AND booking.BOOKDATE = "'.date('Y-m-d').'"';
         }
 
+        if ($this->input->get('typeSearch1') == 'true') {
+            $condition .= ' AND booking.CHECKIN = 1 AND booking.ACCEPT = 1 ';
+        }
+
         if ($this->input->get('typeSearch2') == 'true') {
             $condition .= ' AND booking.CHECKIN = 1 ';
+        }
+
+        if ($this->input->get('typeSearch4') == 'true') {
+            $condition .= ' AND booking.CHECKIN = 1 AND booking.ACCEPT = 1 AND booking.CALLED != 0 ';
         }
 
         $queue = $this->BookingModel->getDataPerpage($this->session->userdata('id'), '', $condition);
@@ -68,6 +76,25 @@ class Patient extends CI_Controller
             echo json_encode(['result'=> true,'data' => $queue]);
         } else {
             echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function checkin()
+    {
+        $_POST = json_decode(file_get_contents("php://input"), true);
+
+        if (!empty($this->input->post('id'))) {
+            $data = [
+                'CHECKIN' => 1,
+            ];
+
+            $result =  $this->BookingModel->updateById($data, $this->input->post('id'));
+
+            if ($result) {
+                echo json_encode(['result'=> true]);
+            } else {
+                echo json_encode(['result'=> false]);
+            }
         }
     }
 
