@@ -164,7 +164,10 @@
                                     src: params.item.IMAGE || '<?php echo base_url();?>assets/img/avatar6.png',
                                 },
                                 class: 'avatar',
-                            }), h('span', {
+                            }), h('a', {
+                                attrs: {
+                                    href :'<?php echo base_url('patient/profile?id=');?>'+params.item.MEMBERIDCARD,
+                                },
                                 style: {
                                     color: '#4285f4',
                                     backgroundColor: 'transparent',
