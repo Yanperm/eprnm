@@ -57,6 +57,14 @@
             -moz-osx-font-smoothing: grayscale;
         }
     </style>
+
+    <?php
+    if (!empty($css)):
+        foreach ($css as $item):?>
+            <link rel="stylesheet" href="<?php echo $item;?>" type="text/css" />
+    <?php endforeach;
+    endif;
+    ?>
 </head>
 
 <body>

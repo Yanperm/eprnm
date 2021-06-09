@@ -31,6 +31,16 @@ class ProductMainModel extends CI_Model
         }
     }
 
+    public function getMaxId($clinicId){
+        $query = $this->db->query('SELECT MAX(CategoryIDs) as max_id FROM tbproductcategory where CLINICID = "'.$clinicId.'"');
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return array();
+        }
+    }
+
     public function insert($data)
     {
         $this->db->insert('tbproductcategory', $data);

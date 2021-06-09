@@ -18,9 +18,17 @@ class ProductMain extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('template/header');
+        $css = [
+            base_url() . 'assets/app/product_main/product_main.css?v=' . time(),
+        ];
+
+        $js = [
+            base_url() . 'assets/app/product_main/product_main.js?v=' . time(),
+        ];
+
+        $this->load->view('template/header', ['css' => $css]);
         $this->load->view('product_main/index');
-        $this->load->view('template/footer');
+        $this->load->view('template/footer', ['js' => $js]);
     }
 
 	public function getProductMain()
@@ -59,6 +67,15 @@ class ProductMain extends CI_Controller {
                 echo json_encode(['result'=> false]);
             }
         }
+    }
+
+    public function getMaxId(){
+        $maxId = $this->ProductMainModel->getMaxId($this->session->userdata('id'));
+        $max = intval(substr($maxId->max_id , 1));
+
+        header('Content-Type: application/json');
+
+        echo json_encode(['result'=> true, 'maxId' => $max]);
     }
 
     public function insert(){
