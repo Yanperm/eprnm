@@ -1,0 +1,64 @@
+.mdrp__activator .activator-wrapper .text-field:focus~label,
+.mdrp__activator .activator-wrapper .text-field__filled~label {
+    top: -20px;
+    font-size: 14px;
+    color: #4285f4;
+    display: none;
+}
+
+.mdrp__activator .activator-wrapper .text-field {
+    display: block;
+    font-size: 15px;
+    margin-top: 19px;
+    padding: 4px 9px 9px 16px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #757575;
+}
+
+.mdrp-root[data-v-7863e830] {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.mdrp__activator .activator-wrapper .bar {
+    display: none !important;
+    position: relative;
+    display: block;
+    width: 315px;
+}
+
+.custom-control {
+    position: relative;
+    display: block;
+    min-height: 1.428571rem;
+    padding-left: 0px;
+}
+
+.avatar {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+p {
+    margin: 0 0 5px;
+}
+
+.at-notification {
+    z-index: 999999999 !important;
+}
+
+.modal-main-icon {
+    font-size: 36px;
+}
+
+.form-group {
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: 800 !important;
+}
