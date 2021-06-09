@@ -238,7 +238,16 @@
 <script type="text/javascript">
     $(document).ready(function(){
         App.init();
+        let href = window.location.href;
+
+        $('.left-sidebar-content a').each(function () {
+            if (href == $(this).attr('href')) {
+                $(this).addClass('active_menu');
+                $(this).parent().parent().parent().first().addClass('open');
+            }
+        });
     });
+    
 </script>
 
 

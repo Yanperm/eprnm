@@ -5,7 +5,6 @@ class ProductMainModel extends CI_Model
 {
     public function getDataPerpage($clinicId, $condition)
     {
-        
         $query = $this->db->query(
             '
             SELECT * FROM tbproductcategory 
@@ -22,7 +21,9 @@ class ProductMainModel extends CI_Model
     }
 
     public function getDataById($id){
-        $query = $this->db->query('SELECT * FROM tbproductcategory WHERE CategoryID = "'.$id.'"');
+        $query = $this->db->query('
+            SELECT * FROM tbproductcategory 
+            WHERE CategoryID = "'.$id.'"');
 
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -32,7 +33,10 @@ class ProductMainModel extends CI_Model
     }
 
     public function getMaxId($clinicId){
-        $query = $this->db->query('SELECT MAX(CategoryIDs) as max_id FROM tbproductcategory where CLINICID = "'.$clinicId.'"');
+        $query = $this->db->query('
+            SELECT MAX(CategoryIDs) as max_id 
+            FROM tbproductcategory 
+            WHERE CLINICID = "'.$clinicId.'"');
 
         if ($query->num_rows() > 0) {
             return $query->row();

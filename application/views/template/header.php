@@ -56,6 +56,9 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
+        .active_menu{
+            color: #4285f4 !important;
+        }
     </style>
 
     <?php
@@ -171,11 +174,11 @@
                         <div class="left-sidebar-content">
                             <ul class="sidebar-elements">
                                 <li class="divider">Menu</li>
-                                <li class="active"><a href="<?php echo base_url();?>"><i class="icon mdi mdi-home"></i><span>หน้าหลัก</span></a>
+                                <li><a href="<?php echo base_url();?>"><i class="icon mdi mdi-home"></i><span>หน้าหลัก</span></a>
                                 </li>
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-face"></i><span>ผู้ป่วย</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('patient/manage-queue');?>">การจัดการนัดหมาย</a>
+                                        <li><a class="nav-link" href="<?php echo base_url('patient/manage-queue');?>">การจัดการนัดหมาย</a>
                                         </li>
                                         <li><a href="<?php echo base_url('patient/queue');?>">เรียกคิว</a>
                                         </li>

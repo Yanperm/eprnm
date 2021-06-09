@@ -30,15 +30,12 @@
                 </div>
             </div>
             <div class="card-body">
-
                 <div class="noSwipe">
-                    <!-- <at-button type="primary" hollow>Primary</at-button> -->
                     <div class="row">
                         <div class="col-md-12 text-right mt-3 mb-3 pr-5">
                             <at-button type="primary" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</at-button>
                         </div>
                     </div>
-                    <!-- <button class="btn btn-space btn-success" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</button> -->
                     <div>
                         <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
                     </div>

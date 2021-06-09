@@ -48,7 +48,7 @@ class ProductMain extends CI_Controller {
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode(['result'=> true, 'data' => $queue]);
         } else {
             echo json_encode(['result'=> false]);
         }
@@ -62,7 +62,7 @@ class ProductMain extends CI_Controller {
             header('Content-Type: application/json');
 
             if ($productMain) {
-                echo json_encode(['result'=> true,'data' => $productMain]);
+                echo json_encode(['result'=> true, 'data' => $productMain]);
             } else {
                 echo json_encode(['result'=> false]);
             }
