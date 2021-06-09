@@ -20,6 +20,18 @@ class ProductMainModel extends CI_Model
         }
     }
 
+    public function getDataByClinic($clinicId){
+        $query = $this->db->query('
+            SELECT * FROM tbproductcategory 
+            WHERE CLINICID = "'.$clinicId.'"');
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function getDataById($id){
         $query = $this->db->query('
             SELECT * FROM tbproductcategory 
