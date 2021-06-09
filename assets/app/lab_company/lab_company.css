@@ -1,4 +1,4 @@
-.mdrp__activator .activator-wrapper .text-field:focus~label,
+<style>.mdrp__activator .activator-wrapper .text-field:focus~label,
 .mdrp__activator .activator-wrapper .text-field__filled~label {
     top: -20px;
     font-size: 14px;
@@ -62,3 +62,5 @@ p {
 .form-group label {
     font-weight: 800 !important;
 }
+
+</style>

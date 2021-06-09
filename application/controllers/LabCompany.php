@@ -18,9 +18,17 @@ class LabCompany extends CI_Controller {
 
     public function index()
     {
-        $this->load->view('template/header');
+        $css = [
+            base_url() . 'assets/app/lab_company/lab_company.css?v=' . time(),
+        ];
+
+        $js = [
+            base_url() . 'assets/app/lab_company/lab_company.js?v=' . time(),
+        ];
+
+        $this->load->view('template/header', ['css' => $css]);
         $this->load->view('lab_company/index');
-        $this->load->view('template/footer');
+        $this->load->view('template/footer', ['js' => $js]);
     }
 
 	public function getLabCompany()
@@ -42,6 +50,84 @@ class LabCompany extends CI_Controller {
         if ($queue) {
             echo json_encode(['result'=> true,'data' => $queue]);
         } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function getLabCompanyById(){
+        $id = $_GET["id"];
+        
+        if(!empty($id)){
+            $labCompany = $this->LabCompanyModel->getDataById($id);
+            header('Content-Type: application/json');
+
+            if ($labCompany) {
+                echo json_encode(['result'=> true, 'data' => $labCompany]);
+            } else {
+                echo json_encode(['result'=> false]);
+            }
+        }
+    }
+
+    public function getMaxId(){
+        $maxId = $this->LabCompanyModel->getMaxId($this->session->userdata('id'));
+        $max = intval(substr($maxId->max_id , 2));
+
+        header('Content-Type: application/json');
+
+        echo json_encode(['result'=> true, 'maxId' => $max]);
+    }
+
+    public function insert(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $code = $_POST["code"];
+        $name = $_POST["name"];
+      
+        $data = [
+            'LabCID' => time(),
+            'LCID' => $code,
+            'LabCName' => $name,
+            'CLINICID' => $this->session->userdata('id')
+        ];
+
+        $result = $this->LabCompanyModel->insert($data);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function update(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $id = $_POST["id"];
+        $code = $_POST["code"];
+        $name = $_POST["name"];
+
+        $data = [
+            'LCID' => $code,
+            'LabCName' => $name,
+        ];
+      
+        $result = $this->LabCompanyModel->update($data, $id);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function delete(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $id = $_POST["id"];
+        
+        $result = $this->LabCompanyModel->delete($id);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
             echo json_encode(['result'=> false]);
         }
     }
