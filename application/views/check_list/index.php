@@ -1,0 +1,117 @@
+<div class="row" id="vue-root">
+    <div class="col-md-12">
+        <div class="card card-table">
+            <div class="row table-filters-container">
+                <div class="col-12 col-lg-12 col-xl-6">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหารายการส่งตรวจ</span>
+                            <div class="filter-container">
+                                <form>
+                                    <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label>
+                                    <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา"></at-input>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">เงื่อนไขการค้นหา</span>
+                            <div class="filter-container">
+                                <label class="control-label">โปรดเลือกเงื่อนไข</label>
+                                <form>
+                                    <at-select v-model="conditionType" size="large" @on-change="makePageData">
+                                        <at-option value="1">รหัสการทดสอบ</at-option>
+                                        <at-option value="2">ชื่อการทดสอบ</at-option>
+                                        <at-option value="3">บริษัทที่รับตรวจแล็บ</at-option>
+                                        <at-option value="4">แผนกส่งตรวจ</at-option>
+                                    </at-select>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="noSwipe">
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
+                            <at-button type="primary" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</at-button>
+                        </div>
+                    </div>
+                    <div>
+                        <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="edit-dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">รายการส่งตรวจ</h3>
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="form-group pt-2">
+                            <label for="inputCode">บริษัทที่รับตรวจแล็บ</label>
+                            <at-select v-model="mainId" size="large" style="width: 100%"  @on-change="getDepartment">
+                                <at-option  v-for="item in labCompany" v-bind:value="item.LabCID">
+                                    {{ item.LabCName }}
+                                </at-option>
+                            </at-select>
+                           
+                        </div>
+                        <div class="form-group pt-2">
+                            <label for="inputCode">แผนกส่งตรวจ</label>
+                            <at-select v-model="subId" size="large" style="width: 100%" id="subId">
+                                <at-option  v-for="item in department" :key="item.DepID"  v-bind:value="item.DepID">
+                                    {{ item.DepName }}
+                                </at-option>
+                            </at-select>
+                        </div>
+                        <div class="form-group pt-2">
+                            <label for="inputCode">รหัสรายการตรวจ</label>
+                            <input class="form-control" id="inputCode" type="text" v-model="code" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">ชื่อการทดสอบ</label>
+                            <input class="form-control" id="inputName" type="text" v-model="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputCost">ต้นทุน</label>
+                            <input class="form-control" id="inputCost" type="number" v-model="cost">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPrice">ราคา</label>
+                            <input class="form-control" id="inputPrice" type="number" v-model="price">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
+                    <button class="btn btn-success" type="button" v-on:click="saveItem">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="text-danger"><span class="modal-main-icon mdi mdi-close-circle-o"></span></div>
+                        <h3>ยืนยันการลบข้อมูล!</h3>
+                        <p>ต้องการลบข้อมูลรายการส่งตรวจหรือไม่</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
+                    <button class="btn btn-danger" type="button" v-on:click="deleteItem">ลบข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

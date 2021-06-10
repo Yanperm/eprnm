@@ -1,17 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class DepartmentModel extends CI_Model
+class CheckListModel extends CI_Model
 {
     public function getDataPerpage($clinicId, $condition)
     {
         
         $query = $this->db->query(
             '
-            SELECT * FROM tbdepartment as dep
-            inner join tblabscompany as company on company.LabCID = dep.LabCID
-            where dep.CLINICID = "' . $clinicId . '" '.$condition.'
-            order by company.LabCName ASC
+            SELECT * FROM tbsenddepartment as checklist
+            inner join tbdepartment as department on department.DepID = checklist.DepID
+            inner join tblabscompany as company on company.LabCID = checklist.LabCID
+            where checklist.CLINICID = "' . $clinicId . '" '.$condition.'
+            order by checklist.STESTNAME ASC
           '
         );
 
@@ -24,8 +25,8 @@ class DepartmentModel extends CI_Model
 
     public function getDataById($id){
         $query = $this->db->query('
-            SELECT * FROM tbdepartment 
-            WHERE DepID = "'.$id.'"');
+            SELECT * FROM tbsenddepartment 
+            WHERE SID = "'.$id.'"');
 
         if ($query->num_rows() > 0) {
             return $query->row();
@@ -34,24 +35,10 @@ class DepartmentModel extends CI_Model
         }
     }
 
-    public function getDataByClinicAndLab($clinicId, $labId){
-        $query = $this->db->query('
-            SELECT * FROM tbdepartment 
-            WHERE CLINICID = "'.$clinicId.'"
-            AND LabCID = "'.$labId.'"
-            ');
-
-        if ($query->num_rows() > 0) {
-            return $query->result();
-        } else {
-            return array();
-        }
-    }
-
     public function getMaxId($clinicId){
         $query = $this->db->query('
-            SELECT MAX(DID) as max_id 
-            FROM tbdepartment 
+            SELECT MAX(SPID) as max_id 
+            FROM tbsenddepartment 
             WHERE CLINICID = "'.$clinicId.'"');
 
         if ($query->num_rows() > 0) {
@@ -63,21 +50,21 @@ class DepartmentModel extends CI_Model
 
     public function insert($data)
     {
-        $this->db->insert('tbdepartment', $data);
+        $this->db->insert('tbsenddepartment', $data);
         return true;
     }
 
     public function update($data, $id)
     {
-        $this->db->where('DepID', $id);
-        $this->db->update('tbdepartment', $data);
+        $this->db->where('SID', $id);
+        $this->db->update('tbsenddepartment', $data);
         return true;
     }
 
     public function delete($id)
     {
-        $this->db->where('DepID', $id);
-        $this->db->delete('tbdepartment');
+        $this->db->where('SID', $id);
+        $this->db->delete('tbsenddepartment');
         return true;
     }
 }

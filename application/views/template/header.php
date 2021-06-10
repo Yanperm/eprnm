@@ -230,7 +230,7 @@
                                         </li>
                                         <li><a href="<?php echo base_url('department');?>">แผนกส่งตรวจ</a>
                                         </li>
-                                        <li><a href="<?php echo base_url();?>">รายการส่งตรวจ</a>
+                                        <li><a href="<?php echo base_url('checkList');?>">รายการส่งตรวจ</a>
                                         </li>
 
                                         <!-- CUT OUT
