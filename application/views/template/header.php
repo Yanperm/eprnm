@@ -59,6 +59,24 @@
         .active_menu{
             color: #4285f4 !important;
         }
+        .at-table {
+            position: relative;
+            color: #3F536E;
+            font-size: 14px;
+        }
+        .at-btn__text {
+            font-size: 15px;
+        }
+        .at-btn__icon, .at-btn__loading {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .table-filter-title {
+            font-size: 15px;
+        }
+        label {
+            font-size: 1.1rem;
+        }
     </style>
 
     <?php
