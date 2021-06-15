@@ -266,7 +266,7 @@
                                 </li>
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-male"></i><span>รายการหัตถการ</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url();?>">การจัดการหัตถการ</a>
+                                        <li><a href="<?php echo base_url('procedure');?>">การจัดการหัตถการ</a>
                                         </li>
 
                                         <!--<li><a href="tables-datatables.html">Data Tables</a>

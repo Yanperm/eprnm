@@ -17,8 +17,8 @@
                                 <label class="control-label">โปรดเลือกเงื่อนไข</label>
                                 <form>
                                     <at-select v-model="conditionType" size="large" @on-change="makePageData">
-                                        <at-option value="1">รหัสกลุ่มยาหลัก</at-option>
-                                        <at-option value="2">ชื่อกลุ่มยาหลัก</at-option>
+                                        <at-option value="1">รหัสรายการหัตถการ</at-option>
+                                        <at-option value="2">ชื่อรายการหัตถการ</at-option>
                                     </at-select>
                                 </form>
                             </div>
@@ -29,6 +29,11 @@
             </div>
             <div class="card-body">
                 <div class="noSwipe">
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
+                            <at-button type="primary" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</at-button>
+                        </div>
+                    </div>
                     <div>
                         <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
                     </div>
@@ -37,161 +42,55 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="edit-dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">ผู้รับตรวจ</h3>
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="form-group pt-2">
+                            <label for="inputCode">รหัสรายการหัตถการ</label>
+                            <input class="form-control" id="inputCode" type="text" v-model="code" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputName">ชื่อรายการหัตถการ</label>
+                            <input class="form-control" id="inputName" type="text" v-model="name">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPrice">ค่าใช้จ่าย</label>
+                            <input class="form-control" id="inputPrice" type="number" v-model="price" step="any">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
+                    <button class="btn btn-success" type="button" v-on:click="saveItem">บันทึกข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-dialog" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="text-danger"><span class="modal-main-icon mdi mdi-close-circle-o"></span></div>
+                        <h3>ยืนยันการลบข้อมูล!</h3>
+                        <p>ต้องการลบข้อมูลรายการหัตถการหรือไม่</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
+                    <button class="btn btn-danger" type="button" v-on:click="deleteItem">ลบข้อมูล</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<style>
-    .mdrp__activator .activator-wrapper .text-field:focus~label,
-    .mdrp__activator .activator-wrapper .text-field__filled~label {
-        top: -20px;
-        font-size: 14px;
-        color: #4285f4;
-        display: none;
-    }
-    
-    .mdrp__activator .activator-wrapper .text-field {
-        display: block;
-        font-size: 15px;
-        margin-top: 19px;
-        padding: 4px 9px 9px 16px;
-        width: 100%;
-        border: none;
-        border-bottom: 1px solid #757575;
-    }
-    
-    .mdrp-root[data-v-7863e830] {
-        position: relative;
-        display: inline-block;
-        width: 100%;
-    }
-    
-    .mdrp__activator .activator-wrapper .bar {
-        display: none !important;
-        position: relative;
-        display: block;
-        width: 315px;
-    }
-    
-    .custom-control {
-        position: relative;
-        display: block;
-        min-height: 1.428571rem;
-        padding-left: 0px;
-    }
-    
-    .avatar {
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-        margin-right: 10px;
-    }
-    
-    p {
-        margin: 0 0 5px;
-    }
-    
-    .at-notification {
-        z-index: 999999999 !important;
-    }
-</style>
-
-</script>
-<script type="text/javascript">
-    const app = new Vue({
-        el: '#vue-root',
-        data() {
-
-            return {
-                isTable: false,
-                page: 1,
-                perPage: 10,
-                record: [],
-                search: '',
-                conditionType: '1',
-                data3: [],
-                columns1: [{
-                    title: 'รหัสกลุ่มยาหลัก',
-                    key: 'CategoryIDs',
-                }, {
-                    title: "ชื่อกลุ่มยาหลัก",
-                    key: 'CategoryName',
-                    sortType: 'normal',
-                    
-                }, {
-                    title: 'วันเวลาที่สร้าง',
-                    key: 'Create',
-
-                }, {
-                    title: 'จัดการ',
-                    key: 'operation',
-                    render: (h, params) => {
-                        
-                            return h('div', [h('AtButton', {
-                                    props: {
-                                        size: 'small',
-                                        hollow: false,
-                                        type: 'warning',
-                                        icon: 'icon-edit'
-                                    },
-
-                                    style: {
-                                        marginRight: '8px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.$Message(params.item.CategoryID)
-                                        }
-                                    }
-                                }, 'แก้ไข'),
-                                h('AtButton', {
-                                    props: {
-                                        size: 'small',
-                                        hollow: false,
-                                        type: 'error',
-                                        icon: 'icon-trash-2'
-                                    },
-
-                                    style: {
-                                        marginRight: '8px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.$Message(params.item.CategoryID)
-                                        }
-                                    }
-                                }, 'ลบ'),
-                            ])
-                        
-                    },
-
-                }, ],
-            }
-        },
-        mounted() {
-            this.record = this.makePageData();
-        },
-        methods: {
-            makePageData() {
-                axios.get("<?php echo base_url('productMain/getProductMain');?>", {
-                        params: {
-                            search: this.search,
-                            type: this.conditionType,
-                        }
-                    })
-                    .then((response) => {
-                        let pageData = [];
-                        this.isTable = true;
-
-                        if (response.data.result) {
-                            for (let i = 0; i < response.data.data.length; i++) {
-                                pageData = pageData.concat(response.data.data[i])
-                            }
-                        }
-
-                        this.data3 = pageData;
-                    }, (response) => {
-
-                    });
-            }
-        }
-    });
-</script>
