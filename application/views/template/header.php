@@ -238,7 +238,7 @@
                                         </li>
                                         <li><a href="<?php echo base_url();?>">เพิ่มยาใหม่</a>
                                         </li>
-                                        <li><a href="<?php echo base_url();?>">คลังยา</a>
+                                        <li><a href="<?php echo base_url('product');?>">คลังยา</a>
                                         </li>
                                     </ul>
                                 </li>

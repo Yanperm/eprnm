@@ -166,7 +166,7 @@
                                 class: 'avatar',
                             }), h('a', {
                                 attrs: {
-                                    href :'<?php echo base_url('patient/profile?id=');?>'+params.item.MEMBERIDCARD,
+                                    href :'<?php echo base_url('recordInformation?id=');?>'+params.item.MEMBERIDCARD,
                                 },
                                 style: {
                                     color: '#4285f4',
