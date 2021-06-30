@@ -465,13 +465,15 @@ class BookingModel extends CI_Model
     }
 
     public function statByMonth($clinicId){
+        $days_ago = date('Y-m-d', strtotime('-30 days', strtotime(date('Y-m-d'))));
         $month = date("Y-m");
         $query = $this->db->query("SELECT
-    COUNT(*) AS NUM, SUBSTRING(BOOKDATE, 9, 2)  AS DATE
+    COUNT(*) AS NUM, SUBSTRING(BOOKDATE, 1, 10)  AS DATE
 FROM
     dbnutmor.tbbooking
 WHERE
-     SUBSTRING(BOOKDATE, 1, 8) LIKE '%" . $month . "%'
+ (BOOKDATE BETWEEN '".$days_ago."' AND '".date('Y-m-d')."')
+    
         AND CLINICID = '" . $clinicId . "'
 GROUP BY DATE , CLINICID");
         if ($query->num_rows() > 0) {
@@ -485,6 +487,7 @@ GROUP BY DATE , CLINICID");
     {
         $this->db->where('BOOKINGID', $bookingId);
         $this->db->update('tbbooking', $data);
+        return true;
     }
 
 

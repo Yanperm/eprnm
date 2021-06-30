@@ -273,7 +273,7 @@
                         <div class="left-sidebar-content">
                             <ul class="sidebar-elements">
                                 <li class="divider">Menu</li>
-                                <li><a href="<?php echo base_url();?>"><i class="icon mdi mdi-home"></i><span>หน้าหลัก</span></a>
+                                <li><a href="<?php echo base_url('dashboard');?>"><i class="icon mdi mdi-home"></i><span>หน้าหลัก</span></a>
                                 </li>
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-face"></i><span>ผู้ป่วย</span></a>
                                     <ul class="sub-menu">

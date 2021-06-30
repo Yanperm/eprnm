@@ -29,17 +29,13 @@ class Dashboard extends CI_Controller
         $like = $this->LikeModel->getCount($this->session->userdata('id'));
         $clinic = $this->ClinicModel->detailById($this->session->userdata('id'));
         $stat = $this->StatModel->pageVisit($this->session->userdata('id'));
-        $listToDay = $this->BookingModel->getDataListNewWaitAccept($this->session->userdata('id'), 5, 1);
-        $product = $this->ProductModel->getDataTop($this->session->userdata('id'));
-
+       
         $data = [
                     'allBooking' => $allBooking[0]->ALLBOOKING,
                     'todayBooking' => $todayBooking[0]->TODAYBOOKING,
                     'like' => $like,
                     'clinic' => $clinic,
-                    'listToDay' => $listToDay,
                     'pageVisit' => $stat,
-                    'product' => $product
                 ];
 
         $js = [
@@ -51,6 +47,32 @@ class Dashboard extends CI_Controller
         $this->load->view('template/footer', ['js' => $js]);
     }
 
+    public function getDataBooking()
+    {
+        $recordBooking = $this->BookingModel->getDataListNewWaitAccept($this->session->userdata('id'), 5, 1);
+        
+        header('Content-Type: application/json');
+
+        if ($recordBooking) {
+            echo json_encode(['result'=> true, 'data' => $recordBooking]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function getDataProduct()
+    {
+        $recordProduct = $this->ProductModel->getDataTop($this->session->userdata('id'), 5, 1);
+        
+        header('Content-Type: application/json');
+
+        if ($recordProduct) {
+            echo json_encode(['result'=> true, 'data' => $recordProduct]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
     public function getDataChart(){
         $conversationRate = [];
         $sale = [];
@@ -58,7 +80,7 @@ class Dashboard extends CI_Controller
 
         if($this->input->get('chartType') == 'month'){
             $conversationRate = $this->StatModel->statByMonth($this->session->userdata('id'));
-            $sale = $this->IncomeModel->statByMonth($this->session->userdata('id'));
+            //$sale = $this->IncomeModel->statByMonth($this->session->userdata('id'));
             $booking = $this->BookingModel->statByMonth($this->session->userdata('id'));
         }else if($this->input->get('chartType') == 'year'){
             $conversationRate = $this->StatModel->statByMonth($this->session->userdata('id'));
@@ -74,5 +96,23 @@ class Dashboard extends CI_Controller
         ];
 
         echo json_encode(['result'=> true,'data' => $data]);
+    }
+
+    public function acceptBooking()
+    {
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $id = $_POST["id"];
+
+        $data = [
+            'ACCEPT' => 1
+        ];
+        
+        $result = $this->BookingModel->updateById($data, $id);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        } 
     }
 }

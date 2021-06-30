@@ -62,14 +62,16 @@ GROUP BY MONTH , IDCLINIC");
 
     public function statByMonth($clinicId)
     {
+        $days_ago = date('Y-m-d', strtotime('-30 days', strtotime(date('Y-m-d'))));
         $month = date("Y-m");
         $query = $this->db->query("SELECT
-    COUNT(*) AS NUM, SUBSTRING(CREATEDATE, 9, 2)  AS DATE
+    COUNT(*) AS NUM, SUBSTRING(CREATEDATE, 1, 10)  AS DATE
 FROM
     dbnutmor.tbstat
 WHERE
     IDCLINIC != '' AND IP != '::1'
-        AND SUBSTRING(CREATEDATE, 1, 8) LIKE '%" . $month . "%'
+        AND (CREATEDATE BETWEEN '".$days_ago."' AND '".date('Y-m-d')."')
+        
         AND IDCLINIC = '" . $clinicId . "'
 GROUP BY DATE , IDCLINIC");
         if ($query->num_rows() > 0) {

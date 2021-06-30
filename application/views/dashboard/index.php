@@ -62,7 +62,7 @@
                         <div class="btn-group">
                             <button class="btn btn-secondary" type="button">Today</button>
                         </div> -->
-                    </div><span class="title">สถิติการใช้งานรายวัน</span>
+                    </div><span class="title">สถิติการใช้งานย้อนหลัง 30 วัน</span>
                 </div>
                 <div class="widget-chart-container">
                     <div class="widget-chart-info">
@@ -90,105 +90,106 @@
                     <div class="title">คิวรอนุมัติการจองรายการล่าสุด</div>
                 </div>
                 <div class="card-body table-responsive">
-                    <table class="table table-striped table-hover">
-                        <thead>
-                            <tr>
-                                <th>ผู้ป่วย</th>
-                                <th>คิวที่</th>
-                                <!-- <th>สาเหตุที่มาพบแพทย์</th> -->
-                                <th>วันและเวลา</th>
-                                <th class="actions">สถานะคิว</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (!empty($listToDay)):?>
-                            <?php foreach ($listToDay as $item):?>
-                            <tr>
-                                <td class="user-avatar"> <img src="<?php echo base_url();?>assets/img/avatar6.png" alt="Avatar">
-                                    <?php echo $item['CUSTOMERNAME']; ?>
-                                </td>
-                                <td>
-                                    <?php echo $item['QUES'];?>
-                                </td>
-                                <!-- <td>
-                                    <?php echo $item['DETAIL']; ?>
-                                </td> -->
-                                <td>
-                                    <?php echo $item['BOOKDATE']; ?>
-                                </td>
-                                <td class="actions centex">
-                                    <vs-tooltip color="primary" text="ยืนยันการจอง">
-                                        <vs-button radius color="primary" type="gradient" icon="check"></vs-button>
-                                    </vs-tooltip>
-                                    <vs-tooltip color="danger" text="ยกเลิกการจอง">
-                                        <vs-button radius color="danger" type="gradient " icon="close"></vs-button>
-                                    </vs-tooltip>
+                    <vs-table :sst="true" v-model="selectedBooking" :data="recordBooking">
+                        <template slot="thead">
+                            <vs-th></vs-th>
+                          <vs-th>
+                            ผู้ป่วย
+                          </vs-th>
+                          <vs-th>
+                            คิวที่
+                          </vs-th>
+                          <vs-th>
+                            วันและเวลา	
+                          </vs-th>
+                          <vs-th>
+                            สถานะคิว
+                          </vs-th>
+                        </template>
 
-
-                                </td>
-                            </tr>
-                            <?php endforeach?>
-                            <?php endif;?>
-                        </tbody>
-                    </table>
+                        <template slot-scope="{data}">
+                            <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
+                                <vs-td :data="data[indextr].BOOKINGID">
+                                    <vs-avatar v-if="data[indextr].IMAGE == null" :text="data[indextr].CUSTOMERNAME"/>
+                                    <vs-avatar v-else :src="data[indextr].IMAGE"/>
+                                </vs-td>
+                                <vs-td :data="data[indextr].BOOKINGID">
+                                    {{data[indextr].CUSTOMERNAME}}
+                                </vs-td>
+                                <vs-td :data="data[indextr].QUES">
+                                    {{data[indextr].QUES}}
+                                </vs-td>
+                                <vs-td :data="data[indextr].BOOKDATE">
+                                    {{data[indextr].BOOKDATE}}
+                                </vs-td>
+                                <vs-td :data="data[indextr].BOOKINGID">
+                                    <div class="centerx">
+                                        <vs-tooltip text="ยืนยันการจอง">
+                                            <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="check" @click="openConfirmAccept(data[indextr].BOOKINGID)"></vs-button>
+                                        </vs-tooltip>
+                                        <vs-tooltip text="ยกเลิกการจอง">
+                                            <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="close" @click="openConfirmCancel(data[indextr].BOOKINGID)"></vs-button>
+                                        </vs-tooltip>
+                                    </div>
+                                </vs-td>
+                          </vs-tr>
+                        </template>
+                    </vs-table>
                 </div>
             </div>
         </div>
-        <!--END COMMENT1-->
 
-
-
-
-
-
-
-
-        <!--COMMENT2-->
         <div class="col-12 col-lg-6 ">
             <div class="card card-table ">
                 <div class="card-header ">
 
                     <div class="tools" style="font-size: 14px;">
-                        <vs-button color="primary" type="gradient" icon="add_circle_outline">เพิ่มข้อมูลยา</vs-button>
+                        <a href="<?php echo base_url('/product');?>">
+                            <vs-button color="primary" type="filled" icon="add_circle_outline">เพิ่มข้อมูลยา</vs-button>
+                        </a>
 
                     </div>
 
                     <div class="title ">Monthly Top Sales</div>
                 </div>
                 <div class="card-body table-responsive ">
-                    <table class="table table-striped table-borderless ">
-                        <thead>
-                            <tr>
-                                <th style="width:40%; ">Product</th>
-                                <th class="number">จำนวนในคลัง</th>
-                                <th class="number " style="width:20%; ">ราคา</th>
-                                <!-- <th style="width:20%; ">Total</th> -->
-                                <th class="actions " style="width:5%; "></th>
-                            </tr>
-                        </thead>
-                        <tbody class="no-border-x ">
-                            <?php if (!empty($product)):?>
-                            <?php foreach ($product as $item):?>
-                            <tr>
-                                <td>
-                                    <?php echo $item->CommonName; ?>
-                                </td>
-                                <td class="number ">
-                                    <?php echo $item->Digit; ?>
-                                </td>
-                                <td class="number ">
-                                    <?php echo $item->PriceBuy; ?>฿</td>
-                                <td class="actions ">
-                                    <vs-tooltip color="primary" text="เติมยาเข้าระบบ">
-                                        <vs-button radius color="primary" type="gradient" icon="add"></vs-button>
+
+                    <vs-table :sst="true" v-model="selectedProduct" :data="recordProduct">
+                        <template slot="thead"> 
+                          <vs-th>
+                            Product
+                          </vs-th>
+                          <vs-th>
+                            จำนวนในคลัง
+                          </vs-th>
+                          <vs-th>
+                            ราคา                          
+                        </vs-th>
+                          <vs-th>
+                            
+                          </vs-th>
+                        </template>
+
+                        <template slot-scope="{data}">
+                            <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
+                            
+                                <vs-td :data="data[indextr].CommonName">
+                                    {{data[indextr].CommonName}}
+                                </vs-td>
+                                <vs-td :data="data[indextr].Digit">
+                                    {{data[indextr].Digit}}
+                                </vs-td>
+                                <vs-td :data="data[indextr].PriceBuy">
+                                    {{data[indextr].PriceBuy}}
+                                </vs-td>
+                                <vs-td :data="data[indextr].ProductID">
+                                    <vs-tooltip text="เติมยาเข้าระบบ">
+                                        <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="add"></vs-button>
                                     </vs-tooltip>
-                                    <!-- <a class="icon " href="# "><i class="mdi mdi-plus-circle-o "></i></a> -->
-                                </td>
-                            </tr>
-                            <?php endforeach?>
-                            <?php endif;?>
-                        </tbody>
-                    </table>
+                                </vs-td>
+                          </vs-tr>
+                        </template>
+                    </vs-table>
                 </div>
             </div>
         </div>
@@ -197,164 +198,22 @@
     </div>
     <!--END ROW-->
 
-
-    <!-- <div class="row ">
-        <div class="col-12 col-lg-4 ">
-            <div class="card ">
-                <div class="card-header card-header-divider pb-3 ">User Channel</div>
-                <div class="card-body pt-5 ">
-                    <div class="row user-progress user-progress-small ">
-                        <div class="col-lg-5 "><span class="title ">Web</span></div>
-                        <div class="col-lg-7 ">
-                            <div class="progress ">
-                                <div class="progress-bar bg-success " style="width: 40% "></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row user-progress user-progress-small ">
-                        <div class="col-lg-5 "><span class="title ">iOS</span></div>
-                        <div class="col-lg-7 ">
-                            <div class="progress ">
-                                <div class="progress-bar bg-success " style="width: 65% "></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row user-progress user-progress-small ">
-                        <div class="col-lg-5 "><span class="title ">Android</span></div>
-                        <div class="col-lg-7 ">
-                            <div class="progress ">
-                                <div class="progress-bar bg-success " style="width: 30% "></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row user-progress user-progress-small ">
-                        <div class="col-lg-5 "><span class="title ">Phone</span></div>
-                        <div class="col-lg-7 ">
-                            <div class="progress ">
-                                <div class="progress-bar bg-success " style="width: 80% "></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row user-progress user-progress-small ">
-                        <div class="col-lg-5 "><span class="title ">Staffs</span></div>
-                        <div class="col-lg-7 ">
-                            <div class="progress ">
-                                <div class="progress-bar bg-success " style="width: 45% "></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-4 ">
-            <div class="widget be-loading ">
-                <div class="widget-head ">
-                    <div class="tools "><span class="icon mdi mdi-chevron-down "></span><span class="icon mdi mdi-refresh-sync toggle-loading "></span><span class="icon mdi mdi-close "></span></div>
-                    <div class="title ">Sale Proportions</div>
-                </div>
-                <div class="widget-chart-container ">
-                    <div id="top-sales " style="height:500px; "></div>
-                    <div class="chart-pie-counter ">36</div>
-                </div>
-                <div class="chart-legend ">
-                    <table>
-                        <tr>
-                            <td class="chart-legend-color "><span data-color="top-sales-color1 "></span></td>
-                            <td>Medicine</td>
-                            <td class="chart-legend-value ">125</td>
-                        </tr>
-                        <tr>
-                            <td class="chart-legend-color "><span data-color="top-sales-color2 "></span></td>
-                            <td>Laboratory</td>
-                            <td class="chart-legend-value ">1569</td>
-                        </tr>
-                        <tr>
-                            <td class="chart-legend-color "><span data-color="top-sales-color3 "></span></td>
-                            <td>Procedure</td>
-                            <td class="chart-legend-value ">824</td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="be-spinner ">
-                    <svg width="40px " height="40px " viewBox="0 0 66 66 " xmlns="http://www.w3.org/2000/svg ">
-                    <circle class="circle " fill="none " stroke-width="4 " stroke-linecap="round " cx="33 " cy="33 " r="30 "></circle>
-                </svg>
-                </div>
-            </div>
-        </div>
-        <div class="col-12 col-lg-4 ">
-            <div class="widget widget-calendar ">
-                <div id="calendar-widget "></div>
-            </div>
-        </div>
-    </div>
-    <div class="row ">
-
-        <div class="col-12 col-lg-6 ">
-
-
-            <div class="card ">
-                <div class="card-header ">Stock Movement</div>
-                <div class="card-body ">
-                    <ul class="user-timeline user-timeline-compact ">
-                        <li class="latest ">
-                            <div class="user-timeline-date ">ให้ทำเป็น Graph </div>
-                            <div class="user-timeline-title ">ความเคลื่อนไหวของคลังสินค้า</div>
-                            <div class="user-timeline-description ">ใช้กราฟ Fullwidth Wave สีเขียว จาก graph Flot</div>
-                        </li>
-                        <li>
-                            <div class="user-timeline-date "> <a href="charts-flot.html "> Link Graph Flot</a></div>
-                            <div class="user-timeline-title ">ใช้กราฟ Fullwidth Wave สีเขียว จาก graph Flot</div>
-                            <div class="user-timeline-description ">Vestibulum lectus nulla, maximus in eros non, tristique.</div>
-                        </li>
-                        <li>
-                            <div class="user-timeline-date ">Yesterday - 10:41</div>
-                            <div class="user-timeline-title "><a href="charts-flot.html "> Link Graph Flot </a> </div>
-                            <div class="user-timeline-description ">Vestibulum lectus nulla, maximus in eros non, tristique. </div>
-                        </li>
-                        <li>
-                            <div class="user-timeline-date ">Yesterday - 3:02</div>
-                            <div class="user-timeline-title ">Fix the Sidebar</div>
-                            <div class="user-timeline-description ">Vestibulum lectus nulla, maximus in eros non, tristique.</div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-
-
-
-        <div class="col-12 col-lg-6 ">
-            <div class="widget be-loading ">
-                <div class="widget-head ">
-                    <div class="tools "><span class="icon mdi mdi-chevron-down "></span><span class="icon mdi mdi-refresh-sync toggle-loading "></span><span class="icon mdi mdi-close "></span></div>
-                    <div class="title ">Conversions</div>
-                </div>
-                <div class="widget-chart-container ">
-                    <div class="widget-chart-info mb-4 ">
-                        <div class="indicator indicator-positive float-right "><span class="icon mdi mdi-chevron-up "></span><span class="number ">15%</span></div>
-                        <div class="counter counter-inline ">
-                            <div class="value ">156k</div>
-                            <div class="desc ">Impressions</div>
-                        </div>
-                    </div>
-                    <div id="map-widget " style="height: 265px; "></div>
-                </div>
-                <div class="be-spinner ">
-                    <svg width="40px " height="40px " viewBox="0 0 66 66 " xmlns="http://www.w3.org/2000/svg ">
-                    <circle class="circle " fill="none " stroke-width="4 " stroke-linecap="round " cx="33 " cy="33 " r="30 "></circle>
-                </svg>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </div>
 
 <style>
     #flot-placeholder div.xAxis div.tickLabel {
         max-width: 30px !important;
         top: 300px !important;
+    }
+    
+    table .material-icons {
+        font-size: 15px;
+        color: #000000 !important;
+        font-weight: 900;
+    }
+    
+    .con-vs-avatar {
+        font-size: 18px;
     }
 </style>
 
@@ -373,8 +232,126 @@
         el: '#vue-root',
         data() {
             return {
-
+                idSelect: null,
+                selectedBooking: [],
+                recordBooking: [],
+                selectedProduct: [],
+                recordProduct: [],
             }
+        },
+        mounted() {
+            this.getDataBooking();
+            this.getDataProduct();
+        },
+        methods: {
+            getDataBooking() {
+                axios.get("dashboard/getDataBooking").then((response) => {
+                    let pageData = [];
+
+                    if (response.data.result) {
+                        for (let i = 0; i < response.data.data.length; i++) {
+                            pageData = pageData.concat(response.data.data[i])
+                        }
+                    }
+
+                    this.totalItems = pageData.length;
+                    this.recordBooking = pageData;
+                    this.selectedBooking = [];
+
+                });
+            },
+            getDataProduct() {
+                axios.get("dashboard/getDataProduct").then((response) => {
+                    let pageData = [];
+
+                    if (response.data.result) {
+                        for (let i = 0; i < response.data.data.length; i++) {
+                            pageData = pageData.concat(response.data.data[i])
+                        }
+                    }
+
+                    this.totalItems = pageData.length;
+                    this.recordProduct = pageData;
+                    this.selectedProduct = [];
+
+                });
+            },
+            openConfirmAccept(id) {
+                this.idSelect = id;
+                this.$vs.dialog({
+                    type: 'confirm',
+                    color: 'primary',
+                    title: `ยืนยันการการจอง`,
+                    text: 'ต้องการยืนยันการจองหรือไม่',
+                    acceptText: 'ตกลง',
+                    cancelText: 'ยกเลิก',
+                    accept: this.acceptBooking
+                })
+            },
+            acceptBooking() {
+                axios.post("dashboard/acceptBooking", {
+                    id: this.idSelect,
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            color: 'primary',
+                            title: 'ยืนยันการจองสำเร็จ',
+                            text: 'ทำการยืนยันการจองสำเร็จ',
+                            icon: 'check',
+                            position: ' top-right',
+                            time: 8000,
+                        });
+                        this.idSelect = null;
+                        this.getDataBooking();
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
+                    }
+                });
+            },
+            openConfirmCancel(id) {
+                this.idSelect = id;
+                this.$vs.dialog({
+                    type: 'confirm',
+                    color: 'danger',
+                    title: `ยืนยันการยกเลิกการจอง`,
+                    text: 'ต้องการยกเลิกการจองหรือไม่',
+                    acceptText: 'ตกลง',
+                    cancelText: 'ยกเลิก',
+                    accept: this.cancelBooking
+                })
+            },
+            cancelBooking() {
+                axios.post("dashboard/cancelBooking", {
+                    id: this.idSelect,
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            color: 'primary',
+                            title: 'ยกเลิกการจองสำเร็จ',
+                            text: 'ทำการยกเลิกการจองสำเร็จ',
+                            icon: 'check',
+                            position: ' top-right',
+                            time: 8000,
+                        });
+                        this.idSelect = null;
+                        this.getDataBooking();
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
+                    }
+                });
+            },
         }
     });
 
@@ -398,16 +375,13 @@
             },
             dataType: "JSON", // data type expected from server
             success: function(response) {
-                // for (let i = 0; i < response.data.sale.length; i++) {
-                //     data.push([parseInt(response.data.sale[i].DATE), (response.data.sale[i].NUM) / 1000])
-                // }
 
                 for (let i = 0; i < response.data.conversationRate.length; i++) {
-                    data2.push([parseInt(response.data.conversationRate[i].DATE), parseInt(response.data.conversationRate[i].NUM)])
+                    data2.push([new Date(response.data.conversationRate[i].DATE).getTime(), parseInt(response.data.conversationRate[i].NUM)])
                 }
 
                 for (let i = 0; i < response.data.booking.length; i++) {
-                    data3.push([parseInt(response.data.booking[i].DATE), parseInt(response.data.booking[i].NUM)])
+                    data3.push([new Date(response.data.booking[i].DATE).getTime(), parseInt(response.data.booking[i].NUM)])
                 }
 
                 var plot_statistics = $.plot($("#main-chart"), [{
@@ -476,16 +450,14 @@
                     tooltip: {
                         show: true,
                         cssClass: "tooltip-chart",
-                        content: "<div class='content-chart'> <span> %s </span> <div class='label'> <div class='label-x'> %x.0 </div> - <div class='label-y'> %y.0 </div> </div></div>",
+                        content: "<div class='content-chart'> <span> %s </span> <div class='label'> <div class='label-x'> %x </div> - <div class='label-y'> %y.0 </div> </div></div>",
                         defaultTheme: false
                     },
                     colors: [color2, color3, color1],
                     xaxis: {
-                        tickFormatter: function() {
-                            return '';
-                        },
-                        autoscaleMargin: 0,
-                        ticks: 0,
+                        mode: "time",
+                        autoScaleMargin: 0,
+                        // ticks: 30,
                         tickDecimals: 0,
                         tickLength: 0
                     },
