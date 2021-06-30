@@ -166,7 +166,7 @@
                                 class: 'avatar',
                             }), h('a', {
                                 attrs: {
-                                    href :'<?php echo base_url('recordInformation?id=');?>'+params.item.MEMBERIDCARD,
+                                    href :'<?php echo base_url('recordInformation?id=');?>'+params.item.MEMBERIDCARD+'&booking_id='+params.item.BOOKINGID,
                                 },
                                 style: {
                                     color: '#4285f4',

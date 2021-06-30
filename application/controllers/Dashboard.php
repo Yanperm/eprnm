@@ -8,14 +8,13 @@ class Dashboard extends CI_Controller
         parent::__construct();
         $this->logged_in();
 
-//        $this->load->model('MembersModel');
         $this->load->model('BookingModel');
         $this->load->model('LikeModel');
         $this->load->model('StatModel');
         $this->load->model('ClinicModel');
-//        $this->load->library('pagination');
-//        $this->load->library('S3_upload');
-//        $this->load->library('S3');
+        $this->load->model('IncomeModel');
+        $this->load->model('ProductModel');
+        
     }
     private function logged_in()
     {
@@ -29,18 +28,19 @@ class Dashboard extends CI_Controller
         $todayBooking = $this->BookingModel->getDataTodayByClinic($this->session->userdata('id'));
         $like = $this->LikeModel->getCount($this->session->userdata('id'));
         $clinic = $this->ClinicModel->detailById($this->session->userdata('id'));
-        $stat = $this->StatModel->stat($this->session->userdata('id'));
-        $listToDay = $this->BookingModel->getDataListNew($this->session->userdata('id'), 10, 1);
+        $stat = $this->StatModel->pageVisit($this->session->userdata('id'));
+        $listToDay = $this->BookingModel->getDataListNewWaitAccept($this->session->userdata('id'), 5, 1);
+        $product = $this->ProductModel->getDataTop($this->session->userdata('id'));
 
         $data = [
                     'allBooking' => $allBooking[0]->ALLBOOKING,
                     'todayBooking' => $todayBooking[0]->TODAYBOOKING,
                     'like' => $like,
                     'clinic' => $clinic,
-                    'listToDay' => $listToDay
-                    //'statData' => $statData
+                    'listToDay' => $listToDay,
+                    'pageVisit' => $stat,
+                    'product' => $product
                 ];
-
 
         $js = [
             base_url() . 'assets/js/app-dashboard.js?v=' . time(),
@@ -49,5 +49,30 @@ class Dashboard extends CI_Controller
         $this->load->view('template/header');
         $this->load->view('dashboard/index', $data);
         $this->load->view('template/footer', ['js' => $js]);
+    }
+
+    public function getDataChart(){
+        $conversationRate = [];
+        $sale = [];
+        $booking = [];
+
+        if($this->input->get('chartType') == 'month'){
+            $conversationRate = $this->StatModel->statByMonth($this->session->userdata('id'));
+            $sale = $this->IncomeModel->statByMonth($this->session->userdata('id'));
+            $booking = $this->BookingModel->statByMonth($this->session->userdata('id'));
+        }else if($this->input->get('chartType') == 'year'){
+            $conversationRate = $this->StatModel->statByMonth($this->session->userdata('id'));
+        }
+        else{
+            $conversationRate = $this->StatModel->statByMonth($this->session->userdata('id'));
+        }
+
+        $data = [
+            'conversationRate' => $conversationRate,
+            'sale' => $sale,
+            'booking' => $booking
+        ];
+
+        echo json_encode(['result'=> true,'data' => $data]);
     }
 }

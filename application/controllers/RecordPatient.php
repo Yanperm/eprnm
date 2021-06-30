@@ -1,0 +1,129 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class RecordPatient extends CI_Controller {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->logged_in();
+
+        $this->load->model('MemberModel');
+        $this->load->model('PatientHistoryModel');
+        
+    }
+    private function logged_in()
+    {
+        if (!$this->session->userdata('authenticated')) {
+            redirect(base_url('login'));
+        }
+    }
+
+    public function index()
+    {       
+        $member = $this->MemberModel->getDataById($_GET['id']);
+
+        $data = [
+            'member' => $member,
+            'bookingId' => $this->input->get('booking_id')
+        ];
+
+        $this->load->view('template/header');
+        $this->load->view('template/record', $data);
+        $this->load->view('record_patient/index', $data);
+        $this->load->view('template/footer');
+    }
+
+    public function getData()
+    {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = intval($this->input->get('page')) - 1;
+        $perPage = $this->input->get('perPage');
+
+        $condition = '';
+        $sort = '';
+
+        if (!empty($this->input->get('search'))) {
+            $search = $this->input->get('search');
+
+            $condition .= 'AND ( PH1 like "%'.$search.'%"';
+            $condition .= ' OR PH2 like "%'.$search.'%"';
+            $condition .= ' OR PH3 like "%'.$search.'%"';
+            $condition .= ' OR PH4 like "%'.$search.'%"';
+            $condition .= ' OR PH5 like "%'.$search.'%"';
+            $condition .= ' OR BOOKINGID like "%'.$search.'%")'; 
+        }
+
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY '.$sortBy.' '.$sortType;
+        }
+
+        $recordHealth = $this->PatientHistoryModel->getDataPerPage($this->input->get('memberId'), $condition, $sort, $page, $perPage);
+        $total = $this->PatientHistoryModel->total($this->input->get('memberId'), $condition);
+       
+        header('Content-Type: application/json');
+
+        if ($recordHealth) {
+            echo json_encode(['result'=> true, 'data' => $recordHealth, 'total' => $total->NUM_OF_ROW]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function insert(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+      
+        $data = [
+            'PHID' => 'PH'.time(),
+            'MEMBERIDCARD' => $_POST["memberId"],
+            'BOOKINGID' => $_POST["bookingId"],
+            'PH1' => $_POST["ph1"],
+            'PH2' => $_POST["ph2"],
+            'PH3' => $_POST["ph3"],
+            'PH4' => $_POST["ph4"],
+            'PH5' => $_POST["ph5"],
+            'CREATE' => date('Y-m-d'),
+        ];
+
+        $result = $this->PatientHistoryModel->insert($data);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function update(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        
+        $data = [
+            'PH1' => $_POST["ph1"],
+            'PH2' => $_POST["ph2"],
+            'PH3' => $_POST["ph3"],
+            'PH4' => $_POST["ph4"],
+            'PH5' => $_POST["ph5"],
+        ];
+
+        $result = $this->PatientHistoryModel->update($data, $_POST["id"]);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function delete(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $id = $_POST["id"];
+        
+        $result = $this->PatientHistoryModel->delete($id);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+}

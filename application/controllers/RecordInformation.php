@@ -9,6 +9,7 @@ class RecordInformation extends CI_Controller {
 
         $this->load->model('MemberModel');
         $this->load->model('PatientsModel');
+        $this->load->model('RecordHealthModel');
         
     }
     private function logged_in()
@@ -23,7 +24,8 @@ class RecordInformation extends CI_Controller {
         $member = $this->MemberModel->getDataById($_GET['id']);
 
         $data = [
-            'member' => $member
+            'member' => $member,
+            'bookingId' => $this->input->get('booking_id')
         ];
 
         $this->load->view('template/header');
@@ -35,7 +37,7 @@ class RecordInformation extends CI_Controller {
     public function getData(){
         $id = $_GET["id"];
         $patient = $this->PatientsModel->getDataById($id);
-
+        
         header('Content-Type: application/json');
 
         if (!empty($patient)) {
@@ -44,6 +46,45 @@ class RecordInformation extends CI_Controller {
                     'result'=> true,
                     'patient' => $patient
                 ]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function getRecordHealth(){
+    
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = intval($this->input->get('page')) - 1;
+        $perPage = $this->input->get('perPage');
+
+        $condition = '';
+        $sort = '';
+
+        if (!empty($this->input->get('search'))) {
+            $search = $this->input->get('search');
+
+            $condition .= 'AND ( Wieght like "%'.$search.'%"';
+            $condition .= ' OR Height like "%'.$search.'%"';
+            $condition .= ' OR BMI like "%'.$search.'%"';
+            $condition .= ' OR BodyTemp like "%'.$search.'%"';
+            $condition .= ' OR HR like "%'.$search.'%"';
+            $condition .= ' OR BP like "%'.$search.'%"';
+            $condition .= ' OR FBS like "%'.$search.'%"';
+            $condition .= ' OR BOOKINGID like "%'.$search.'%")'; 
+        }
+
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY '.$sortBy.' '.$sortType;
+        }
+
+        $recordHealth = $this->RecordHealthModel->getDataPerPage($this->input->get('memberId'), $this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->RecordHealthModel->total($this->input->get('memberId'), $this->session->userdata('id'), $condition);
+       
+        header('Content-Type: application/json');
+
+        if ($recordHealth) {
+            echo json_encode(['result'=> true, 'data' => $recordHealth, 'total' => $total->NUM_OF_ROW]);
         } else {
             echo json_encode(['result'=> false]);
         }
@@ -80,6 +121,33 @@ class RecordInformation extends CI_Controller {
         }
 
         if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function addHealth(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        
+        $data = [
+            'PHID' => 'P'.time(),
+            'DATE_CREATE' => date('Y-m-d'),
+            'Wieght' => $_POST["weight"],
+            'Height' => $_POST["height"],
+            'BMI' => $_POST["bmi"],
+            'BodyTemp' => $_POST["bodyTemp"],
+            'BP' => $_POST["bp"],
+            'HR' => $_POST["hr"],
+            'FBS' => $_POST["fbs"],
+            'MEMBERIDCARD' => $_POST["memberId"],
+            'BOOKINGID' => $_POST["bookingId"],
+            'CLINICID' => $this->session->userdata('id')
+        ];
+
+        $recordHealth = $this->RecordHealthModel->insert($data);
+
+        if($recordHealth){
             echo json_encode(['result'=> true]);
         }else{
             echo json_encode(['result'=> false]);

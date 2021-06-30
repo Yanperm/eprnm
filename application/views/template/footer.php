@@ -211,18 +211,10 @@
 <script src="<?php echo base_url();?>assets/lib/select2/js/select2.full.min.js" type="text/javascript"></script>
 
 <script src="<?php echo base_url();?>assets/js/app.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/jquery.flot.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/jquery.flot.pie.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/jquery.flot.time.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/jquery.flot.resize.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/plugins/jquery.flot.orderBars.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/plugins/curvedLines.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery-flot/plugins/jquery.flot.tooltip.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jquery.sparkline/jquery.sparkline.min.js" type="text/javascript"></script>
+
+
 <script src="<?php echo base_url();?>assets/lib/countup/countUp.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url();?>assets/lib/jquery-ui/jquery-ui.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jqvmap/jquery.vmap.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url();?>assets/lib/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
 
 
 <script src="<?php echo base_url();?>assets/lib/datetimepicker/js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
@@ -238,6 +230,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
         App.init();
+
         let href = window.location.href;
 
         $('.left-sidebar-content a').each(function () {

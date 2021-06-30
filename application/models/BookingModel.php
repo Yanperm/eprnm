@@ -354,6 +354,26 @@ class BookingModel extends CI_Model
         }
     }
 
+    public function getDataListNewWaitAccept($clinicId, $rowperpage, $rowno)
+    {
+        $days_ago = date('Y-m-d');
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbbooking as booking
+            INNER join tbmembers as member on member.MEMBERIDCARD = booking.MEMBERIDCARD OR member.IDCARD = booking.IDCARD
+            where ACCEPT = 0 AND  (TYPE = 0 AND booking.CLINICID = "' . $clinicId . '" AND booking.BOOKDATE = "' . $days_ago . '" AND BOOKTIME != "")
+            OR (STATUS !=2 AND TYPE != "0" AND booking.CLINICID = "' . $clinicId . '" AND booking.BOOKDATE = "' . $days_ago . '" )
+            order by booking.QBER ASC
+            limit ' . $rowno . ',' . $rowperpage
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return array();
+        }
+    }
+
 
     public function getDataListByDate($clinicId, $date, $rowperpage, $rowno)
     {
@@ -442,6 +462,23 @@ class BookingModel extends CI_Model
         $this->db->update('tbbooking');
 
         return true;
+    }
+
+    public function statByMonth($clinicId){
+        $month = date("Y-m");
+        $query = $this->db->query("SELECT
+    COUNT(*) AS NUM, SUBSTRING(BOOKDATE, 9, 2)  AS DATE
+FROM
+    dbnutmor.tbbooking
+WHERE
+     SUBSTRING(BOOKDATE, 1, 8) LIKE '%" . $month . "%'
+        AND CLINICID = '" . $clinicId . "'
+GROUP BY DATE , CLINICID");
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
     }
 
     public function updateById($data, $bookingId)

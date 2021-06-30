@@ -21,6 +21,24 @@ class ProductModel extends CI_Model
         }
     }
 
+    public function getDataTop($clinicId)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbproducts 
+            where CLINICID = "' . $clinicId . '" 
+          
+            order by ProductID ASC   limit 5
+          '
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function getDataByClinic($clinicId){
         $query = $this->db->query('
             SELECT * FROM tblabscompany 

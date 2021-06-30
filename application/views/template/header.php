@@ -21,7 +21,8 @@
 
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400&display=swap" rel="stylesheet">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.min.js"></script> -->
 
     <!-- <script src="https://unpkg.com/vue@next"></script> -->
@@ -31,7 +32,9 @@
 
 
 
+  
 
+    
     <script src="//cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/at-ui/dist/at.min.js"></script>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/at-ui-style/css/at.min.css">
@@ -43,7 +46,11 @@
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/app.css" type="text/css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/material-design-icons/css/material-design-iconic-font.min.css" />
 
-
+  
+    <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
+    <script src="https://unpkg.com/vuesax"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    
     <style>
         .icon {
             font-family: 'Material Icons', 'feather' !important;
@@ -76,6 +83,80 @@
         }
         label {
             font-size: 1.1rem;
+        }
+        .vs-input--input.hasValue+.vs-placeholder-label, .vs-input--input:focus+.vs-placeholder-label {
+            font-size: 13px;
+        }
+        .vs-input--placeholder {
+            font-size: 13px;
+        }
+        .con-select {
+            width: auto;
+            clear: both;
+        }
+        .vs-con-input-label {
+            width: 100%;
+        }
+        .vs-con-textarea h4 {
+            font-size: 14px;
+        }
+        .vs-textarea {
+            color: rgb(78 67 67 / 80%);
+            font-size: 13px; 
+        }
+        .centex {
+            display: -ms-flexbox;
+            display: -webkit-box;
+            display: flex;
+            -ms-flex-align: center;
+            -webkit-box-align: center;
+            align-items: center;
+            -ms-flex-pack: center;
+            -webkit-box-pack: center;
+            justify-content: center;
+        }
+        .vs-button,.vs-switch {
+            margin: 3px;
+        }
+        .con-text-noti h3,.con-text-noti p {
+            color: #ffffff;
+            padding-top: 3px;
+            padding-bottom: 1px;
+            margin-bottom: 3px;
+            margin-top: 7px;
+        }
+
+        th ,.vs-table--search-input,.vs-table--search i{
+            font-size: 14px;
+        }
+        .vs-con-table table {
+            font-size: 13px;
+        }
+        ol, ul, dl {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .vs-table--pagination .item-pagination {
+            font-size: 13px;
+        }
+        .centerx, .con-notifications, .con-notifications-position {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+        .con-vs-dialog .vs-dialog .vs-dialog-text {
+            padding: 10px;
+            font-size: 14px;
+            -webkit-transition: all .23s ease .1s;
+            transition: all .23s ease .1s;
         }
     </style>
 
