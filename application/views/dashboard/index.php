@@ -392,7 +392,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'dashBoard/getDataChart',
+            url: 'dashboard/getDataChart',
             data: {
                 chartType: 'month'
             },
