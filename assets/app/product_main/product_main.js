@@ -2,6 +2,26 @@ const app = new Vue({
     el: '#vue-root',
     data() {
         return {
+            popupActive: false,
+            action: null,
+            field: {
+                CategoryName: null,
+                CategoryIDs: null,
+            },
+            id: null,
+            page: 1,
+            perPage: 10,
+            record: [],
+            search: '',
+            sortBy: '',
+            sortType: '',
+            selected: [],
+            totalItems: 0,
+            recordData: [],
+            pagination: {
+                last_page: 0,
+            },
+
             isTable: false,
             idSelect: null,
             action: null,
@@ -12,70 +32,41 @@ const app = new Vue({
             record: [],
             search: '',
             conditionType: '1',
-            data3: [],
-            columns1: [{
-                title: 'รหัสกลุ่มยาหลัก',
-                key: 'CategoryIDs',
-            }, {
-                title: "ชื่อกลุ่มยาหลัก",
-                key: 'CategoryName',
-                sortType: 'normal',
-            }, {
-                title: 'วันเวลาที่สร้าง',
-                key: 'Create',
-            }, {
-                title: 'จัดการ',
-                key: 'operation',
-                render: (h, params) => {
 
-                    return h('div', [h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'warning',
-                                icon: 'icon-edit',
-                            },
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.editDialog(params.item.CategoryID);
-                                }
-                            }
-                        }, ''),
-                        h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'error',
-                                icon: 'icon-trash-2',
-                                circle: true
-                            },
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.deleteDialog(params.item.CategoryID)
-                                }
-                            }
-                        }, ''),
-                    ])
-                },
-
-            }, ],
         }
+    },
+    watch: {
+        page: function(val) {
+            this.makePageData();
+            this.page = val;
+        },
+        search: function(val) {
+            this.makePageData();
+        },
+        selected: function(val) {
+            this.id = val.CategoryID;
+            this.field.CategoryIDs = val.CategoryIDs;
+            this.field.CategoryName = val.CategoryName;
+        },
     },
     mounted() {
         this.record = this.makePageData();
     },
     methods: {
+        handleSort(key, active) {
+            this.sortBy = key;
+            this.sortType = active;
+            this.makePageData();
+        },
         makePageData() {
             axios.get("productMain/getProductMain", {
                 params: {
                     search: this.search,
                     type: this.conditionType,
+                    sortBy: this.sortBy,
+                    sortType: this.sortType,
+                    page: this.page,
+                    perPage: this.perPage,
                 }
             }).then((response) => {
                 let pageData = [];
@@ -86,122 +77,123 @@ const app = new Vue({
                         pageData = pageData.concat(response.data.data[i])
                     }
                 }
-
-                this.data3 = pageData;
+                this.totalItems = pageData.length;
+                this.recordData = pageData;
+                this.selected = [];
             });
         },
-        saveItem() {
+        save() {
 
             if (this.action == 'insert') {
                 axios.post("productMain/insert", {
-                    code: this.code,
-                    name: this.name
+                    code: this.field.CategoryIDs,
+                    name: this.field.CategoryName
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: ' top-right',
+
                         });
                         this.makePageData();
-                        this.code = null;
-                        this.name = null;
-                        $('#edit-dialog').modal("hide");
+                        this.field.CategoryIDs = null;
+                        this.field.CategoryName = null;
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
-                        });
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
                     }
                 });
             } else if (this.action == 'update') {
                 axios.post("productMain/update", {
-                    id: this.idSelect,
-                    code: this.code,
-                    name: this.name
+                    id: this.id,
+                    code: this.field.CategoryIDs,
+                    name: this.field.CategoryName
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: ' top-right',
+
                         });
                         this.makePageData();
-                        this.code = null;
-                        this.name = null;
-                        $('#edit-dialog').modal("hide");
+                        this.field.CategoryIDs = null;
+                        this.field.CategoryName = null;
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
-                        });
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
                     }
                 });
             }
         },
-        addDialog() {
-            this.action = "insert";
-            this.name = null;
+        add() {
+            this.field.CategoryIDs = null;
+            this.field.CategoryName = null;
             axios.get("productMain/getMaxId")
                 .then((response) => {
                     if (response.data.result) {
-                        this.code = "M" + ('000' + (response.data.maxId + 1)).slice(-3);
+                        this.field.CategoryIDs = "M" + ('000' + (response.data.maxId + 1)).slice(-3);
+                        this.action = 'insert';
+                        this.popupActive = true;
                     }
                 });
-            $('#edit-dialog').modal("show");
         },
-        editDialog(id) {
-            this.action = "update";
-            this.idSelect = id;
-            axios.get("productMain/getProductMainById", {
-                params: {
-                    id: id,
-                }
-            }).then((response) => {
-                if (response.data.result) {
-                    this.code = response.data.data.CategoryIDs;
-                    this.name = response.data.data.CategoryName;
-                    $('#edit-dialog').modal("show");
-                }
-            });
+        openConfirm() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
         },
-        deleteDialog(id) {
-            this.idSelect = id;
-            $('#delete-dialog').modal('show');
-        },
-        deleteItem() {
+        acceptAlert() {
             axios.post("productMain/delete", {
-                id: this.idSelect,
+                id: this.id,
             }).then((response) => {
                 if (response.data.result) {
-                    this.$Notify({
-                        title: 'สำเร็จ',
-                        duration: 5000,
-                        message: 'ลบข้อมูลสำเร็จ',
-                        type: 'success'
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
                     });
                     this.makePageData();
-                    this.idSelect = null;
-                    $('#delete-dialog').modal('hide');
+                    this.selected = [];
                 } else {
-                    this.$Notify({
+                    this.$vs.notify({
                         title: 'ผิดพลาด',
-                        duration: 5000,
-                        message: 'กรุณาลองใหม่อีกครั้ง',
-                        type: 'warning'
-                    });
-                    $('#delete-dialog').modal('hide');
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+
+                    })
                 }
             });
         },
-        clearItem() {
-            this.idSelect = null;
+        productSub(id) {
+            window.location.href = 'productSub?category_id=' + id;
         }
     }
 });

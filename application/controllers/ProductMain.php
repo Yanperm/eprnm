@@ -33,18 +33,29 @@ class ProductMain extends CI_Controller {
 
 	public function getProductMain()
     {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = intval($this->input->get('page')) - 1;
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
-                $condition .= ' AND CategoryIDs like "%'.$search.'%"';
+                $condition .= ' AND tbproductcategory.CategoryIDs like "%'.$search.'%"';
             }
             if ($this->input->get('type') == '2') {
-                $condition .= ' AND CategoryName like "%'.$search.'%"';
+                $condition .= ' AND tbproductcategory.CategoryName like "%'.$search.'%"';
             }
         }
 
-        $queue = $this->ProductMainModel->getDataPerpage($this->session->userdata('id'), $condition);
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY "tbproductcategory.'.$sortBy.'" '.$sortType;
+        }
+
+        $queue = $this->ProductMainModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
         header('Content-Type: application/json');
 
         if ($queue) {

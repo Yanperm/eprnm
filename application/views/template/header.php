@@ -158,6 +158,35 @@
             -webkit-transition: all .23s ease .1s;
             transition: all .23s ease .1s;
         }
+
+        .breadcrumb {
+            background-color: #eeeeee;
+            margin-bottom: 18px;
+            padding: 7px 0px 6px;
+            line-height: 16px;
+        }
+        .page-head-title {
+            color: #313030;
+        }
+
+        .card {
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .vs-table--tbody-table .tr-values td {
+            padding: 10px;
+            font-size: 14px;
+        }
+        .sub-text{
+            color: rgb(144, 145, 146);
+            font-size: 12px;
+        }
+        th .sort-th, th .vs-table-text {
+            display: block;
+        }
+        .vs-input--input.large {
+            font-size: 14px;
+        }
     </style>
 
     <?php

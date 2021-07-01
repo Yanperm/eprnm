@@ -62,3 +62,9 @@ p {
 .form-group label {
     font-weight: 800 !important;
 }
+
+table .material-icons {
+    font-size: 16px;
+    color: #000000 !important;
+    font-weight: 900;
+}

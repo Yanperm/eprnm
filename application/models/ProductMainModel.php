@@ -3,14 +3,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ProductMainModel extends CI_Model
 {
-    public function getDataPerpage($clinicId, $condition)
+    public function getDataPerpage($clinicId, $condition, $sort, $page, $perPage)
     {
+        // echo '
+        // SELECT *,COUNT(sub.*) AS NUM_OF_SUB FROM tbproductcategory
+        // LEFT JOIN tbsubcategory AS sub ON sub.CategoryID =  tbproductcategory.CategoryID
+        // WHERE tbproductcategory.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
+        // LIMIT '.$page.','.$perPage;
         $query = $this->db->query(
             '
-            SELECT * FROM tbproductcategory 
-            WHERE CLINICID = "' . $clinicId . '" '.$condition.'
-            ORDER BY CategoryName ASC
-          '
+            SELECT tbproductcategory.*,count(sub.SubID) AS NUM_OF_SUB
+            FROM tbproductcategory
+            LEFT JOIN tbsubcategory AS sub ON sub.CategoryID =  tbproductcategory.CategoryID
+            WHERE tbproductcategory.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
+            GROUP BY tbproductcategory.CategoryID
+            LIMIT '.$page.','.$perPage
+          
         );
 
         if ($query->num_rows() > 0) {
