@@ -12,7 +12,6 @@
         <div class="card card-table">
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
-
                     <div class="row">
                         <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหากลุ่มยาหลัก</span>
                             <div class="filter-container">
@@ -35,18 +34,21 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <div class="noSwipe">
+                <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
                         <div class="col-md-12 text-right mt-3 mb-3 pr-5">
                             <v-row vs-justify="right">
-                                <vs-col vs-offset="10" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center" vs-align="center" vs-w="2">
+                                <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
                                     <vs-button type="filled" icon="add_circle_outline" @click="add()">เพิ่มข้อมูล</vs-button>
                                 </vs-col>
                             </v-row>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="noSwipe">
+
                     <div>
                         <vs-table :sst="true" @sort="handleSort" v-model="selected" :total="totalItems" :max-items="perPage" :data="recordData">
                             <template slot="thead">

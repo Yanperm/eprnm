@@ -5,11 +5,6 @@ class ProductMainModel extends CI_Model
 {
     public function getDataPerpage($clinicId, $condition, $sort, $page, $perPage)
     {
-        // echo '
-        // SELECT *,COUNT(sub.*) AS NUM_OF_SUB FROM tbproductcategory
-        // LEFT JOIN tbsubcategory AS sub ON sub.CategoryID =  tbproductcategory.CategoryID
-        // WHERE tbproductcategory.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
-        // LIMIT '.$page.','.$perPage;
         $query = $this->db->query(
             '
             SELECT tbproductcategory.*,count(sub.SubID) AS NUM_OF_SUB
@@ -23,6 +18,21 @@ class ProductMainModel extends CI_Model
 
         if ($query->num_rows() > 0) {
             return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function total($clinicId, $condition){
+       
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW FROM tbproductcategory 
+            WHERE CLINICID = "' . $clinicId . '" '.$condition
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
         } else {
             return array();
         }

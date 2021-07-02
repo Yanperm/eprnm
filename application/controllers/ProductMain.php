@@ -35,7 +35,7 @@ class ProductMain extends CI_Controller {
     {
         $sortBy = $this->input->get('sortBy');
         $sortType = $this->input->get('sortType');
-        $page = intval($this->input->get('page')) - 1;
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
         $perPage = $this->input->get('perPage');
 
         $condition = '';
@@ -55,11 +55,17 @@ class ProductMain extends CI_Controller {
             $sort .= 'ORDER BY "tbproductcategory.'.$sortBy.'" '.$sortType;
         }
 
-        $queue = $this->ProductMainModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $productMain = $this->ProductMainModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->ProductMainModel->total($this->session->userdata('id'), $condition);
+       
         header('Content-Type: application/json');
 
-        if ($queue) {
-            echo json_encode(['result'=> true, 'data' => $queue]);
+        if ($productMain) {
+            echo json_encode([
+                'result'=> true,
+                'data' => $productMain,
+                'total' => $total->NUM_OF_ROW
+                ]);
         } else {
             echo json_encode(['result'=> false]);
         }

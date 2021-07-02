@@ -21,24 +21,14 @@ const app = new Vue({
             pagination: {
                 last_page: 0,
             },
-
-            isTable: false,
-            idSelect: null,
-            action: null,
-            code: null,
-            name: null,
-            page: 1,
-            perPage: 10,
-            record: [],
-            search: '',
             conditionType: '1',
 
         }
     },
     watch: {
         page: function(val) {
-            this.makePageData();
             this.page = val;
+            this.makePageData();
         },
         search: function(val) {
             this.makePageData();
@@ -76,10 +66,13 @@ const app = new Vue({
                     for (let i = 0; i < response.data.data.length; i++) {
                         pageData = pageData.concat(response.data.data[i])
                     }
+
+                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } else {
+                    this.pagination.last_page = 0;
                 }
                 this.totalItems = pageData.length;
                 this.recordData = pageData;
-                this.selected = [];
             });
         },
         save() {
