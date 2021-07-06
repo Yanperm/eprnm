@@ -3,6 +3,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class IncomeModel extends CI_Model
 {
+    public function getAllData(){
+        $query = $this->db->get('tbincome');
+        
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function getDataById($id){
+
+        $query = $this->db->query('SELECT * FROM tbincome where ci_id = "'.$id.'"');
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return array();
+        }
+    }
+
     public function statByMonth($clinicId){
         $month = date("2020-04");
         $query = $this->db->query("SELECT
@@ -23,18 +43,21 @@ class IncomeModel extends CI_Model
     public function insert($data)
     {
         $this->db->insert('tbincome', $data);
-        return $this->db->insert_id();
+        return true;
     }
 
     public function update($data, $id)
     {
         $this->db->where('ci_id', $id);
         $this->db->update('tbincome', $data);
+        return true;
     }
 
     public function delete($id)
     {
         $this->db->where('ci_id', $id);
         $this->db->delete('tbincome');
+
+        return true;
     }
 }
