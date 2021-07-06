@@ -25,6 +25,7 @@ class Income extends CI_Controller {
         
         if(!empty($id)){
             $income = $this->IncomeModel->getDataById($id);
+            
             header('Content-Type: application/json');
 
             if ($income) {
