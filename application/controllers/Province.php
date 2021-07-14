@@ -93,6 +93,17 @@ class Province extends CI_Controller{
             echo json_encode(['result' => false]);
         }
     }
+
+    public function joinProvinceAndAmphur (){
+        $result = $this->ProvinceModel->joinProvinceAndAmphur();
+        header('Content-Type: application/json');
+
+        if($result){
+            echo json_encode(['result' => true,'data' => $result]);
+        }else{
+            echo json_encode(['result'=>false]);
+        }
+    }
 }
 
 

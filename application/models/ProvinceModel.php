@@ -40,6 +40,19 @@ class ProvinceModel extends CI_Model{
         $this->db->delete('province');
         return true;
     }
+
+    public function joinProvinceAndAmphur(){
+        $this->db->select('p.*,a.*');
+        $this->db->from('province as p');
+        $this->db->join('amphur as a', 'a.PROVINCE_ID = p.PROVINCE_ID');
+        $query = $this->db->get();
+
+        if($query->num_rows() > 0){
+            return $query->result();
+        }else{
+            return array();
+        }
+    }
 }
 
 
