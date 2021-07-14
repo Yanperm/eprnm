@@ -85,11 +85,8 @@
                                                     </vs-td>
                                                     <vs-td :data="data[indextr].LBID">
                                                         <div class="centerx">
-                                                            <!-- <vs-tooltip color="primary" text="แก้ไข">
-                                                                <vs-button radius color="primary" type="border" icon="edit_note" @click="popupActive=true,action='update'"></vs-button>
-                                                            </vs-tooltip> -->
-                                                            <vs-tooltip color="primary" text="ลบ">
-                                                                <vs-button radius color="primary" type="border" icon="delete_forever" @click="openConfirm()"></vs-button>
+                                                            <vs-tooltip text="ลบข้อมูล">
+                                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete" @click="openConfirm()"></vs-button>
                                                             </vs-tooltip>
                                                         </div>
                                                     </vs-td>
@@ -108,12 +105,44 @@
         </div>
     </div>
     <vs-popup class="holamundo" title="Lab Record" :active.sync="popupActive">
-        <div class="row">
+        <v-row>
+            <vs-table multiple :sst="true" @search="handleSearchItem" @sort="handleSortItem" v-model="selectedItem" :total="totalItemsPro" :max-items="perPageItem" search :data="recordDataItem">
+                <template slot="thead">
+                    <vs-th sort-key="tbsenddepartment.STESTNAME">
+                        Test Name
+                    </vs-th>
+                    <vs-th sort-key="tbdepartment.DepName">
+                        Department
+                    </vs-th>
+                    <vs-th  sort-key="tblabscompany.LabCName">
+                        Company
+                    </vs-th>
+                    <vs-th  sort-key="tbsenddepartment.Price">
+                        Price
+                    </vs-th>
+                </template>
 
-        </div>
-
-        <div class="row centex mt-3">
-            <vs-button type="relief" @click=save>บันทึกข้อมูล</vs-button>
+                <template slot-scope="{data}">
+                    <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
+                        <vs-td :data="data[indextr].STESTNAME">
+                            {{data[indextr].STESTNAME}}
+                        </vs-td>
+                        <vs-td :data="data[indextr].DepName">
+                            {{data[indextr].DepName}}
+                        </vs-td>
+                        <vs-td :data="data[indextr].LabCName">
+                            {{data[indextr].LabCName}}
+                        </vs-td>
+                        <vs-td :data="data[indextr].Price">
+                            {{data[indextr].Price}}
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
+            <vs-pagination class="mt-4" :total="paginationItem.last_page" v-model="pageItem"></vs-pagination>
+        </v-row>
+        <div class="centex mt-3">
+            <vs-button type="relief" @click=saveItem size="large">บันทึกข้อมูล</vs-button>
         </div>
     </vs-popup>
 </div>
@@ -156,14 +185,27 @@
                 sortType: '',
                 selected: [],
                 totalItems: 0,
-                record: [],
                 pagination: {
                     last_page: 0,
-                }
+                },
+                idItem: null,
+                pageItem: 1,
+                perPageItem: 10,
+                recordItem: [],
+                searchItem: '',
+                sortByItem: '',
+                sortTypeItem: '',
+                selectedItem: [],
+                totalItemsPro: 0,
+                recordDataItem: [],
+                paginationItem: {
+                    last_page: 0,
+                },
             }
         },
         mounted() {
             this.getData();
+            this.getDataItem();
         },
         watch: {
             page: function(val) {
@@ -171,12 +213,12 @@
                 this.page = val;
             },
             selected: function(val) {
-                this.id = val.LBID;
-                this.field.PH1 = val.PH1;
-                this.field.PH2 = val.PH2;
-                this.field.PH3 = val.PH3;
-                this.field.PH4 = val.PH4
+                this.id = val.LBID
             },
+            pageItem: function(val){
+                this.getDataItem();
+                this.pageItem = val;
+            }
         },
         methods: {
             handleSearch(searching) {
@@ -187,6 +229,16 @@
                 this.sortBy = key;
                 this.sortType = active;
                 this.getData();
+            },
+            handleSearchItem(searching) {
+                this.searchItem = searching;
+                this.getDataItem();
+            },
+            handleSortItem(key, active) {
+                console.log(key);
+                this.sortByItem = key;
+                this.sortTypeItem = active;
+                this.getDataItem();
             },
             getData() {
                 axios.get("recordLab/getData", {
@@ -214,70 +266,60 @@
                     this.selected = [];
                 });
             },
-            save() {
-                if (this.action == "insert") {
-                    axios.post("recordLab/insert", {
-                        ph1: this.field.PH1,
-                        ph2: this.field.PH2,
-                        ph3: this.field.PH3,
-                        ph4: this.field.PH4,
-                        memberId: $('#id').val(),
-                        bookingId: $('#bookingId').val(),
-                    }).then((response) => {
-                        if (response.data.result) {
-                            this.$vs.notify({
-                                title: 'สำเร็จ',
-                                text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-                                color: "success",
-                                icon: 'check',
-                                position: ' top-right',
+            getDataItem() {
+                axios.get("recordLab/getLab", {
+                    params: {
+                        search: this.searchItem,
+                        sortBy: this.sortByItem,
+                        sortType: this.sortTypeItem,
+                        page: this.pageItem,
+                        perPage: this.perPageItem,
+                    }
+                }).then((response) => {
+                    let pageData = [];
+                    this.isTable = true;
 
-                            });
-                            this.popupActive = false;
-                            this.getData();
-                            this.selected = [];
-                        } else {
-                            this.$vs.notify({
-                                title: 'ผิดพลาด',
-                                text: 'กรุณาลองใหม่อีกครั้ง',
-                                color: "warning",
-                                icon: 'warning_amber',
-                                position: ' top-right',
-
-                            })
+                    if (response.data.result) {
+                        for (let i = 0; i < response.data.data.length; i++) {
+                            pageData = pageData.concat(response.data.data[i])
                         }
-                    });
-                } else if (this.action == "update") {
-                    axios.post("recordLab/update", {
-                        ph1: this.field.PH1,
-                        ph2: this.field.PH2,
-                        ph3: this.field.PH3,
-                        ph4: this.field.PH4,
-                        id: this.id,
-                    }).then((response) => {
-                        if (response.data.result) {
-                            this.$vs.notify({
-                                title: 'สำเร็จ',
-                                text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-                                color: "success",
-                                icon: 'check',
-                                position: ' top-right',
-                            });
-                            this.popupActive = false;
-                            this.getData();
-                            this.selected = [];
-                        } else {
-                            this.$vs.notify({
-                                title: 'ผิดพลาด',
-                                text: 'กรุณาลองใหม่อีกครั้ง',
-                                color: "warning",
-                                icon: 'warning_amber',
-                                position: ' top-right',
 
-                            })
-                        }
-                    });
-                }
+                        this.paginationItem.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                    } else {
+                        this.paginationItem.last_page = 0;
+                    }
+                    this.totalItemsPro = pageData.length;
+                    this.recordDataItem = pageData;
+                });
+            },
+            saveItem(){
+                axios.post("recordLab/insert", {
+                    member_id: $('#id').val(),
+                    booking_id: $('#bookingId').val(),
+                    data : this.selectedItem
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            title: 'สำเร็จ',
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: ' top-right',
+
+                        });
+                        this.getData();
+                        this.selectedItem = [];
+                        this.popupActive = false;
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
+                    }
+                });
             },
             openConfirm() {
                 this.$vs.dialog({
@@ -296,7 +338,7 @@
                 }).then((response) => {
                     if (response.data.result) {
                         this.$vs.notify({
-                            color: 'danger',
+                            color: 'success',
                             title: 'ลบข้อมูลสำเร็จ',
                             text: 'ทำการลบข้อมูลสำเร็จ',
                             icon: 'check',
