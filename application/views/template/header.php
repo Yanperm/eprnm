@@ -187,6 +187,11 @@
         .vs-input--input.large {
             font-size: 14px;
         }
+        table .material-icons {
+            font-size: 16px;
+            color: #000000 !important;
+            font-weight: 900;
+        }
     </style>
 
     <?php
