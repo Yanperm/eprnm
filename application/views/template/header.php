@@ -433,9 +433,6 @@
                                     </ul>
                                 </li>
 
-
-
-
                                 <li class="divider">Configuration</li>
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-store"></i><span>ข้อมูลคลินิก</span></a>
                                     <ul class="sub-menu">
@@ -493,7 +490,14 @@
                                     </ul>
                                 </li>
 
-
+                                <li class="parent"><a href="#"><i class="icon mdi-youtube"></i><span>YouTube</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('productYoutube');?>">จัดการ YouTube</a>
+                                        </li>
+                                        <!-- <li><a href="maps-vector.html">Vector Maps</a>
+                                    </li> -->
+                                    </ul>
+                                </li>
 
                                 <!--<li class="parent"><a href="#"><i class="icon mdi mdi-folder"></i><span>Menu Levels</span></a>
                               <ul class="sub-menu">
