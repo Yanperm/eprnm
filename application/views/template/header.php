@@ -494,8 +494,13 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('productYoutube');?>">จัดการ YouTube</a>
                                         </li>
-                                        <!-- <li><a href="maps-vector.html">Vector Maps</a>
-                                    </li> -->
+                                    </ul>
+                                </li>
+
+                                <li class="parent"><a href="#"><i class="icon mdi-calendar-check"></i><span>จัดการคิวเต็ม</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('queueClode');?>">จัดการคิวเต็ม</a>
+                                        </li>
                                     </ul>
                                 </li>
 
