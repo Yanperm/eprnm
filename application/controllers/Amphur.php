@@ -95,5 +95,6 @@ class Amphur extends CI_Controller{
              echo json_encode(['result' => false]);
          }
    }
+       
 }
 ?>

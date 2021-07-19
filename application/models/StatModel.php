@@ -9,7 +9,7 @@ class StatModel extends CI_Model
         $query = $this->db->query("SELECT
                 COUNT(*) AS NUM
             FROM
-                dbnutmor.tbstat
+                tbstat
             WHERE
                 IDCLINIC != '' AND IP != '::1'
                     AND IDCLINIC = '" . $clinicId . "'"

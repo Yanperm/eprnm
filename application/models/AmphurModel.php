@@ -41,6 +41,7 @@ class AmphurModel extends CI_model{
         return true;
     }
 
+
 }
 
 
