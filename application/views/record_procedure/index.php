@@ -29,7 +29,9 @@
                                             <input type="hidden" id="id" value="<?php echo $member->MEMBERIDCARD;?>">
                                             <input type="hidden" id="bookingId" value="<?php echo $bookingId;?>">
                                             <vs-row vs-w="12">
-                                                <vs-button @click="popupActive=true,action='insert'" color="primary" type="border" icon="add_circle_outline">เพิ่มข้อมูล</vs-button>
+                                                <vs-col vs-offset="10">
+                                                    <vs-button @click="popupActive=true,action='insert'" color="primary" type="filled" icon="add_circle_outline">เพิ่มข้อมูล</vs-button>
+                                                </vs-col>
                                             </vs-row>
                                             <vs-table :sst="true" @search="handleSearch" @sort="handleSort" v-model="selected" :total="totalItems" :max-items="perPage" search :data="recordData">
                                                 <template slot="header">
@@ -186,14 +188,14 @@
             this.getDataItem();
         },
         watch: {
-            page: function(val){
+            page: function(val) {
                 this.getData();
                 this.page = val;
             },
             selected: function(val) {
                 this.id = val.PROID;
             },
-            pageItem: function(val){
+            pageItem: function(val) {
                 this.getDataItem();
                 this.pageItem = val;
             }
@@ -270,11 +272,11 @@
                     this.recordDataItem = pageData;
                 });
             },
-            saveItem(){
+            saveItem() {
                 axios.post("recordProcedure/insert", {
                     member_id: $('#id').val(),
                     booking_id: $('#bookingId').val(),
-                    data : this.selectedItem
+                    data: this.selectedItem
                 }).then((response) => {
                     if (response.data.result) {
                         this.$vs.notify({
