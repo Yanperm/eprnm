@@ -17,3 +17,5 @@ application/logs/*
 /vendor/
 .idea/workspace.xml
 application/.DS_Store
+application/.DS_Store
+.idea/workspace.xml
