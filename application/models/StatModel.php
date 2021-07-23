@@ -9,7 +9,7 @@ class StatModel extends CI_Model
         $query = $this->db->query("SELECT
                 COUNT(*) AS NUM
             FROM
-                dbnutmor.tbstat
+                tbstat
             WHERE
                 IDCLINIC != '' AND IP != '::1'
                     AND IDCLINIC = '" . $clinicId . "'"
@@ -104,6 +104,38 @@ GROUP BY DATE , IDCLINIC");
     public function insert($data)
     {
         $this->db->insert('tbstat', $data);
-        return $this->db->insert_id();
+       return $this->db->insert_id();
+    }
+
+    public function getAllData(){
+        $query = $this->db->get('tbstat');
+
+        if($query->num_rows() > 0){
+            return $query->result();
+        }else{
+            return array();
+        }
+    }
+
+    public function getDataByID($id){
+        $query = $this->db->query('SELECT * FROM tbstat where id = "'.$id.'"');
+
+        if($query->num_rows() > 0){
+            return $query->row();
+        }else{
+            return array();
+        }
+    }
+
+    public function update($data,$id){
+        $this->db->where('id',$id);
+        $this->db->update('tbstat',$data);
+        return true;
+    }
+
+    public function delete($id){
+        $this->db->where('id',$id);
+        $this->db->delete('tbstat');
+        return true;
     }
 }
