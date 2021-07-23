@@ -438,7 +438,7 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('clinic')?>">จัดการข้อมูลคลินิก</a>
                                         </li>
-                                        <li><a href="<?php echo base_url();?>">ผู้ใช้งานระบบ</a>
+                                        <li><a href="<?php echo base_url('showUser');?>">ผู้ใช้งานระบบ</a>
                                         </li>
                                         <!--<li><a href="email-compose.html">Email Compose</a>
                                     </li>-->
