@@ -504,6 +504,13 @@
                                     </ul>
                                 </li>
 
+                                <li class="parent"><a href="#"><i class="icon mdi mdi-check"></i><span>จัดการ SEO</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('seoClinic');?>">จัดการ SEO</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <!--<li class="parent"><a href="#"><i class="icon mdi mdi-folder"></i><span>Menu Levels</span></a>
                               <ul class="sub-menu">
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 1</span></a>
