@@ -8,7 +8,8 @@ class RecordCertification extends CI_Controller {
         $this->logged_in();
 
         $this->load->model('MemberModel');
-        $this->load->model('RecordLabModel');
+        $this->load->model('PatientSickModel');
+        $this->load->model('PatientJobModel');
         
     }
     private function logged_in()
@@ -33,43 +34,7 @@ class RecordCertification extends CI_Controller {
         $this->load->view('template/footer');
     }
 
-    public function getData()
-    {
-        $sortBy = $this->input->get('sortBy');
-        $sortType = $this->input->get('sortType');
-        $page = intval($this->input->get('page')) - 1;
-        $perPage = $this->input->get('perPage');
-
-        $condition = '';
-        $sort = '';
-
-        if (!empty($this->input->get('search'))) {
-            $search = $this->input->get('search');
-
-            $condition .= 'AND ( PH1 like "%'.$search.'%"';
-            $condition .= ' OR PH2 like "%'.$search.'%"';
-            $condition .= ' OR PH3 like "%'.$search.'%"';
-            $condition .= ' OR PH4 like "%'.$search.'%"';
-            $condition .= ' OR BOOKINGID like "%'.$search.'%")'; 
-        }
-
-        if (!empty($this->input->get('sortBy'))) {
-            $sort .= 'ORDER BY '.$sortBy.' '.$sortType;
-        }
-
-        $recordHealth = $this->RecordLabModel->getDataPerPage($this->input->get('memberId'), $condition, $sort, $page, $perPage);
-        $total = $this->RecordLabModel->total($this->input->get('memberId'), $condition);
-       
-        header('Content-Type: application/json');
-
-        if ($recordHealth) {
-            echo json_encode(['result'=> true, 'data' => $recordHealth, 'total' => $total->NUM_OF_ROW]);
-        } else {
-            echo json_encode(['result'=> false]);
-        }
-    }
-
-    public function getLab()
+    public function getDataJob()
     {
         $sortBy = $this->input->get('sortBy');
         $sortType = $this->input->get('sortType');
@@ -81,49 +46,88 @@ class RecordCertification extends CI_Controller {
 
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
-            $condition .= '  (tbsenddepartment.STESTNAME like "%'.$search.'%"';
-            $condition .= ' OR tbsenddepartment.PriceSale like "%'.$search.'%"';
-            $condition .= ' OR tbdepartment.DepName like "%'.$search.'%"';
-            $condition .= ' OR tblabscompany.LabCName like "%'.$search.'%")';
+
+            $condition .= 'AND ( tbpatient_job.CREATE like "%'.$search.'%"';
+            $condition .= ' OR BOOKINGID like "%'.$search.'%"';
+            $condition .= ' OR Recommendation like "%'.$search.'%"';
+            $condition .= ' OR Price like "%'.$search.'%")'; 
         }
 
-        $recordLab = $this->RecordLabModel->getDataLab($this->session->userdata('id'), $condition, $sortBy, $sortType, $page, $perPage);
-        $total = $this->RecordLabModel->totalLab($this->session->userdata('id'), $condition);
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY '.$sortBy.' '.$sortType;
+        }else{
+            $sort .= 'ORDER BY tbpatient_job.CREATE DESC';
+        }
 
+        $recordJob = $this->PatientJobModel->getDataPerPage($this->input->get('memberId'), $condition, $sort, $page, $perPage);
+        $total = $this->PatientJobModel->total($this->input->get('memberId'), $condition);
+       
         header('Content-Type: application/json');
 
-        if ($recordLab) {
-            echo json_encode([
-                'result'=> true,
-                'data' => $recordLab,
-                'total' => $total->NUM_OF_ROW
-            ]);
+        if ($recordJob) {
+            echo json_encode(['result'=> true, 'data' => $recordJob, 'total' => $total->NUM_OF_ROW]);
         } else {
             echo json_encode(['result'=> false]);
         }
     }
 
-    public function insert(){
-        $_POST = json_decode(file_get_contents("php://input"),true);
-        $memberId = $_POST["member_id"];
-        $bookingId = $_POST["booking_id"];
-        $dataLab = $_POST["data"];
+    public function getDataSick()
+    {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
 
-        for ($i = 0;$i < sizeof($dataLab);$i++) {
-            $data = [
-                'LBID' => 'LB'.$i.time(),
-                'MEMBERIDCARD' => $memberId,
-                'PH1' => $dataLab[$i]['STESTNAME'],
-                'PH2' => $dataLab[$i]['DepName'],
-                'PH3' => $dataLab[$i]['LabCName'],
-                'PH4' => $dataLab[$i]['Price'],
-                'BOOKINGID' => $bookingId,
-                'CREATE' => date('Y-m-d H:i:s'),
-            ];
+        $condition = '';
+        $sort = '';
 
-            $result = $this->RecordLabModel->insert($data);
+        if (!empty($this->input->get('search'))) {
+            $search = $this->input->get('search');
+
+            $condition .= 'AND ( tbpatient_sick.CREATE like "%'.$search.'%"';
+            $condition .= ' OR Dayoff like "%'.$search.'%"';
+            $condition .= ' OR BOOKINGID like "%'.$search.'%"';
+            $condition .= ' OR Recommendation like "%'.$search.'%"';
+            $condition .= ' OR Price like "%'.$search.'%"';
+            $condition .= ' OR Startdate like "%'.$search.'%"';
+            $condition .= ' OR Enddate like "%'.$search.'%")'; 
         }
 
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY '.$sortBy.' '.$sortType;
+        }else{
+            $sort .= 'ORDER BY tbpatient_sick.CREATE DESC';
+        }
+
+        $recordSick = $this->PatientSickModel->getDataPerPage($this->input->get('memberId'), $condition, $sort, $page, $perPage);
+        $total = $this->PatientSickModel->total($this->input->get('memberId'), $condition);
+       
+        header('Content-Type: application/json');
+
+        if ($recordSick) {
+            echo json_encode(['result'=> true, 'data' => $recordSick, 'total' => $total->NUM_OF_ROW]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function insertSick(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $data = [
+            'SickID' => 'SK'.time(),
+            'Dayoff' => $_POST['numOfSick'],
+            'Startdate' => $_POST['startDate'],
+            'Enddate' => $_POST["endDate"],
+            'Recommendation' => $_POST["recommend"],
+            'Price' => $_POST["price"],
+            'MEMBERIDCARD' => $_POST["memberId"],
+            'BOOKINGID' => $_POST["bookingId"],
+            'CREATE' => date('Y-m-d'),
+            'Status' =>1
+        ];
+
+        $result = $this->PatientSickModel->insert($data);
+        
         if($result){
             echo json_encode(['result'=> true]);
         }else{
@@ -131,17 +135,18 @@ class RecordCertification extends CI_Controller {
         }
     }
 
-    public function update(){
+    public function updateSick(){
         $_POST = json_decode(file_get_contents("php://input"),true);
         
         $data = [
-            'PH1' => $_POST["ph1"],
-            'PH2' => $_POST["ph2"],
-            'PH3' => $_POST["ph3"],
-            'PH4' => $_POST["ph4"],
+            'Dayoff' => $_POST['numOfSick'],
+            'Startdate' => $_POST['startDate'],
+            'Enddate' => $_POST["endDate"],
+            'Recommendation' => $_POST["recommend"],
+            'Price' => $_POST["price"],
         ];
 
-        $result = $this->RecordLabModel->update($data, $_POST["id"]);
+        $result = $this->PatientSickModel->update($data, $_POST["id"]);
 
         if($result){
             echo json_encode(['result'=> true]);
@@ -150,11 +155,11 @@ class RecordCertification extends CI_Controller {
         }
     }
 
-    public function delete(){
+    public function deleteSick(){
         $_POST = json_decode(file_get_contents("php://input"),true);
         $id = $_POST["id"];
         
-        $result = $this->RecordLabModel->delete($id);
+        $result = $this->PatientSickModel->delete($id);
 
         if($result){
             echo json_encode(['result'=> true]);
@@ -162,4 +167,129 @@ class RecordCertification extends CI_Controller {
             echo json_encode(['result'=> false]);
         }
     }
+
+    public function insertJob(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        
+        $diseases = "ไม่มี";
+        if(isset($_POST['diseases']) && $_POST['diseases']){
+            $diseases = "มี";
+        }
+
+        $accident = "ไม่มี";
+        if(isset($_POST['accident']) && $_POST['accident']){
+            $accident = "มี";
+        }
+
+        $hospital = "ไม่มี";
+        if(isset($_POST['hospital']) && $_POST['hospital']){
+            $hospital = "มี";
+        }
+
+        $others = "ไม่มี";
+        if(isset($_POST['others']) && $_POST['others']){
+            $others = "มี";
+        }
+
+        $health = "ไม่มี";
+        if(isset($_POST['health']) && $_POST['health']){
+            $health = "มี";
+        }
+        
+        $data = [
+            'JobID' => 'JB'.time(),
+            'Diseases' => $diseases,
+            'DiseasesDetail' => (isset($_POST['diseasesDetail']) ? $_POST['diseasesDetail'] : '') ,
+            'Accident' => $accident,
+            'AccidentDetail' => (isset($_POST['accidentDetail']) ? $_POST['accidentDetail'] : '') ,
+            'Hospital' => $hospital,
+            'HospitalDetail' => (isset($_POST['hospitalDetail']) ? $_POST['hospitalDetail']: '') ,
+            'Others' => $others,
+            'OthersDetail' => (isset($_POST['othersDetail']) ? $_POST['othersDetail'] :  '') ,
+            'BodyHealth' => $health,
+            'BodyHealthDetail' => (isset($_POST['healthDetail']) ? $_POST['healthDetail'] :  ''),
+            'OtherSymptoms' => (isset($_POST['otherSymptoms']) ? $_POST['otherSymptoms'] :  ''),
+            'Recommendation' => (isset($_POST['recommend']) ? $_POST['recommend'] :  ''),
+            'Price' => (isset($_POST['price']) ? $_POST['price'] :  ''),
+            'MEMBERIDCARD' => $_POST["memberId"],
+            'BOOKINGID' => $_POST["bookingId"],
+            'CREATE' => date('Y-m-d'),
+            'Status' => 1
+        ];
+
+        $result = $this->PatientJobModel->insert($data);
+        
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function updateJob(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $diseases = "ไม่มี";
+        if(isset($_POST['diseases']) && $_POST['diseases']){
+            $diseases = "มี";
+        }
+
+        $accident = "ไม่มี";
+        if(isset($_POST['accident']) && $_POST['accident']){
+            $accident = "มี";
+        }
+
+        $hospital = "ไม่มี";
+        if(isset($_POST['hospital']) && $_POST['hospital']){
+            $hospital = "มี";
+        }
+
+        $others = "ไม่มี";
+        if(isset($_POST['others']) && $_POST['others']){
+            $others = "มี";
+        }
+
+        $health = "ไม่มี";
+        if(isset($_POST['health']) && $_POST['health']){
+            $health = "มี";
+        }
+
+        $data = [
+            'Diseases' => $diseases,
+            'DiseasesDetail' => (isset($_POST['diseasesDetail']) ? $_POST['diseasesDetail'] : '') ,
+            'Accident' => $accident,
+            'AccidentDetail' => (isset($_POST['accidentDetail']) ? $_POST['accidentDetail'] : '') ,
+            'Hospital' => $hospital,
+            'HospitalDetail' => (isset($_POST['hospitalDetail']) ? $_POST['hospitalDetail']: '') ,
+            'Others' => $others,
+            'OthersDetail' => (isset($_POST['othersDetail']) ? $_POST['othersDetail'] :  '') ,
+            'BodyHealth' => $health,
+            'BodyHealthDetail' => (isset($_POST['healthDetail']) ? $_POST['healthDetail'] :  ''),
+            'OtherSymptoms' => (isset($_POST['otherSymptoms']) ? $_POST['otherSymptoms'] :  ''),
+            'Recommendation' => (isset($_POST['recommend']) ? $_POST['recommend'] :  ''),
+            'Price' => (isset($_POST['price']) ? $_POST['price'] :  ''),
+        ];
+
+        $result = $this->PatientJobModel->update($data, $_POST["id"]);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function deleteJob(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $id = $_POST["id"];
+        
+        $result = $this->PatientJobModel->delete($id);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+
 }
