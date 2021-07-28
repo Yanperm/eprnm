@@ -35,6 +35,21 @@ class PatientHistoryModel extends CI_Model
         }
     }
 
+    public function getDataById($bookId)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_history 
+            WHERE BOOKINGID = "'.$bookId.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function insert($data)
     {
         $this->db->insert('tbpatient_history', $data);

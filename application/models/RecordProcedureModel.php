@@ -79,6 +79,22 @@ class RecordProcedureModel extends CI_Model
         }
     }
 
+    public function getDataByBookingId($bookingId)
+    {
+      
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_procedure 
+            WHERE BOOKINGID = "'.$bookingId.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function getMaxId($clinicId){
         $query = $this->db->query('
             SELECT MAX(ProcedureIDs) as max_id 

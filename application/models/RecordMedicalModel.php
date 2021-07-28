@@ -52,6 +52,22 @@ class RecordMedicalModel extends CI_Model
         }
     }
 
+    public function getDataByBookingId($bookingId)
+    {
+      
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_medical 
+            WHERE BOOKINGID = "'.$bookingId.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function getDataProduct($clinicId, $condition, $sortBy, $sortType, $page, $perPage)
     {
 

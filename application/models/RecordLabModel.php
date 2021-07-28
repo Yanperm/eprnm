@@ -34,6 +34,21 @@ class RecordLabModel extends CI_Model
         }
     }
 
+    public function getDataByBookingId($bookingId)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_lab 
+            WHERE BOOKINGID = "'.$bookingId.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function getDataLab($clinicId, $condition, $sortBy, $sortType, $page, $perPage)
     {
 

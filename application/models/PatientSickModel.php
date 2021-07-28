@@ -33,6 +33,21 @@ class PatientSickModel extends CI_Model {
         }
     }
 
+    public function getDataByBookingId($bookingId)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_sick 
+            WHERE BOOKINGID = "'.$bookingId.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function insert($data){
         $this->db->insert('tbpatient_sick', $data);
         

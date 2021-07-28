@@ -9,7 +9,12 @@ class RecordSummary extends CI_Controller {
 
         $this->load->model('MemberModel');
         $this->load->model('RecordLabModel');
-        
+        $this->load->model('PatientHistoryModel');
+        $this->load->model('RecordMedicalModel');
+        $this->load->model('RecordLabModel');
+        $this->load->model('RecordProcedureModel');
+        $this->load->model('PatientJobModel');
+        $this->load->model('PatientSickModel');
     }
     private function logged_in()
     {
@@ -21,10 +26,24 @@ class RecordSummary extends CI_Controller {
     public function index()
     {       
         $member = $this->MemberModel->getDataById($_GET['id']);
+        $bookingId = $this->input->get('booking_id');
 
+        $diagnose = $this->PatientHistoryModel->getDataById($bookingId);
+        $medical = $this->RecordMedicalModel->getDataByBookingId($bookingId);
+        $lab = $this->RecordLabModel->getDataByBookingId($bookingId);
+        $procedure = $this->RecordProcedureModel->getDataByBookingId($bookingId);
+        $certificateJob = $this->PatientJobModel->getDataByBookingId($bookingId);
+        $certificateSick = $this->PatientSickModel->getDataByBookingId($bookingId);
+       
         $data = [
             'member' => $member,
-            'bookingId' => $this->input->get('booking_id')
+            'bookingId' => $bookingId,
+            'diagnose' => $diagnose,
+            'medical' => $medical,
+            'lab' => $lab,
+            'procedure' => $procedure,
+            'certificateJob' => $certificateJob,
+            'certificateSick' => $certificateSick
         ];
 
         $this->load->view('template/header');
