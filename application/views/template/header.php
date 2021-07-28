@@ -446,7 +446,7 @@
                                 </li>
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-calendar-alt"></i><span>วันและเวลา</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('close');?>">จัดการเวลาเปิดปิด</a>
+                                        <li><a href="<?php echo base_url('time');?>">จัดการเวลาเปิดปิด</a>
                                         </li>
                                         <li><a href="<?php echo base_url('rest-day');?>">วันหยุดคลินิก</a>
                                         </li>

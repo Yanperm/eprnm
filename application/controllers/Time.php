@@ -2,14 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Time extends CI_Controller {
+
     public function __construct()
     {
         parent::__construct();
-      //  $this->logged_in();
-        $this->load->model('ClinicModel');
-        $this->load->model('CloseModel');
-        $this->load->library('S3_upload');
-        $this->load->library('S3');
+        $this->logged_in();
+
+        $this->load->model('TimeModel');
     }
     private function logged_in()
     {
@@ -18,101 +17,117 @@ class Time extends CI_Controller {
         }
     }
 
-    public function close()
+    public function index()
     {
-        $clinic = $this->ClinicModel->getDetail($this->session->userdata('id'));
-
-        $data = [
-            'clinic' => $clinic
+        $css = [
+           base_url() . 'assets/app/time_clinic/time_clinic.css?v=' . time(),
         ];
 
-        $this->load->view('template/header');
-        $this->load->view('time/close', $data);
-        $this->load->view('template/footer');
+        $js = [
+            base_url() . 'assets/app/time_clinic/time_clinic.js?v=' . time(),
+        ];
+
+        $this->load->view('template/header', ['css' => $css]);
+        $this->load->view('time_clinic/index');
+        $this->load->view('template/footer', ['js' => $js]);
     }
 
-	public function restDay()
-	{
-        $this->load->view('template/header');
-        $this->load->view('time/rest_day');
-        $this->load->view('template/footer');
-	}
-
-    public function data()
-    {
-        $clicnic = $this->ClinicModel->getDetail($this->session->userdata('id'));
+    public function getDay(){
+        $day = $this->TimeModel->getDay($this->session->userdata('id'));
+       
         header('Content-Type: application/json');
-        echo json_encode($clicnic);
+
+        if ($day) {
+            echo json_encode([
+                'result'=> true,
+                'day' => $day,
+                ]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
     }
 
-    public function update()
-    {
-        $timeOpen = $this->input->post('time_open');
-        $timeClose = $this->input->post('time_close');
-        $time1 = $this->input->post('time1');
-        $close1 = $this->input->post('close1');
-        $time2 = $this->input->post('time2');
-        $close2 = $this->input->post('close2');
-        $time3 = $this->input->post('time3');
-        $close3 = $this->input->post('close3');
-        $time4 = $this->input->post('time4');
-        $close4 = $this->input->post('close4');
-        $time5 = $this->input->post('time5');
-        $close5 = $this->input->post('close5');
-        $time6 = $this->input->post('time6');
-        $close6 = $this->input->post('close6');
-        $w1 = $this->input->post('w1');
-        $w2 = $this->input->post('w2');
-        $w3 = $this->input->post('w3');
-        $w4 = $this->input->post('w4');
-        $w5 = $this->input->post('w5');
-        $w6 = $this->input->post('w6');
-        $w7 = $this->input->post('w7');
+    // public function getTimeClinic()
+    // {
+    //     $sortBy = $this->input->get('sortBy');
+    //     $sortType = $this->input->get('sortType');
+    //     $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+    //     $perPage = $this->input->get('perPage');
 
-        $dayOff = 7;
+    //     $condition = '';
+    //     $sort = '';
 
-        if($w1 == ''){
-            $dayOff = 0;
-        }else if($w2 == ''){
-            $dayOff = 1;
-        }else if($w3 == ''){
-            $dayOff = 2;
-        }else if($w4 == ''){
-            $dayOff = 3;
-        }else if($w5 == ''){
-            $dayOff = 4;
-        }else if($w6 == ''){
-            $dayOff =5;
-        }else if($w7 == ''){
-            $dayOff = 6;
-        }
+    //     // if (!empty($this->input->get('search'))) {
+    //     //     $search = $this->input->get('search');
+    //     //     $condition .= ' AND tbclinic.SEO_TITLE like "%'.$search.'%"';
+            
+    //     // }
 
+    //     // if (!empty($this->input->get('sortBy'))) {
+    //     //     $sort .= 'ORDER BY "tbclinic.'.$sortBy.'" '.$sortType;
+    //     // }
+
+    //     $timeclinic = $this->TimeModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+    //     $total = $this->TimeModel->total($this->session->userdata('id'), $condition);
+       
+    //     header('Content-Type: application/json');
+
+    //     if ($timeclinic) {
+    //         echo json_encode([
+    //             'result'=> true,
+    //             'main' => $timeclinic,
+    //             'total' => $total->NUM_OF_ROW
+    //             ]);
+    //     } else {
+    //         echo json_encode(['result'=> false]);
+    //     }
+    // }
+
+    public function update(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $id = $_POST["id"];
+        $openSunday = $_POST["openSunday"];
+        //$timeclose = $_POST["timeclose"];
+        // $time1 = $_POST["time1"];
+        // $close1 = $_POST["close1"];
+        // $time2 = $_POST["time2"];
+        // $close2 = $_POST["close2"];
+        // $time3 = $_POST["time3"];
+        // $close3 = $_POST["close3"];
+        // $time4 = $_POST["time4"];
+        // $close4 = $_POST["close4"];
+        // $time5 = $_POST["time5"];
+        // $close5 = $_POST["close5"];
+        // $time6 = $_POST["time6"];
+        // $close6 = $_POST["close6"];
+      
         $data = [
-            'TIME_OPEN' => $timeOpen,
-            'TIME_CLOSE' => $timeClose,
-            'TIME1' => $time1,
-            'CLOSE1' => $close1,
-            'TIME2' => $time2,
-            'CLOSE2' => $close2,
-            'TIME3' => $time3,
-            'CLOSE3' => $close3,
-            'TIME4' => $time4,
-            'CLOSE4' => $close4,
-            'TIME5' => $time5,
-            'CLOSE5' => $close5,
-            'TIME6' => $time6,
-            'CLOSE6' => $close6,
-            'DAYOFF' => $dayOff
+            'TIME_OPEN' => $openSunday,
+            // 'TIME_CLOSE' => $timeclose,
+            // 'TIME1' => $time1,
+            // 'CLOSE1' => $close1 ,
+            // 'TIME2' => $time2 ,
+            // 'CLOSE2' => $close2,
+            // 'TIME3' => $time3,
+            // 'CLOSE3' => $close3,
+            // 'TIME4' => $time4,
+            // 'CLOSE4' => $close4,
+            // 'TIME5' => $time5,
+            // 'CLOSE5' => $close5,
+            // 'TIME6' => $time6,
+            // 'CLOSE6' => $close6,
         ];
 
-        $result =  $this->ClinicModel->update($data, $this->session->userdata('id'));
+        $result = $this->TimeModel->update($data, $id);
 
         if($result){
-            echo json_encode(['result'=> true, 'dayOff' => $dayOff]);
+            echo json_encode(['result'=> true]);
         }else{
             echo json_encode(['result'=> false]);
         }
-
     }
+
+
+
 
 }
