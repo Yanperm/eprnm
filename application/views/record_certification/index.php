@@ -595,7 +595,7 @@ const app = new Vue({
 
             setTimeout(() => {
                 console.log(this.idJob);
-                window.open("http://localhost/eprnm/recordCertification/printCertificateJob" + "?id=" +
+                window.open("https://medreco.co/recordCertification/printCertificateJob" + "?id=" +
                     this.idJob, '_blank');
             }, 1000);
 
