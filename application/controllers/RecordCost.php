@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class RecordHistory extends CI_Controller {
+class RecordCost extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
@@ -20,7 +20,7 @@ class RecordHistory extends CI_Controller {
     {       
         $member = $this->MemberModel->getDataById($_GET['id']);
         $bookingId = $_GET['booking_id'];
-
+        
         $data = [
             'member' => $member,
             'bookingId' => $bookingId
@@ -28,7 +28,7 @@ class RecordHistory extends CI_Controller {
 
         $this->load->view('template/header');
         $this->load->view('template/record', $data);
-        $this->load->view('record_history/index', $data);
+        $this->load->view('record_cost/index', $data);
         $this->load->view('template/footer');
     }
 }

@@ -6,7 +6,7 @@
                     <div class="card">
                         <div class="tab-container">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item"><a class="nav-link active"
+                                <li class="nav-item"><a class="nav-link "
                                         href="<?php echo base_url('recordHistory');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
                                             class="icon mdi mdi-assignment-account"></span>รายการตรวจวินิจฉัย</a></li>
                                 <li class="nav-item"><a class="nav-link "
@@ -18,7 +18,7 @@
                                 <li class="nav-item"><a class="nav-link"
                                         href="<?php echo base_url('recordDrug');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
                                             class="icon mdi mdi-local-pharmacy"></span>ห้องยา</a></li>
-                                <li class="nav-item"><a class="nav-link "
+                                <li class="nav-item"><a class="nav-link active"
                                         href="<?php echo base_url('recordCost');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
                                             class="icon mdi mdi-card"></span>ค่าใช้จ่าย</a></li>
                             </ul>
