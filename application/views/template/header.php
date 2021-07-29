@@ -511,6 +511,13 @@
                                     </ul>
                                 </li>
 
+                                <li class="parent"><a href="#"><i class=""></i><span>Like</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('likeClinic');?>">Like</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
                                 <!--<li class="parent"><a href="#"><i class="icon mdi mdi-folder"></i><span>Menu Levels</span></a>
                               <ul class="sub-menu">
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 1</span></a>

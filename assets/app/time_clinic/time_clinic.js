@@ -68,7 +68,7 @@ const app = new Vue({
             });
         },
         makePageData() {
-            axios.get("", {
+            axios.get("time/getDay", {
                 params: {
                     search: this.search,
                     sortBy: this.sortBy,
@@ -81,25 +81,36 @@ const app = new Vue({
                 this.isTable = true;
 
                 if (response.data.result) {
-                    for (let i = 0; i < response.data.main.length; i++) {
+                    for (let i = 0; i < response.data.day.length; i++) {
                         pageData = pageData.concat(response.data.main[i])
                     }
 
-                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
-                } else {
-                    this.pagination.last_page = 0;
-                }
-                this.totalItems = pageData.length;
-                this.recordData = pageData;
+                   // this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } //else {
+                //     this.pagination.last_page = 0;
+                // }
+                // this.totalItems = pageData.length;
+                // this.recordData = pageData;
             });
         },
         save() {
 
             //if (this.action == 'update') {
                 axios.post("time/update", {
-                    id: this.id,
                     openSunday: this.field.openSunday,
-                    
+                    closeSunday: this.field.closeSunday,
+                    openMon: this.field.openMon,
+                    closeMon: this.field.closeMon,
+                    openTue: this.field.openTue,
+                    closeTue: this.field.closeTue,
+                    openWed: this.field.openWed,
+                    closeWed: this.field.closeWed,
+                    openThu: this.field.openThu,
+                    closeThu: this.field.closeTue,
+                    openFri: this.field.openFri,
+                    closeFri: this.field.closeFri,
+                    openSat: this.field.openSat,
+                    closeSat: this.field.closeSat,
 
                 }).then((response) => {
                     if (response.data.result) {

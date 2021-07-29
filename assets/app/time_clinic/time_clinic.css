@@ -1,1 +1,19 @@
-.resizedTextbox {width: 100px; height: 50px}
+.resizedTextbox {
+    width: 100px; 
+    height: 50px;
+    margin-right: 100px;
+    margin-left: 20px;
+}
+
+.box {
+    width: 100px; 
+    height: 50px;
+    margin-right: 20px;
+}
+
+.textbox1 {
+    margin-right: 170px;
+    margin-left: 70px;
+}
+
+
