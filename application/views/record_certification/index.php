@@ -106,13 +106,15 @@
                                                                     </vs-td>
                                                                     <vs-td :data="data[indextr].JobID">
                                                                         <div class="centerx">
+
                                                                             <vs-tooltip text="พิมพ์">
                                                                                 <vs-button
                                                                                     color="rgba(112, 128, 144, 0.25)"
                                                                                     type="filled" icon="print"
-                                                                                    @click="popupActiveJob=true,actionJob='update'">
+                                                                                    @click="printJob">
                                                                                 </vs-button>
                                                                             </vs-tooltip>
+
                                                                             <vs-tooltip text="แก้ไข">
                                                                                 <vs-button
                                                                                     color="rgba(112, 128, 144, 0.25)"
@@ -507,6 +509,7 @@ const app = new Vue({
         },
         selectedJob: function(val) {
             this.idJob = val.JobID;
+            console.log(this.idJob)
             this.fieldJob.diseases = val.DiseasesDetail ? true : null;
             this.fieldJob.diseasesDetail = val.DiseasesDetail;
             this.fieldJob.accident = val.AccidentDetail ? true : null;
@@ -587,6 +590,15 @@ const app = new Vue({
             this.sortBySick = key;
             this.sortTypeSick = active;
             this.getDataSick();
+        },
+        printJob() {
+
+            setTimeout(() => {
+                console.log(this.idJob);
+                window.open("http://localhost/eprnm/recordCertification/printCertificateJob" + "?id=" +
+                    this.idJob, '_blank');
+            }, 1000);
+
         },
         getDataJob() {
             axios.get("recordCertification/getDataJob", {

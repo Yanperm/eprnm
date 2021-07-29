@@ -10,6 +10,10 @@ class RecordCertification extends CI_Controller {
         $this->load->model('MemberModel');
         $this->load->model('PatientSickModel');
         $this->load->model('PatientJobModel');
+        $this->load->model('ClinicModel');
+        $this->load->model('MemberModel');
+        $this->load->model('RecordHealthModel');
+        $this->load->model('PatientsModel');
         
     }
     private function logged_in()
@@ -191,9 +195,9 @@ class RecordCertification extends CI_Controller {
             $others = "มี";
         }
 
-        $health = "ไม่มี";
+        $health = "ปกติ";
         if(isset($_POST['health']) && $_POST['health']){
-            $health = "มี";
+            $health = "ผิดปกติ";
         }
         
         $data = [
@@ -248,9 +252,9 @@ class RecordCertification extends CI_Controller {
             $others = "มี";
         }
 
-        $health = "ไม่มี";
+        $health = "ปกติ";
         if(isset($_POST['health']) && $_POST['health']){
-            $health = "มี";
+            $health = "ผิดปกติ";
         }
 
         $data = [
@@ -288,6 +292,103 @@ class RecordCertification extends CI_Controller {
             echo json_encode(['result'=> true]);
         }else{
             echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function printCertificateJob()
+    {
+        $certificateJob = $this->PatientJobModel->getDataById($_GET['id']);
+        $member = $this->MemberModel->getDataById($certificateJob->MEMBERIDCARD);
+        $clinic = $this->ClinicModel->detailById($this->session->userdata('id'));
+        $health = $this->RecordHealthModel->getDataByBookingId($certificateJob->BOOKINGID);
+        $patient = $this->PatientsModel->getDataById($certificateJob->MEMBERIDCARD);
+      
+        $thaiMonth=array("มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม");
+
+        if($certificateJob){
+            $this->load->library('Pdf');
+            $this->load->library('parser');
+            $pdf = new Pdf();
+            $font = 'thsarabun';
+            $pdf->font = $font;
+            $pdf->SetCreator("Nutmor.com");
+            $pdf->SetAuthor("Nutmor.com");
+            $pdf->SetTitle("ใบรับรองแพทย์ สมัครงาน");
+            $pdf->SetSubject("ใบรับรองแพทย์");
+            $pdf->setPrintHeader(false);
+            $pdf->setPrintFooter(false);
+            $pdf->SetHeaderMargin(5);
+            $pdf->SetTopMargin(5);
+            $pdf->SetLeftMargin(20);
+            $pdf->SetRightMargin(20);
+            $pdf->SetAutoPageBreak(TRUE, 0);
+            $pdf->SetFooterMargin(0);
+            $pdf->SetFont($font, '', 14);
+            $pdf->AddPage('P','A4');
+            $html = '<h1 style="text-align:center"><b>ใบรับรองแพทย์</b></h1>';
+            $html .= '<h3><span style="background-color:black;color:white;"> ส่วนที่ 1 </span> ของผู้รับใบรับรองสุขภาพ</h3>';
+            $html .= '<br>ข้าพเจ้า <b>'.$patient->PATIEN_NAMEPREFIX." ".$patient->PATIEN_NAME."</b>";
+            $html .= '<br>สถานที่อยู่ (ที่สามารถติดต่อได้) <b>'.$patient->PATIEN_ADDRESS."</b>";
+            $html .= '<br>หมายเลขบัตรประจำตัวประชาชน <b>'.$patient->IDCARD.'</b>';
+            $html .= '<br>ข้าพเจ้าขอใบรับรองสุขขภาพ โดยมีประวัติสุขภาพดังนี้';
+
+            if($certificateJob->DiseasesDetail != ''){
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. โรคประจำตัว <b>'.$certificateJob->DiseasesDetail."</b>";
+            }else{
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. โรคประจำตัว <b>'.$certificateJob->Diseases."</b>";
+            }
+
+            if($certificateJob->AccidentDetail != ''){
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. อุบัติเหตุ และ ผ่าตัด <b>'.$certificateJob->AccidentDetail."</b>";
+            }else{
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. อุบัติเหตุ และ ผ่าตัด <b>'.$certificateJob->Accident."</b>";
+            }
+
+            if($certificateJob->HospitalDetail != ''){
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. เคยเข้ารับการรักษาในโรงพยาบาล <b>'.$certificateJob->HospitalDetail."</b>";
+            }else{
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. เคยเข้ารับการรักษาในโรงพยาบาล <b>'.$certificateJob->Hospital."</b>";
+            }
+
+            if($certificateJob->OthersDetail != ''){
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. ประวัติอื่นที่สำคัญ <b>'.$certificateJob->OthersDetail."</b>";
+            }else{
+                $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. ประวัติอื่นที่สำคัญ <b>'.$certificateJob->Others."</b>";
+            }
+            
+            $html .= '<p style="text-align:right">ลงชื่อ.............................................................................วันที่ '.date('d').' เดือน '.$thaiMonth[intval(date('m'))-1].' พ.ศ. '.(intval(date('Y'))+543).'</p>';
+            $html .= '<p style="text-align:right">ในกรณีเด็กที่ไม่สามารถรับรองตนเองได้ ให้ผู้ปกครองลงนามรับรองแทนได้</p>';
+            $html .= '<h3><span style="background-color:black;color:white;"> ส่วนที่ 2 </span> ของแพทย์</h3>';
+            $html .= '<br>สถานที่ตรวจ <b>'.$clinic->CLINICNAME.'</b> วันที่ '.date('d').' เดือน '.$thaiMonth[intval(date('m'))-1].' พ.ศ. '.(intval(date('Y'))+543);
+            $html .= '<br><b>(1)</b> ข้าพเจ้า <b>'.$clinic->DOCTORNAME."</b>";
+            $html .= '<br>ใบอนุญาตประกอบวิชาชีพเวชกรรมเลขที่ ..........................................สถานพยาบาลชื่อ <b>'.$clinic->CLINICNAME."</b>";
+            $html .= '<br>ที่อยู่ <b>'.$clinic->ADDRESS."</b>";
+            $html .= '<br>ได้ตรวจร่างกาย <b>'.$patient->PATIEN_NAMEPREFIX." ".$patient->PATIEN_NAME."</b>";
+            $html .= '<br>แล้วเมื่อวันที่ '.date('d').' เดือน '.$thaiMonth[intval(date('m'))-1].' พ.ศ. '.(intval(date('Y'))+543).' มีรายละเอียดดังนี้';
+            $html .= '<br>น้ำหนักตัว <b>'.$health->Wieght.'</b> กิโลกรัม&nbsp;&nbsp;ความสูง <b>'.$health->Height.'</b> เซนติเมตร&nbsp;&nbsp;ความดันโลหิต <b>'.$health->BP.'</b> มม.ปรอท&nbsp;&nbsp;ชีพจร <b>'.$health->HR.'</b> ครั้ง/นาที';
+            
+            if($certificateJob->BodyHealthDetail != ''){
+                $html .= '<br>สภาพร่างกายทั่วไปอยู่ในเกณฑ์ <b>'.$certificateJob->BodyHealth." ".$certificateJob->BodyHealthDetail."</b>";
+            }else{
+                $html .= '<br>สภาพร่างกายทั่วไปอยู่ในเกณฑ์ <b>'.$certificateJob->BodyHealth."</b>";
+            }
+            $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ขอรับรองว่า บุคคลดังกล่าว ไม่เป็นผู้มีร่างกายทุพพลภาพจนไม่สามารถปฏิบัติหน้าที่ได้ ไม่ปรากฏอาการของโรคจิต
+            หรือจิตฟั่นเฟือนหรือปัญญาอ่อน ไม่ปรากฏอาการของการติดยาเสพติดให้โทษ และอาการของโรคพิษสุราเรื้อรัง และไม่
+            ปรากฏอาการและอาการแสดงของโรคต่อไปนี้';
+            $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(1) โรคเรื้อนในระยะติดต่อ หรือในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม';
+            $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) วัณโรคในระยะอันตราย';
+            $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3) โรคเท้าช้างในระยะที่ปรากฏอาการเป็นที่รังเกียจแก่สังคม';
+            $html .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(4) อื่น ๆ (ถ้ามี) <b>'.$certificateJob->OtherSymptoms."</b>";
+            $html .= '<br><b>(2)</b> สรุปความเห็นและข้อแนะนำของแพทย์ <b>'.$certificateJob->Recommendation."</b>";
+            $html .= '<p style="text-align:right">ลงชื่อ................................................................................แพทย์ผู้ตรวจร่างกาย</p>';
+            $html .="<br>หมายเหตุ (1) ต้องเป็นแพทย์ซึ่งได้ขึ้นทะเบียนรับใบอนุญาตประกอบวิชาชีพเวชกรรม
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) ให้แสดงว่าเป็นผู้มีร่างกายสมบูรณ์เพียงใด ใบรับรองแพทย์ฉบับนีให้ใช้ได้ 1 เดือนนับแต่วันที่ตรวจร่างกาย
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3) คำรับรองนี้เป็นการตรวจวินิจฉัยเบื้องต้น
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;แบบฟอร์มนี้ได้รับการรับรองจากมติคณะกรรมการแพทยสภาในการประชุมครั้งที่ 4/2561 วันที่19 เมษายน 2561";
+
+            $pdf->writeHTMLCell(0, 0, '', '', $html, 0, 1, 0, true, '', true);
+            $pdf->lastPage();
+            $pdf->Output('certificate.pdf', 'I');
         }
     }
 

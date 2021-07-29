@@ -197,8 +197,7 @@ class RecordMedical extends CI_Controller {
     public function sticker()
     {
         $recordMedical = $this->RecordMedicalModel->getDataById($_GET['id']);
-        // print_r($recordMedical);
-        // exit();
+      
         if($recordMedical){
             $this->load->library('Pdf');
             $this->load->library('parser');

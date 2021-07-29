@@ -48,6 +48,22 @@ class PatientJobModel extends CI_Model{
         }
     }
 
+    public function getDataById($id)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_job 
+            WHERE JobID = "'.$id.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return array();
+        }
+    }
+    
+
     public function insert($data){
         $this->db->insert('tbpatient_job', $data);
         

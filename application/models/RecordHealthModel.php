@@ -46,6 +46,18 @@ class RecordHealthModel extends CI_Model
         }
     }
 
+    public function getDataByBookingId($bookingId){
+        $query = $this->db->query('
+            SELECT * FROM tbpatient_health 
+            WHERE BOOKINGID = "'.$bookingId.'"');
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return array();
+        }
+    }
+
     public function getDataById($id){
         $query = $this->db->query('
             SELECT * FROM tbpatient_health 
