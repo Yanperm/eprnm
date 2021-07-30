@@ -389,7 +389,7 @@
 
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-chart"></i><span>รายงาน</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url();?>">รายงานยอดขาย</a>
+                                        <li><a href="<?php echo base_url('reportSell');?>">รายงานยอดขาย</a>
                                         </li>
 
                                         <!--
