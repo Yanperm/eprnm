@@ -4,13 +4,17 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class FregquencyModel extends CI_Model{
 
     public function getAllData(){
-        $query = $this->db->get('tbfregquency');
 
-        if($query->num_rows()>0){
+        $this->db->order_by('id', 'ASC');
+        $query =  $this->db->get('tbFregquency');
+
+        if ($query->num_rows() > 0) {
+
             return $query->result();
         }else{
             return array();
         }
+
 
     }
 
@@ -41,7 +45,6 @@ class FregquencyModel extends CI_Model{
         return true;
     }
 }
-
 
 
 ?>

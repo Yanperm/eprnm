@@ -6,22 +6,33 @@
                     <div class="card">
                         <div class="tab-container">
                             <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item"><a class="nav-link " href="<?php echo base_url('recordHistory');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span class="icon mdi mdi-assignment-account"></span>รายการตรวจวินิจฉัย</a></li>
-                                <li class="nav-item"><a class="nav-link " href="<?php echo base_url('recordInformation');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span class="icon mdi mdi-male"></span>ข้อมูลผู้ป่วย</a></li>
-                                <li class="nav-item"><a class="nav-link active" href="<?php echo base_url('recordPatient');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span class="icon mdi mdi-local-hospital"></span>การรักษา</a></li>
-                                <li class="nav-item"><a class="nav-link" href="<?php echo base_url('recordDrug');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span class="icon mdi mdi-local-pharmacy"></span>ห้องยา</a></li>
-                                <li class="nav-item"><a class="nav-link" href="<?php echo base_url('recordCost');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span class="icon mdi mdi-card"></span>ค่าใช้จ่าย</a></li>
+                                <li class="nav-item"><a class="nav-link " href="<?php echo base_url('recordHistory');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
+                                            class="icon mdi mdi-assignment-account"></span>รายการตรวจวินิจฉัย</a></li>
+                                <li class="nav-item"><a class="nav-link " href="<?php echo base_url('recordInformation');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
+                                            class="icon mdi mdi-male"></span>ข้อมูลผู้ป่วย</a></li>
+                                <li class="nav-item"><a class="nav-link active" href="<?php echo base_url('recordPatient');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
+                                            class="icon mdi mdi-local-hospital"></span>การรักษา</a></li>
+                                <li class="nav-item"><a class="nav-link" href="<?php echo base_url('recordDrug');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
+                                            class="icon mdi mdi-local-pharmacy"></span>ห้องยา</a></li>
+                                <li class="nav-item"><a class="nav-link" href="<?php echo base_url('recordCost');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>"><span
+                                            class="icon mdi mdi-card"></span>ค่าใช้จ่าย</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" role="tabpanel">
                                     <div class="mt-2 mb-2">
                                         <div class="mt-2 mb-2">
-                                            <a href="<?php echo base_url('recordPatient');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big "><i class="icon mdi mdi-account-add"></i> Diagnose </a>
-                                            <a href="<?php echo base_url('recordMedical');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big "><i class="icon mdi mdi-hospital-alt"></i> Medicine </a>
-                                            <a href="<?php echo base_url('recordLab');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big active"><i class="icon mdi mdi-eyedropper"></i> Laboratory </a>
-                                            <a href="<?php echo base_url('recordProcedure');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big"><i class="icon mdi mdi-airline-seat-flat-angled"></i> Procedure</a>
-                                            <a href="<?php echo base_url('recordCertification');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big"><i class="icon mdi mdi-file-text"></i> Certificate </a>
-                                            <a href="<?php echo base_url('recordSummary');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big"><i class="icon mdi mdi-receipt"></i> Summary</a>
+                                            <a href="<?php echo base_url('recordPatient');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big "><i
+                                                    class="icon mdi mdi-account-add"></i> Diagnose </a>
+                                            <a href="<?php echo base_url('recordMedical');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big "><i
+                                                    class="icon mdi mdi-hospital-alt"></i> Medicine </a>
+                                            <a href="<?php echo base_url('recordLab');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big active"><i
+                                                    class="icon mdi mdi-eyedropper"></i> Laboratory </a>
+                                            <a href="<?php echo base_url('recordProcedure');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big"><i
+                                                    class="icon mdi mdi-airline-seat-flat-angled"></i> Procedure</a>
+                                            <a href="<?php echo base_url('recordCertification');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big"><i
+                                                    class="icon mdi mdi-file-text"></i> Certificate </a>
+                                            <a href="<?php echo base_url('recordSummary');?>?id=<?php echo $member->MEMBERIDCARD;?>&booking_id=<?php echo $bookingId;?>" class="btn btn-space btn-secondary btn-big"><i
+                                                    class="icon mdi mdi-receipt"></i> Summary</a>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-12">
@@ -29,74 +40,77 @@
                                             <input type="hidden" id="id" value="<?php echo $member->MEMBERIDCARD;?>">
                                             <input type="hidden" id="bookingId" value="<?php echo $bookingId;?>">
                                             <vs-row vs-w="12">
-                                                <vs-button @click="popupActive=true,action='insert'" color="primary" type="border" icon="add_circle_outline">เพิ่มข้อมูล</vs-button>
+                                                <vs-col vs-offset="9">
+                                                    <vs-button color="primary" type="border" icon="print"> พิมพ์</vs-button>
+                                                    <vs-button @click="popupActive=true,action='insert'" color="primary" type="filled" icon="add_circle_outline">เพิ่มข้อมูล</vs-button>
+                                                </vs-col>
                                             </vs-row>
                                             <vs-table :sst="true" @search="handleSearch" @sort="handleSort" v-model="selected" :total="totalItems" :max-items="perPage" search :data="record">
                                                 <template slot="header">
                                                     <h4>
                                                         Lab Record
                                                     </h4>
-                                                  </template>
+                                                </template>
                                                 <template slot="thead">
-                                                  <vs-th>
-                                                    วันที่
-                                                  </vs-th>
-                                                  <vs-th>
-                                                    Visit Number
-                                                  </vs-th>
-                                                  <vs-th>
-                                                    รายการแล็บ
-                                                  </vs-th>
-                                                  <vs-th>
-                                                    Department
-                                                  </vs-th>
-                                                  <vs-th>
-                                                    Company
-                                                  </vs-th>
-                                                  <vs-th>
-                                                    ราคา
-                                                  </vs-th>
-                                                  <vs-th>
-                                                    จัดการ
-                                                  </vs-th>
+                                                    <vs-th>
+                                                        วันที่
+                                                    </vs-th>
+                                                    <vs-th>
+                                                        Visit Number
+                                                    </vs-th>
+                                                    <vs-th>
+                                                        รายการแล็บ
+                                                    </vs-th>
+                                                    <vs-th>
+                                                        Department
+                                                    </vs-th>
+                                                    <vs-th>
+                                                        Company
+                                                    </vs-th>
+                                                    <vs-th>
+                                                        ราคา
+                                                    </vs-th>
+                                                    <vs-th>
+                                                        จัดการ
+                                                    </vs-th>
                                                 </template>
 
                                                 <template slot-scope="{data}">
-                                                    <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data" >
-                                                    <vs-td :data="data[indextr].CREATE">
-                                                      {{data[indextr].CREATE}}
-                                                    </vs-td>
-                                          
-                                                    <vs-td :data="data[indextr].BOOKINGID">
-                                                      {{data[indextr].BOOKINGID}}
-                                                    </vs-td>
-                                          
-                                                    <vs-td :data="data[indextr].PH1">
-                                                      {{data[indextr].PH1}}
-                                                    </vs-td>
-                                                    <vs-td :data="data[indextr].PH2">
-                                                      {{data[indextr].PH2}}
-                                                    </vs-td>
-                                                    <vs-td :data="data[indextr].PH3">
-                                                      {{data[indextr].PH3}}
-                                                    </vs-td>
-                                                    <vs-td :data="data[indextr].PH4">
-                                                      {{data[indextr].PH4}}
-                                                    </vs-td>
-                                                    <vs-td :data="data[indextr].LBID">
-                                                        <div class="centerx">
-                                                            <!-- <vs-tooltip color="primary" text="แก้ไข">
-                                                                <vs-button radius color="primary" type="border" icon="edit_note" @click="popupActive=true,action='update'"></vs-button>
-                                                            </vs-tooltip> -->
-                                                            <vs-tooltip color="primary" text="ลบ">
-                                                                <vs-button radius color="primary" type="border" icon="delete_forever" @click="openConfirm()"></vs-button>
-                                                            </vs-tooltip>
-                                                        </div>
-                                                    </vs-td>
-                                                  </vs-tr>
+                                                    <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                                                        <vs-td :data="data[indextr].CREATE">
+                                                            {{data[indextr].CREATE}}
+                                                        </vs-td>
+
+                                                        <vs-td :data="data[indextr].BOOKINGID">
+                                                            {{data[indextr].BOOKINGID}}
+                                                        </vs-td>
+
+                                                        <vs-td :data="data[indextr].PH1">
+                                                            {{data[indextr].PH1}}
+                                                        </vs-td>
+                                                        <vs-td :data="data[indextr].PH2">
+                                                            {{data[indextr].PH2}}
+                                                        </vs-td>
+                                                        <vs-td :data="data[indextr].PH3">
+                                                            {{data[indextr].PH3}}
+                                                        </vs-td>
+                                                        <vs-td :data="data[indextr].PH4">
+                                                            {{data[indextr].PH4}}
+                                                        </vs-td>
+                                                        <vs-td :data="data[indextr].LBID">
+                                                            <div class="centerx">
+                                                                <vs-tooltip text="ลบข้อมูล">
+                                                                    <vs-button color="rgba(112, 128, 144, 0.25)"
+                                                                        type="filled" icon="delete"
+                                                                        @click="openConfirm()"></vs-button>
+                                                                </vs-tooltip>
+                                                            </div>
+                                                        </vs-td>
+                                                    </vs-tr>
                                                 </template>
                                             </vs-table>
-                                            <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page"></vs-pagination>
+                                            <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page">
+                                            </vs-pagination>
                                         </div>
                                     </div>
                                 </div>
@@ -108,12 +122,44 @@
         </div>
     </div>
     <vs-popup class="holamundo" title="Lab Record" :active.sync="popupActive">
-        <div class="row">
+        <v-row>
+            <vs-table multiple :sst="true" @search="handleSearchItem" @sort="handleSortItem" v-model="selectedItem" :total="totalItemsPro" :max-items="perPageItem" search :data="recordDataItem">
+                <template slot="thead">
+                    <vs-th sort-key="tbsenddepartment.STESTNAME">
+                        Test Name
+                    </vs-th>
+                    <vs-th sort-key="tbdepartment.DepName">
+                        Department
+                    </vs-th>
+                    <vs-th sort-key="tblabscompany.LabCName">
+                        Company
+                    </vs-th>
+                    <vs-th sort-key="tbsenddepartment.Price">
+                        Price
+                    </vs-th>
+                </template>
 
-        </div>
-
-        <div class="row centex mt-3">
-            <vs-button type="relief" @click=save>บันทึกข้อมูล</vs-button>
+                <template slot-scope="{data}">
+                    <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                        <vs-td :data="data[indextr].STESTNAME">
+                            {{data[indextr].STESTNAME}}
+                        </vs-td>
+                        <vs-td :data="data[indextr].DepName">
+                            {{data[indextr].DepName}}
+                        </vs-td>
+                        <vs-td :data="data[indextr].LabCName">
+                            {{data[indextr].LabCName}}
+                        </vs-td>
+                        <vs-td :data="data[indextr].Price">
+                            {{data[indextr].Price}}
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
+            <vs-pagination class="mt-4" :total="paginationItem.last_page" v-model="pageItem"></vs-pagination>
+        </v-row>
+        <div class="centex mt-3">
+            <vs-button type="relief" @click=saveItem size="large">บันทึกข้อมูล</vs-button>
         </div>
     </vs-popup>
 </div>
@@ -156,14 +202,27 @@
                 sortType: '',
                 selected: [],
                 totalItems: 0,
-                record: [],
                 pagination: {
                     last_page: 0,
-                }
+                },
+                idItem: null,
+                pageItem: 1,
+                perPageItem: 10,
+                recordItem: [],
+                searchItem: '',
+                sortByItem: '',
+                sortTypeItem: '',
+                selectedItem: [],
+                totalItemsPro: 0,
+                recordDataItem: [],
+                paginationItem: {
+                    last_page: 0,
+                },
             }
         },
         mounted() {
             this.getData();
+            this.getDataItem();
         },
         watch: {
             page: function(val) {
@@ -171,12 +230,12 @@
                 this.page = val;
             },
             selected: function(val) {
-                this.id = val.LBID;
-                this.field.PH1 = val.PH1;
-                this.field.PH2 = val.PH2;
-                this.field.PH3 = val.PH3;
-                this.field.PH4 = val.PH4
+                this.id = val.LBID
             },
+            pageItem: function(val) {
+                this.getDataItem();
+                this.pageItem = val;
+            }
         },
         methods: {
             handleSearch(searching) {
@@ -187,6 +246,16 @@
                 this.sortBy = key;
                 this.sortType = active;
                 this.getData();
+            },
+            handleSearchItem(searching) {
+                this.searchItem = searching;
+                this.getDataItem();
+            },
+            handleSortItem(key, active) {
+                console.log(key);
+                this.sortByItem = key;
+                this.sortTypeItem = active;
+                this.getDataItem();
             },
             getData() {
                 axios.get("recordLab/getData", {
@@ -214,70 +283,61 @@
                     this.selected = [];
                 });
             },
-            save() {
-                if (this.action == "insert") {
-                    axios.post("recordLab/insert", {
-                        ph1: this.field.PH1,
-                        ph2: this.field.PH2,
-                        ph3: this.field.PH3,
-                        ph4: this.field.PH4,
-                        memberId: $('#id').val(),
-                        bookingId: $('#bookingId').val(),
-                    }).then((response) => {
-                        if (response.data.result) {
-                            this.$vs.notify({
-                                title: 'สำเร็จ',
-                                text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-                                color: "success",
-                                icon: 'check',
-                                position: ' top-right',
+            getDataItem() {
+                axios.get("recordLab/getLab", {
+                    params: {
+                        search: this.searchItem,
+                        sortBy: this.sortByItem,
+                        sortType: this.sortTypeItem,
+                        page: this.pageItem,
+                        perPage: this.perPageItem,
+                    }
+                }).then((response) => {
+                    let pageData = [];
+                    this.isTable = true;
 
-                            });
-                            this.popupActive = false;
-                            this.getData();
-                            this.selected = [];
-                        } else {
-                            this.$vs.notify({
-                                title: 'ผิดพลาด',
-                                text: 'กรุณาลองใหม่อีกครั้ง',
-                                color: "warning",
-                                icon: 'warning_amber',
-                                position: ' top-right',
-
-                            })
+                    if (response.data.result) {
+                        for (let i = 0; i < response.data.data.length; i++) {
+                            pageData = pageData.concat(response.data.data[i])
                         }
-                    });
-                } else if (this.action == "update") {
-                    axios.post("recordLab/update", {
-                        ph1: this.field.PH1,
-                        ph2: this.field.PH2,
-                        ph3: this.field.PH3,
-                        ph4: this.field.PH4,
-                        id: this.id,
-                    }).then((response) => {
-                        if (response.data.result) {
-                            this.$vs.notify({
-                                title: 'สำเร็จ',
-                                text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-                                color: "success",
-                                icon: 'check',
-                                position: ' top-right',
-                            });
-                            this.popupActive = false;
-                            this.getData();
-                            this.selected = [];
-                        } else {
-                            this.$vs.notify({
-                                title: 'ผิดพลาด',
-                                text: 'กรุณาลองใหม่อีกครั้ง',
-                                color: "warning",
-                                icon: 'warning_amber',
-                                position: ' top-right',
 
-                            })
-                        }
-                    });
-                }
+                        this.paginationItem.last_page = Math.ceil(parseInt(response.data.total) / this
+                            .perPage);
+                    } else {
+                        this.paginationItem.last_page = 0;
+                    }
+                    this.totalItemsPro = pageData.length;
+                    this.recordDataItem = pageData;
+                });
+            },
+            saveItem() {
+                axios.post("recordLab/insert", {
+                    member_id: $('#id').val(),
+                    booking_id: $('#bookingId').val(),
+                    data: this.selectedItem
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            title: 'สำเร็จ',
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: ' top-right',
+
+                        });
+                        this.getData();
+                        this.selectedItem = [];
+                        this.popupActive = false;
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
+                    }
+                });
             },
             openConfirm() {
                 this.$vs.dialog({
@@ -296,7 +356,7 @@
                 }).then((response) => {
                     if (response.data.result) {
                         this.$vs.notify({
-                            color: 'danger',
+                            color: 'success',
                             title: 'ลบข้อมูลสำเร็จ',
                             text: 'ทำการลบข้อมูลสำเร็จ',
                             icon: 'check',

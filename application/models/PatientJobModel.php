@@ -3,20 +3,29 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class PatientJobModel extends CI_Model{
 
-
-    public function getAllData(){
-        $query = $this->db->get('tbpatient_job');
+    public function getDataPerPage($memberId, $condition, $sort, $page, $perPage)
+    {
+          $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_job 
+            WHERE MEMBERIDCARD = '.$memberId.' '.$condition.' '.$sort.' 
+            LIMIT '.$page.','.$perPage
+        );
 
         if ($query->num_rows() > 0) {
             return $query->result();
-        }else{
+        } else {
             return array();
         }
     }
 
-    public function getDataById($id){
+    public function total($memberId, $condition){
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW FROM tbpatient_job 
+            WHERE MEMBERIDCARD = '.$memberId.' '.$condition 
+        );
 
-        $query = $this->db->query('SELECT * FROM tbpatient_job where JobID = "'.$id.'"');
         if ($query->num_rows() > 0) {
             return $query->row();
         } else {
@@ -24,25 +33,55 @@ class PatientJobModel extends CI_Model{
         }
     }
 
+    public function getDataByBookingId($bookingId)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_job 
+            WHERE BOOKINGID = "'.$bookingId.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function getDataById($id)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbpatient_job 
+            WHERE JobID = "'.$id.'"'
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return array();
+        }
+    }
+    
+
     public function insert($data){
-        $this->db->insert('tbpatient_job',$data);
+        $this->db->insert('tbpatient_job', $data);
+        
         return true;
     }
 
-    public function update($data,$id){
-        $this->db->where('JobID',$id);
-        $this->db->update('tbpatient_job',$data);
+    public function update($data, $id){
+        $this->db->where('JobID', $id);
+        $this->db->update('tbpatient_job', $data);
+
         return true;
     }
 
     public function delete($id){
-        $this->db->where('JobID',$id);
+        $this->db->where('JobID', $id);
         $this->db->delete('tbpatient_job');
+        
         return true;
     }
-
-    
-
 }
-
 ?>

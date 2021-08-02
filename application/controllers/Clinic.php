@@ -7,9 +7,6 @@ class Clinic extends CI_Controller {
         parent::__construct();
         $this->logged_in();
         $this->load->model('ClinicModel');
-//        $this->load->model('MembersModel');
-//        $this->load->model('BookingModel');
-//        $this->load->library('pagination');
         $this->load->library('S3_upload');
         $this->load->library('S3');
     }
@@ -29,9 +26,9 @@ class Clinic extends CI_Controller {
 
     public function data()
     {
-        $clicnic = $this->ClinicModel->getDetail($this->session->userdata('id'));
+        $clinic = $this->ClinicModel->getDetail($this->session->userdata('id'));
         header('Content-Type: application/json');
-        echo json_encode($clicnic);
+        echo json_encode($clinic);
     }
 
     public function update()
@@ -50,13 +47,6 @@ class Clinic extends CI_Controller {
             }
         }
 
-//        echo $image;
-//        exit();
-
-
-
-//        echo  $this->input->post('services');
-//        exit();
         $name = $this->input->post('name');
         $line = $this->input->post('line');
         $phone = $this->input->post('phone');
@@ -95,7 +85,5 @@ class Clinic extends CI_Controller {
         }else{
             echo json_encode(['result'=> false]);
         }
-
-
     }
 }

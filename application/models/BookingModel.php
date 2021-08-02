@@ -21,7 +21,7 @@ class BookingModel extends CI_Model
             SELECT * FROM tbbooking as booking
             INNER join tbmembers as member on member.MEMBERIDCARD = booking.MEMBERIDCARD OR member.IDCARD = booking.IDCARD
             where booking.CLINICID = "' . $clinicId . '" '.$condition.'
-            order by booking.BOOKDATE,booking.QBER ASC
+            
           '
         );
 

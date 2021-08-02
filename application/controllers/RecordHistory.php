@@ -19,9 +19,11 @@ class RecordHistory extends CI_Controller {
     public function index()
     {       
         $member = $this->MemberModel->getDataById($_GET['id']);
+        $bookingId = $_GET['booking_id'];
 
         $data = [
-            'member' => $member
+            'member' => $member,
+            'bookingId' => $bookingId
         ];
 
         $this->load->view('template/header');

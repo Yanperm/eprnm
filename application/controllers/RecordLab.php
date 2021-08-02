@@ -69,21 +69,60 @@ class RecordLab extends CI_Controller {
         }
     }
 
+    public function getLab()
+    {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
+        $condition = '';
+        $sort = '';
+
+        if (!empty($this->input->get('search'))) {
+            $search = $this->input->get('search');
+            $condition .= '  (tbsenddepartment.STESTNAME like "%'.$search.'%"';
+            $condition .= ' OR tbsenddepartment.PriceSale like "%'.$search.'%"';
+            $condition .= ' OR tbdepartment.DepName like "%'.$search.'%"';
+            $condition .= ' OR tblabscompany.LabCName like "%'.$search.'%")';
+        }
+
+        $recordLab = $this->RecordLabModel->getDataLab($this->session->userdata('id'), $condition, $sortBy, $sortType, $page, $perPage);
+        $total = $this->RecordLabModel->totalLab($this->session->userdata('id'), $condition);
+
+        header('Content-Type: application/json');
+
+        if ($recordLab) {
+            echo json_encode([
+                'result'=> true,
+                'data' => $recordLab,
+                'total' => $total->NUM_OF_ROW
+            ]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
     public function insert(){
         $_POST = json_decode(file_get_contents("php://input"),true);
-      
-        $data = [
-            'LBID' => 'LB'.time(),
-            'MEMBERIDCARD' => $_POST["memberId"],
-            'BOOKINGID' => $_POST["bookingId"],
-            'PH1' => $_POST["ph1"],
-            'PH2' => $_POST["ph2"],
-            'PH3' => $_POST["ph3"],
-            'PH4' => $_POST["ph4"],
-            'CREATE' => date('Y-m-d H:i:s'),
-        ];
+        $memberId = $_POST["member_id"];
+        $bookingId = $_POST["booking_id"];
+        $dataLab = $_POST["data"];
 
-        $result = $this->RecordLabModel->insert($data);
+        for ($i = 0;$i < sizeof($dataLab);$i++) {
+            $data = [
+                'LBID' => 'LB'.$i.time(),
+                'MEMBERIDCARD' => $memberId,
+                'PH1' => $dataLab[$i]['STESTNAME'],
+                'PH2' => $dataLab[$i]['DepName'],
+                'PH3' => $dataLab[$i]['LabCName'],
+                'PH4' => $dataLab[$i]['Price'],
+                'BOOKINGID' => $bookingId,
+                'CREATE' => date('Y-m-d H:i:s'),
+            ];
+
+            $result = $this->RecordLabModel->insert($data);
+        }
 
         if($result){
             echo json_encode(['result'=> true]);
