@@ -462,7 +462,7 @@
 
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-chart"></i><span>รายงาน</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url();?>">รายงานยอดขาย</a>
+                                        <li><a href="<?php echo base_url('reportSell');?>">รายงานยอดขาย</a>
                                         </li>
 
                                         <!--
@@ -512,7 +512,7 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('clinic')?>">จัดการข้อมูลคลินิก</a>
                                         </li>
-                                        <li><a href="<?php echo base_url();?>">ผู้ใช้งานระบบ</a>
+                                        <li><a href="<?php echo base_url('showUser');?>">ผู้ใช้งานระบบ</a>
                                         </li>
                                         <!--<li><a href="email-compose.html">Email Compose</a>
                                     </li>-->
@@ -521,7 +521,7 @@
                                 <li class="parent"><a href="#"><i
                                             class="icon mdi mdi-calendar-alt"></i><span>วันและเวลา</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('close');?>">จัดการเวลาเปิดปิด</a>
+                                        <li><a href="<?php echo base_url('time');?>">จัดการเวลาเปิดปิด</a>
                                         </li>
                                         <li><a href="<?php echo base_url('rest-day');?>">วันหยุดคลินิก</a>
                                         </li>
@@ -577,6 +577,20 @@
                                             class="icon mdi-calendar-check"></i><span>จัดการคิวเต็ม</span></a>
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('queueClode');?>">จัดการคิวเต็ม</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="parent"><a href="#"><i class="icon mdi mdi-check"></i><span>จัดการ SEO</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('seoClinic');?>">จัดการ SEO</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="parent"><a href="#"><i class=""></i><span>Like</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('likeClinic');?>">Like</a>
                                         </li>
                                     </ul>
                                 </li>

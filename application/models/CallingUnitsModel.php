@@ -1,25 +1,20 @@
-<?php 
+<?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class FregquencyModel extends CI_Model{
+class CallingUnitsModel extends CI_Model{
 
-    public function getAllData(){
+    public function getDataAll(){
+        $query = $this->db->get('tbcallingunits');
 
-        $this->db->order_by('id', 'ASC');
-        $query =  $this->db->get('tbFregquency');
-
-        if ($query->num_rows() > 0) {
-
+        if($query->num_rows()>0){
             return $query->result();
         }else{
             return array();
         }
-
-
     }
 
     public function getDataByID($id){
-        $query = $this->db->query('SELECT * FROM tbfregquency where id = "'.$id.'"');
+        $query = $this->db->query('SELECT * FROM tbcallingunits WHERE id = "'.$id.'" ');
 
         if($query->num_rows()>0){
             return $query->row();
@@ -29,20 +24,22 @@ class FregquencyModel extends CI_Model{
     }
 
     public function insert($data){
-        $this->db->insert('tbfregquency',$data);
+        $this->db->insert('tbcallingunits',$data);
         return true;
     }
 
     public function update($data,$id){
         $this->db->where('id',$id);
-        $this->db->update('tbfregquency',$data);
+        $this->db->update('tbcallingunits',$data);
         return true;
     }
 
     public function delete($id){
         $this->db->where('id',$id);
-        $this->db->delete('tbfregquency');
+        $this->db->delete('tbcallingunits');
         return true;
     }
 }
+
+
 ?>
