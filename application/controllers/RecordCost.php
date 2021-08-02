@@ -81,19 +81,19 @@ class RecordCost extends CI_Controller {
             $pdf->setPrintHeader(false);
             $pdf->setPrintFooter(false);
             $pdf->SetAutoPageBreak(TRUE, 0);
-            $pdf->SetMargins(5, 5, 5);
+            $pdf->SetMargins(0, 0, 0);
             $pdf->SetHeaderMargin(0);
-            $pdf->SetTopMargin(5);
+            $pdf->SetTopMargin(1);
             $pdf->SetFooterMargin(0);
             $pdf->SetFont($font, '', 10);
             // Add a page
             $width = $pdf->pixelsToUnits(283); 
             $height = $pdf->pixelsToUnits(212);
-            $resolution= array(150, 80);
+            $resolution= array(50, 150);
             $pdf->AddPage('P', $resolution, true, 'UTF-8', false);
         
-           // $html = '<img src="'.base_url().'assets/img/nutmor_logo02.png" width="20px" height="15px">';
-            $html = '<span style="text-align:center"><b>'.$clinic->CLINICNAME."</b></span>";
+            $html = '<p><img  style="text-align:center" src="'.base_url().'assets/img/nutmor_logo02.png" width="40px" height="35px"></p>';
+            $html .= '<br><span style="text-align:center"><b>'.$clinic->CLINICNAME."</b></span>";
             $html .= "<br>".'<span style="text-align:center">'.$clinic->ADDRESS.'</span>';
             $html .= "<br>".'<span style="text-align:right">Tel : '.$clinic->PHONE.'</span>';
             $html .= "<br>".'<span style="text-align:left">ต้นฉบับใบเสร็จรับเงิน</span>';
@@ -103,10 +103,10 @@ class RecordCost extends CI_Controller {
             $html .= "<hr>";
             $i = 0;
             $total = 0;
-            $html .= '<table style="width:92%">';
+            $html .= '<table style="width:135px">';
             if(!empty($diagnose)){
                 $i ++;
-                $html .= '<tr ><td style="width:60%"><b>'.$i.".Diagnose</b></td><td></td></tr>";
+                $html .= '<tr ><td ><b>'.$i.".Diagnose</b></td><td></td></tr>";
                 foreach($diagnose as $item){
                     $total += $item->PH5;
                     $html .= '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$item->PH3.'</td><td style="text-align:right">'.number_format($item->PH5, 2)."</td></tr>";
@@ -122,7 +122,7 @@ class RecordCost extends CI_Controller {
             }
             if(!empty($lab)){
                 $i ++;
-                $html .= '<tr><td><b>'.$i.".Laboratory</b></td><td></td></tr>";
+                $html .= '<tr><td ><b>'.$i.".Laboratory</b></td><td></td></tr>";
                 foreach($lab as $item){
                     $total += $item->PH4;
                     $html .= '<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$item->PH1.'</td><td style="text-align:right">'.number_format($item->PH4, 2)."</td></tr>";
@@ -138,7 +138,7 @@ class RecordCost extends CI_Controller {
             }
             if(!empty($certificateJob) || !empty($certificateSick)){
                 $i ++;
-                $html .= '<tr><td><b>'.$i.".Certificate</b></td><td></td></tr>";
+                $html .= '<tr ><td><b>'.$i.".Certificate</b></td><td></td></tr>";
                 if(!empty($certificateJob)){
                     foreach($certificateJob as $item){
                         $total += $item->Price;
