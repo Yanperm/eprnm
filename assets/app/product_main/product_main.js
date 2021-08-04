@@ -2,6 +2,11 @@ const app = new Vue({
     el: '#vue-root',
     data() {
         return {
+            optionTypeSearch: [
+                { text: 'รหัสกลุ่มยาหลัก', value: 1 },
+                { text: 'ชื่อกลุ่มยาหลัก', value: 2 },
+            ],
+            typeSearch: 1,
             popupActive: false,
             action: null,
             field: {
@@ -38,6 +43,9 @@ const app = new Vue({
             this.field.CategoryIDs = val.CategoryIDs;
             this.field.CategoryName = val.CategoryName;
         },
+        typeSearch: function(val) {
+            this.makePageData();
+        },
     },
     mounted() {
         this.record = this.makePageData();
@@ -52,7 +60,7 @@ const app = new Vue({
             axios.get("productMain/getProductMain", {
                 params: {
                     search: this.search,
-                    type: this.conditionType,
+                    type: this.typeSearch,
                     sortBy: this.sortBy,
                     sortType: this.sortType,
                     page: this.page,
