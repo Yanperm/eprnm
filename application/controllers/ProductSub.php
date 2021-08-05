@@ -33,9 +33,43 @@ class ProductSub extends CI_Controller {
         $this->load->view('template/footer', ['js' => $js]);
     }
 
-	public function getProductSub()
+	// public function getProductSub()
+    // {
+    //     $condition = '';
+    //     if (!empty($this->input->get('search'))) {
+    //         $search = $this->input->get('search');
+    //         if ($this->input->get('type') == '1') {
+    //             $condition .= ' AND sub.SubIDs like "%'.$search.'%"';
+    //         }
+    //         if ($this->input->get('type') == '2') {
+    //             $condition .= ' AND sub.SubName like "%'.$search.'%"';
+    //         }
+
+    //         if ($this->input->get('type') == '3') {
+    //             $condition .= ' AND main.CategoryName like "%'.$search.'%"';
+    //         }
+    //     }
+
+    //     $queue = $this->ProductSubModel->getDataPerpage($this->session->userdata('id'), $condition);
+    //     header('Content-Type: application/json');
+
+    //     if ($queue) {
+    //         echo json_encode(['result'=> true,'data' => $queue]);
+    //     } else {
+    //         echo json_encode(['result'=> false]);
+    //     }
+    // }
+
+    public function getProductSub()
     {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
@@ -44,17 +78,26 @@ class ProductSub extends CI_Controller {
             if ($this->input->get('type') == '2') {
                 $condition .= ' AND sub.SubName like "%'.$search.'%"';
             }
-
             if ($this->input->get('type') == '3') {
                 $condition .= ' AND main.CategoryName like "%'.$search.'%"';
             }
         }
 
-        $queue = $this->ProductSubModel->getDataPerpage($this->session->userdata('id'), $condition);
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY "sub.'.$sortBy.'" '.$sortType;
+        }
+
+        $productSub = $this->ProductSubModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->ProductSubModel->total($this->session->userdata('id'), $condition);
+       
         header('Content-Type: application/json');
 
-        if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+        if ($productSub) {
+            echo json_encode([
+                'result'=> true,
+                'data' => $productSub,
+                'total' => $total->NUM_OF_ROW
+                ]);
         } else {
             echo json_encode(['result'=> false]);
         }
@@ -100,7 +143,7 @@ class ProductSub extends CI_Controller {
         $_POST = json_decode(file_get_contents("php://input"),true);
         $code = $_POST["code"];
         $name = $_POST["name"];
-        $mainId = $_POST["mainId"];
+        $mainId = $_POST["category"];
       
         $data = [
             'SubID' => time(),
@@ -122,12 +165,10 @@ class ProductSub extends CI_Controller {
     public function update(){
         $_POST = json_decode(file_get_contents("php://input"),true);
         $id = $_POST["id"];
-        $code = $_POST["code"];
         $name = $_POST["name"];
-        $mainId = $_POST["mainId"];
+        $mainId = $_POST["category"];
       
         $data = [
-            'SubIDs' => $code,
             'SubName' => $name,
             'CategoryID' => $mainId
         ];
