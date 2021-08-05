@@ -46,9 +46,23 @@ class ReportSell extends CI_Controller{
 
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
-            $condition .= ' AND tbincome.ci_name like "%'.$search.'%"';
-           // $condition .= ' AND tbincome.ci_date like "%'.$search.'%"';
+            $condition .= ' AND tbincome.ci_name like "%'.$search.'%" OR tbincome.ci_drug like "%'.$search.'%" OR tbincome.ci_lab like "%'.$search.'%" 
+            OR tbincome.ci_procedure like "%'.$search.'%" OR tbincome.ci_certificate like "%'.$search.'%" ';
         }
+        
+        $startDate = $this->input->get('startDate');
+        $endDate = $this->input->get('endDate');
+
+        if ($startDate != "") {
+           $condition .= " AND tbincome.ci_date >= '".$startDate."' AND tbincome.ci_date <='".$endDate."' ";
+
+        }
+
+        // if (!empty($this->input->get('endDate'))) {
+        //     $startDate = $this->input->get('startDate');
+        //     $endDate = $this->input->get('endDate');
+        //    $condition .= ' AND tbincome.ci_date like "%'.$endDate.'%" ';
+        // }
 
         if (!empty($this->input->get('sortBy'))) {
             $sort .= 'ORDER BY "tbincome.'.$sortBy.'" '.$sortType;

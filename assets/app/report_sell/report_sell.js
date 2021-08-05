@@ -2,16 +2,13 @@ const app = new Vue({
     el: '#vue-root',
     data() {
         return {
-            // popupActive: false,
-            // action: null,
-            // field: {
-                
-            //     CUSTOMERNAME : null, 
-            // },
+            startDate: "",
+            endDate: "",
             id: null,
             page: 1,
             perPage: 10,
             record: [],
+            date:'',
             search: '',
             sortBy: '',
             sortType: '',
@@ -33,6 +30,12 @@ const app = new Vue({
         search: function(val) {
             this.makePageData();
         },
+        startDate: function(val) {
+            this.makePageData();
+        },
+        endDate: function(val) {
+            this.makePageData();
+        },
         selected: function(val) {
             //this.id = val.ci_id;
             // this.field.ci_order = val.ci_order;
@@ -49,6 +52,9 @@ const app = new Vue({
         this.record = this.makePageData();
     },
     methods: {
+        print(){
+            window.open('http://localhost/eprnm/recordSell/print?search='+this.search+"&start="+this.startDate+"&end="+this.endDate, '_blank');
+        },
         handleSort(key, active) {
             this.sortBy = key;
             this.sortType = active;
@@ -58,6 +64,8 @@ const app = new Vue({
             axios.get("reportSell/getReport", {
                 params: {
                     search: this.search,
+                    startDate: this.startDate,
+                    endDate: this.endDate,
                     sortBy: this.sortBy,
                     sortType: this.sortType,
                     page: this.page,

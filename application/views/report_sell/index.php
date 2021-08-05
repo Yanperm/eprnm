@@ -13,7 +13,7 @@
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหา</span>
+                        <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหาชื่อคนไข้</span>
                             <div class="filter-container">
                                 <form>
                                     <!-- <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label> -->
@@ -21,8 +21,37 @@
                                 </form>
                             </div>
                         </div>
+                        <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4"><span class="table-filter-title">วันที่ - วันที่</span>
+                            <div class="filter-container">
+                                <form>
+                                    <at-input v-model="startDate" size="large" type="date"  placeholder="yyyy-mm-dd" ></at-input>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4"><span class="table-filter-title"></span>
+                            <div class="filter-container">
+                                <form>
+                                    <br>
+                                    <at-input v-model="endDate" size="large" type="date"  placeholder="yyyy-mm-dd" ></at-input>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div> 
+
+                <div class="col-12 col-lg-12 col-xl-6">
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
+                            <v-row vs-justify="right">
+                                <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
+                                    <!-- <vs-button type="filled" icon="add_circle_outline" to="recordCost/receipt">รายงาน</vs-button> -->
+                                    <a href="#" class="btn btn-primary" @click="print">พิมพ์</a>
+
+                                </vs-col>
+                            </v-row>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="noSwipe">
