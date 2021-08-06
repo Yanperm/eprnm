@@ -52,6 +52,23 @@ class RecordMedicalModel extends CI_Model
         }
     }
 
+    public function getDataByMedicalId($id)
+    {
+        $query = $this->db->query(
+            '
+            SELECT *,medical.CREATE as DATE_MEDICAL FROM tbpatient_medical as medical
+            left join tbmembers as member on member.MEMBERIDCARD = medical.MEMBERIDCARD
+            left join tbclinic as clinic on clinic.IDCLINIC = medical.CLINICID
+            WHERE medical.MEDICALID = "'.$id.'"' 
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function getDataByBookingId($bookingId)
     {
       

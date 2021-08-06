@@ -1,20 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class RecordMedical extends CI_Controller {
+class RecordDrug extends CI_Controller {
     public function __construct()
     {
         parent::__construct();
         $this->logged_in();
 
         $this->load->model('MemberModel');
-        $this->load->model('PatientHistoryModel');
         $this->load->model('RecordMedicalModel');
-        $this->load->model('CountUnitModel');
-        $this->load->model('CallingUnitModel');
-        $this->load->model('FregquencyModel');
-        $this->load->model('SuggestionModel');
-        $this->load->model('MealModel');
     }
     private function logged_in()
     {
@@ -24,7 +18,7 @@ class RecordMedical extends CI_Controller {
     }
 
     public function index()
-    {       
+    {
         $member = $this->MemberModel->getDataById($_GET['id']);
 
         $data = [
@@ -34,10 +28,9 @@ class RecordMedical extends CI_Controller {
 
         $this->load->view('template/header');
         $this->load->view('template/record', $data);
-        $this->load->view('record_medical/index', $data);
+        $this->load->view('record_drug/index', $data);
         $this->load->view('template/footer');
     }
-
     public function getRecord()
     {
         $sortBy = $this->input->get('sortBy');
@@ -79,99 +72,9 @@ class RecordMedical extends CI_Controller {
             echo json_encode(['result'=> false]);
         }
     }
-
-    public function getProduct()
-    {
-        $sortBy = $this->input->get('sortBy');
-        $sortType = $this->input->get('sortType');
-        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
-        $perPage = $this->input->get('perPage');
-
-        $condition = '';
-        $sort = '';
-
-        if (!empty($this->input->get('search'))) {
-            $search = $this->input->get('search');
-            $condition .= '  (tbproducts.ProID like "%'.$search.'%"';
-            $condition .= ' OR tbproducts.CommonName like "%'.$search.'%"';
-            $condition .= ' OR tbproducts.BrandName like "%'.$search.'%"';
-            $condition .= ' OR tbproducts.Barcode like "%'.$search.'%"';
-            $condition .= ' OR tbsubcategory.SubName like "%'.$search.'%"';
-            $condition .= ' OR tbproductcategory.CategoryName like "%'.$search.'%")';
-        }
-
-        $recordProduct = $this->RecordMedicalModel->getDataProduct($this->session->userdata('id'), $condition, $sortBy, $sortType, $page, $perPage);
-        $total = $this->RecordMedicalModel->totalProduct($this->session->userdata('id'), $condition);
-
-        header('Content-Type: application/json');
-
-        if ($recordProduct) {
-            echo json_encode([
-                'result'=> true,
-                'data' => $recordProduct,
-                'total' => $total->NUM_OF_ROW
-            ]);
-        } else {
-            echo json_encode(['result'=> false]);
-        }
-    }
-
-    public function insert(){
-        $_POST = json_decode(file_get_contents("php://input"),true);
-        $memberId = $_POST["member_id"];
-        $ph1 = $_POST["ph1"];
-        $ph2 = $_POST["ph2"];
-        $ph3 = $_POST["ph3"];
-        $ph4 = $_POST["ph4"];
-        $ph5 = $_POST["ph5"];
-        $ph6 = $_POST["ph6"];
-        $ph7 = $_POST["ph7"];
-        $ph8 = $_POST["ph8"];
-        $ph9 = $_POST["ph9"];
-        $pregCat = $_POST["pregCat"];
-        $comment = $_POST["comment"];
-        $duration = $_POST["duration"];
-        $number = $_POST["number"];
-        $unit = $_POST["unit"];
-        $barcode = $_POST["barcode"];
-        $bookingId = $_POST["booking_id"];
-      
-        $data = [
-            'MEDICALID' => "MI".time(),
-            'MEMBERIDCARD' => $memberId,
-            'PH1' => $ph1,
-            'PH2' => $ph2,
-            'PH3' => $ph3,
-            'PH4' => $ph4,
-            'PH5' => $ph5,
-            'PH6' => $ph6,
-            'PH7' => $ph7,
-            'PH8' => $ph8,
-            'PH9' => $ph9,
-            'PregCat' => $pregCat,
-            'COMMENT' => $comment,
-            'Duration' => $duration,
-            'Number' => $number,
-            'Unit' => $unit,
-            'Barcode' => $barcode,
-            'Status' => 1,
-            'BOOKINGID' => $bookingId,
-            'CREATE' => date('Y-m-d'),
-            'CLINICID' => $this->session->userdata('id'),
-        ];
-
-        $result = $this->RecordMedicalModel->insert($data);
-
-        if($result){
-            echo json_encode(['result'=> true]);
-        }else{
-            echo json_encode(['result'=> false]);
-        }
-    }
-
     public function sticker()
     {
-        $recordMedical = $this->RecordMedicalModel->getDataById($_GET['id']);
+        $recordMedical = $this->RecordMedicalModel->getDataByMedicalId($_GET['id']);
       
         if($recordMedical){
             $this->load->library('Pdf');
@@ -188,6 +91,7 @@ class RecordMedical extends CI_Controller {
             $pdf->SetSubject("ฉลากยา");
             $pdf->setPrintHeader(false);
             $pdf->setPrintFooter(false);
+            $pdf->SetAutoPageBreak(TRUE, 0);
             $pdf->SetMargins(0, 0, 0);
             $pdf->SetHeaderMargin(0);
             $pdf->SetTopMargin(0);
