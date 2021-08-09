@@ -13,7 +13,7 @@
         <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหา Link Youtube</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหาชื่อ</span>
                             <div class="filter-container">
                                 <form>
                                     <!-- <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label> -->
