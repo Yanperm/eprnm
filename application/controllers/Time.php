@@ -27,6 +27,8 @@ class Time extends CI_Controller {
             base_url() . 'assets/app/time_clinic/time_clinic.js?v=' . time(),
         ];
 
+        
+
         $this->load->view('template/header', ['css' => $css]);
         $this->load->view('time_clinic/index');
         $this->load->view('template/footer', ['js' => $js]);
@@ -47,41 +49,41 @@ class Time extends CI_Controller {
         }
     }
 
-    // public function getTimeClinic()
-    // {
-    //     $sortBy = $this->input->get('sortBy');
-    //     $sortType = $this->input->get('sortType');
-    //     $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
-    //     $perPage = $this->input->get('perPage');
+    public function getDateClinic()
+    {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
 
-    //     $condition = '';
-    //     $sort = '';
+        $condition = '';
+        $sort = '';
 
-    //     // if (!empty($this->input->get('search'))) {
-    //     //     $search = $this->input->get('search');
-    //     //     $condition .= ' AND tbclinic.SEO_TITLE like "%'.$search.'%"';
+        // if (!empty($this->input->get('search'))) {
+        //     $search = $this->input->get('search');
+        //     $condition .= ' AND tbclinic.SEO_TITLE like "%'.$search.'%"';
             
-    //     // }
+        // }
 
-    //     // if (!empty($this->input->get('sortBy'))) {
-    //     //     $sort .= 'ORDER BY "tbclinic.'.$sortBy.'" '.$sortType;
-    //     // }
+        // if (!empty($this->input->get('sortBy'))) {
+        //     $sort .= 'ORDER BY "tbclinic.'.$sortBy.'" '.$sortType;
+        // }
 
-    //     $timeclinic = $this->TimeModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
-    //     $total = $this->TimeModel->total($this->session->userdata('id'), $condition);
+        $date = $this->TimeModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->TimeModel->total($this->session->userdata('id'), $condition);
        
-    //     header('Content-Type: application/json');
+        header('Content-Type: application/json');
 
-    //     if ($timeclinic) {
-    //         echo json_encode([
-    //             'result'=> true,
-    //             'main' => $timeclinic,
-    //             'total' => $total->NUM_OF_ROW
-    //             ]);
-    //     } else {
-    //         echo json_encode(['result'=> false]);
-    //     }
-    // }
+        if ($date) {
+            echo json_encode([
+                'result'=> true,
+                'date' => $date,
+                'total' => $total->NUM_OF_ROW
+                ]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
 
     public function update(){
         $_POST = json_decode(file_get_contents("php://input"),true);
@@ -128,6 +130,42 @@ class Time extends CI_Controller {
     }
 
 
+    public function insert(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $open = $_POST["open"];
+        $close = $_POST["close"];
+        $date = $_POST["date"];
+        
+      
+        $data = [
+            'id' => time(),
+            'time_open' => $open,
+            'time_close' =>$close,
+            'CLINICID' => $this->session->userdata('id'),
+            'date' => $date,
+        ];
+
+        $result = $this->TimeModel->insert($data);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function delete(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+        $ID = $_POST["ID"];
+        
+        $result = $this->TimeModel->delete($ID);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
 
 
 }
