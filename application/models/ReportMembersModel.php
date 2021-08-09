@@ -1,16 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ReportSellModel extends CI_Model{
+class ReportMembersModel extends CI_Model{
 
     
     public function getReport($clinicId, $condition, $sort, $page, $perPage){
         $query = $this->db->query(
             '
-            SELECT tbincome.* 
-            FROM tbincome
-            JOIN tbmembers ON tbmembers.IDCARD =  tbincome.IDCARD
-            WHERE tbincome.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
+            SELECT tbbooking.*,tbmembers.CUSTOMERNAME
+            FROM tbbooking
+            JOIN tbmembers ON tbmembers.IDCARD =  tbbooking.IDCARD
+            WHERE tbbooking.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
             LIMIT '.$page.','.$perPage
            
         );
@@ -27,10 +27,10 @@ class ReportSellModel extends CI_Model{
       
         $query = $this->db->query(
             '
-            SELECT tbincome.* 
-            FROM tbincome
-            JOIN tbmembers ON tbmembers.IDCARD =  tbincome.IDCARD
-            WHERE tbincome.CLINICID = "' . $clinicId . '" '.$condition
+            SELECT tbbooking.*,tbmembers.CUSTOMERNAME
+            FROM tbbooking
+            JOIN tbmembers ON tbmembers.IDCARD =  tbbooking.IDCARD
+            WHERE tbbooking.CLINICID = "' . $clinicId . '" '.$condition
             
            
         );
@@ -42,13 +42,14 @@ class ReportSellModel extends CI_Model{
         }
     }
 
-
     public function total($clinicId, $condition){
        
         $query = $this->db->query(
             '
-            SELECT COUNT(*) AS NUM_OF_ROW FROM tbincome 
-            WHERE CLINICID = "' . $clinicId . '" '.$condition
+            SELECT COUNT(*) AS NUM_OF_ROW
+            FROM tbbooking 
+            JOIN tbmembers ON tbmembers.IDCARD =  tbbooking.IDCARD
+            WHERE tbbooking.CLINICID = "' . $clinicId . '" '.$condition
         );
 
         if ($query->num_rows() > 0) {

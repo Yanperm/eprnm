@@ -78,7 +78,7 @@
 
     <vs-popup class="holamundo" title="จัดการคิวเต็ม" :active.sync="popupActive">
         <v-row>
-            <vs-input label-placeholder="วันที่คิวเต็ม" type="text" v-model="field.CLOSEDATE" size="large" />
+            <vs-input label-placeholder="วันที่คิวเต็ม" type="date" v-model="field.CLOSEDATE" size="large" />
         </v-row>
         <div class="centex mt-3">
             <vs-button type="relief" @click=save size="large">บันทึกข้อมูล</vs-button>

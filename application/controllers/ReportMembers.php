@@ -1,14 +1,14 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ReportSell extends CI_Controller{
+class ReportMembers extends CI_Controller{
 
     public function __construct()
     {
         parent:: __construct();
         $this->logged_in();
 
-        $this->load->model('ReportSellModel');
+        $this->load->model('ReportMembersModel');
     }
 
     private function logged_in()
@@ -25,11 +25,11 @@ class ReportSell extends CI_Controller{
         ];
 
         $js = [
-            base_url() . 'assets/app/report_sell/report_sell.js?v=' . time(),
+           // base_url() . 'assets/app/report_sell/report_sell.js?v=' . time(),
         ];
 
         $this->load->view('template/header', ['css' => $css]);
-        $this->load->view('report_sell/index');
+        $this->load->view('report_members/index');
         $this->load->view('template/footer', ['js' => $js]);
     }
 
@@ -46,30 +46,25 @@ class ReportSell extends CI_Controller{
 
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
-            $condition .= ' AND tbincome.ci_name like "%'.$search.'%" OR tbincome.ci_drug like "%'.$search.'%" OR tbincome.ci_lab like "%'.$search.'%" 
-            OR tbincome.ci_procedure like "%'.$search.'%" OR tbincome.ci_certificate like "%'.$search.'%" ';
+            $condition .= ' AND tbmembers.CUSTOMERNAME like "%'.$search.'%"  ';
         }
+
         
         $startDate = $this->input->get('startDate');
         $endDate = $this->input->get('endDate');
 
         if ($startDate != "") {
-           $condition .= " AND tbincome.ci_date >= '".$startDate."' AND tbincome.ci_date <='".$endDate."' ";
+           $condition .= " AND tbbooking.BOOKDATE >= '".$startDate."' AND tbbooking.BOOKDATE <='".$endDate."' ";
 
         }
-
-        // if (!empty($this->input->get('endDate'))) {
-        //     $startDate = $this->input->get('startDate');
-        //     $endDate = $this->input->get('endDate');
-        //    $condition .= ' AND tbincome.ci_date like "%'.$endDate.'%" ';
-        // }
 
         if (!empty($this->input->get('sortBy'))) {
-            $sort .= 'ORDER BY "tbincome.'.$sortBy.'" '.$sortType;
+            $sort .= 'ORDER BY "tbbooking.'.$sortBy.'" '.$sortType;
         }
 
-        $getreport = $this->ReportSellModel->getReport($this->session->userdata('id'), $condition, $sort, $page, $perPage);
-        $total = $this->ReportSellModel->total($this->session->userdata('id'), $condition);
+
+        $getreport = $this->ReportMembersModel->getReport($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->ReportMembersModel->total($this->session->userdata('id'), $condition);
        
         header('Content-Type: application/json');
 

@@ -19,8 +19,13 @@ const app = new Vue({
                 closeFri : null,
                 openSat : null,
                 closeSat : null,
+
+                date : null,
+                open : null,
+                close : null,
             },
             id: null,
+            ID: null,
             page: 1,
             perPage: 10,
             record: [],
@@ -38,9 +43,26 @@ const app = new Vue({
 
         }
     },
+
+    watch: {
+        page: function(val) {
+            this.page = val;
+            this.makePageData2();
+        },
+        search: function(val) {
+            this.makePageData2();
+        },
+        selected: function(val) {
+            this.ID = val.id;
+            this.field.open = val.open;
+            this.field.close = val.close;
+            this.field.date = val.data;
+        },
+    },
    
     mounted() {
         this.record = this.makePageData();
+        this.record = this.makePageData2();
         this.getDay();
     },
     methods: {
@@ -48,6 +70,7 @@ const app = new Vue({
             this.sortBy = key;
             this.sortType = active;
             this.makePageData();
+            this.makePageData2();
         },
         getDay(){
             axios.get("time/getDay").then((response) => {
@@ -82,20 +105,44 @@ const app = new Vue({
 
                 if (response.data.result) {
                     for (let i = 0; i < response.data.day.length; i++) {
-                        pageData = pageData.concat(response.data.main[i])
+                        //pageData = pageData.concat(response.data.day[i])
                     }
 
-                   // this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                  // this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
                 } //else {
-                //     this.pagination.last_page = 0;
-                // }
-                // this.totalItems = pageData.length;
-                // this.recordData = pageData;
+                //      this.pagination.last_page = 0;
+                //  }
+                //  this.totalItems = pageData.length;
+                //  this.recordData = pageData;
+            });
+        },
+        makePageData2() {
+            axios.get("time/getDateClinic", {
+                params: {
+                    search: this.search,
+                    sortBy: this.sortBy,
+                    sortType: this.sortType,
+                    page: this.page,
+                    perPage: this.perPage,
+                }
+            }).then((response) => {
+                let pageData2 = [];
+                this.isTable = true;
+
+                if (response.data.result) {
+                    for (let i = 0; i < response.data.date.length; i++) {
+                        pageData2 = pageData2.concat(response.data.date[i])
+                    }
+
+                   this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } else {
+                     this.pagination.last_page = 0;
+                 }
+                 this.totalItems = pageData2.length;
+                 this.recordData = pageData2;
             });
         },
         save() {
-
-            //if (this.action == 'update') {
                 axios.post("time/update", {
                     openSunday: this.field.openSunday,
                     closeSunday: this.field.closeSunday,
@@ -132,7 +179,75 @@ const app = new Vue({
                         })
                     }
                 });
-           // }
         },
+        insert() {
+            window.location.reload()
+                axios.post("time/insert", {
+                    
+                    open: this.field.open,
+                    close: this.field.close,
+                    date: this.field.date,
+
+
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            title: 'สำเร็จ',
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: 'top-right',
+
+                        });
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: 'top-right',
+                        })
+                    }
+                });
+        },
+        acceptAlert() {
+            window.location.reload()
+            axios.post("time/delete", {
+                ID: this.ID,
+            }).then((response) => {
+                if (response.data.result) {
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
+                    });
+                    this.makePageData();
+                    this.selected = [];
+                } else {
+                    this.$vs.notify({
+                        title: 'ผิดพลาด',
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+
+                    })
+                }
+            });
+        },
+        openConfirm() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
+        },
+        
     }
 });

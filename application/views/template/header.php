@@ -464,6 +464,7 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('reportSell');?>">รายงานยอดขาย</a>
                                         </li>
+                                        <li><a href="<?php echo base_url('reportMembers');?>">รายงานยอดคนไข้</a></li>
 
                                         <!--
                                      <li><a href="pages-blank-header.html">Blank Page Header</a>
