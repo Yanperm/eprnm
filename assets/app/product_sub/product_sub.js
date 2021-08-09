@@ -3,231 +3,213 @@ const app = new Vue({
     data() {
 
         return {
-            isTable: false,
-            idSelect: null,
+            optionTypeSearch: [
+                { text: 'รหัสกลุ่มยารอง', value: 1 },
+                { text: 'ชื่อกลุ่มยารอง', value: 2 },
+                { text: 'ชื่อกลุ่มยาหลัก', value: 3 },
+            ],
+            category: [],
+            typeSearch: 1,
+            popupActive: false,
             action: null,
-            code: null,
-            name: null,
-            mainId: null,
-            productMain: [],
+            field: {
+                SubName: null,
+                SubIDs: null,
+                CategoryID: null,
+            },
+            id: null,
             page: 1,
             perPage: 10,
             record: [],
             search: '',
-            conditionType: '1',
-            data3: [],
-            columns1: [{
-                title: 'รหัสกลุ่มยารอง',
-                key: 'SubIDs',
-            }, {
-                title: "ชื่อกลุ่มยารอง",
-                key: 'SubName',
-                sortType: 'normal',
-
-            }, {
-                title: "ชื่อกลุ่มยาหลัก",
-                key: 'CategoryName',
-                sortType: 'normal',
-
-            }, {
-                title: 'จัดการ',
-                key: 'operation',
-                render: (h, params) => {
-
-                    return h('div', [h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'warning',
-                                icon: 'icon-edit'
-                            },
-
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.editDialog(params.item.SubID);
-                                }
-                            }
-                        }, ''),
-                        h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'error',
-                                icon: 'icon-trash-2'
-                            },
-
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.deleteDialog(params.item.SubID)
-                                }
-                            }
-                        }, ''),
-                    ])
-
-                },
-
-            }, ],
+            sortBy: '',
+            sortType: '',
+            selected: [],
+            totalItems: 0,
+            recordData: [],
+            pagination: {
+                last_page: 0,
+            },
         }
     },
     mounted() {
         this.record = this.makePageData();
         this.getProductMain();
     },
+    watch: {
+        page: function(val) {
+            this.page = val;
+            this.makePageData();
+        },
+        selected: function(val) {
+            this.id = val.SubID;
+            this.field.SubName = val.SubName;
+            this.field.SubIDs = val.SubIDs;
+            this.field.CategoryID = val.CategoryID;
+        },
+        search: function(val) {
+            this.makePageData();
+        },
+        typeSearch: function(val) {
+            this.makePageData();
+        },
+    },
     methods: {
+        handleSort(key, active) {
+            this.sortBy = key;
+            this.sortType = active;
+            this.makePageData();
+        },
         getProductMain() {
             axios.get("productSub/getProductMain")
                 .then((response) => {
-                    this.productMain = response.data.data;
-
+                    for (let i = 0; i < response.data.data.length; i++) {
+                        this.category.push({ text: response.data.data[i].CategoryName, value: response.data.data[i].CategoryID });
+                    }
                 });
         },
         makePageData() {
             axios.get("productSub/getProductSub", {
-                    params: {
-                        search: this.search,
-                        type: this.conditionType,
+                params: {
+                    search: this.search,
+                    type: this.typeSearch,
+                    sortBy: this.sortBy,
+                    sortType: this.sortType,
+                    page: this.page,
+                    perPage: this.perPage,
+                }
+            }).then((response) => {
+                let pageData = [];
+
+                if (response.data.result) {
+                    for (let i = 0; i < response.data.data.length; i++) {
+                        pageData = pageData.concat(response.data.data[i])
                     }
-                })
-                .then((response) => {
-                    let pageData = [];
-                    this.isTable = true;
 
-                    if (response.data.result) {
-                        for (let i = 0; i < response.data.data.length; i++) {
-                            pageData = pageData.concat(response.data.data[i])
-                        }
-                    }
-
-                    this.data3 = pageData;
-                }, (response) => {
-
-                });
+                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } else {
+                    this.pagination.last_page = 0;
+                }
+                this.totalItems = pageData.length;
+                this.recordData = pageData;
+            });
         },
-        saveItem() {
+        save() {
 
             if (this.action == 'insert') {
                 axios.post("productSub/insert", {
-                    code: this.code,
-                    name: this.name,
-                    mainId: this.mainId
+                    code: this.field.SubIDs,
+                    name: this.field.SubName,
+                    category: this.field.CategoryID
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: ' top-right',
+
                         });
                         this.makePageData();
-                        this.code = null;
-                        this.name = null;
-                        $('#edit-dialog').modal("hide");
+                        this.field.CategoryID = null;
+                        this.field.SubName = null;
+                        this.field.SubIDs = null;
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
-                        });
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
                     }
                 });
             } else if (this.action == 'update') {
                 axios.post("productSub/update", {
-                    id: this.idSelect,
-                    code: this.code,
-                    name: this.name,
-                    mainId: this.mainId
+                    id: this.id,
+                    name: this.field.SubName,
+                    category: this.field.CategoryID
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: ' top-right',
+
                         });
                         this.makePageData();
-                        this.code = null;
-                        this.name = null;
-                        this.mainId = null;
-                        $('#edit-dialog').modal("hide");
+                        this.field.CategoryID = null;
+                        this.field.SubName = null;
+                        this.field.SubIDs = null;
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
-                        });
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: ' top-right',
+                        })
                     }
                 });
             }
         },
-        addDialog() {
-            this.action = "insert";
-            this.name = null;
-            this.mainId = "";
-            console.log(this.mainId);
+        add() {
+            this.field.SubIDs = null;
+            this.field.SubName = null;
+            this.field.CategoryID = null;
             axios.get("productSub/getMaxId")
                 .then((response) => {
                     if (response.data.result) {
-                        this.code = "S" + ('000' + (response.data.maxId + 1)).slice(-4);
+                        this.field.SubIDs = "S" + ('000' + (response.data.maxId + 1)).slice(-4);
+                        this.action = 'insert';
+                        this.popupActive = true;
                     }
                 });
-            $('#edit-dialog').modal("show");
         },
-        editDialog(id) {
-            this.action = "update";
-            this.idSelect = id;
-            axios.get("productSub/getProductSubById", {
-                params: {
-                    id: id,
-                }
-            }).then((response) => {
-                if (response.data.result) {
-                    this.code = response.data.data.SubIDs;
-                    this.name = response.data.data.SubName;
-                    this.mainId = response.data.data.CategoryID;
-                    $('#edit-dialog').modal("show");
-                }
-            });
+        openConfirm() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
         },
-        deleteDialog(id) {
-            this.idSelect = id;
-            $('#delete-dialog').modal('show');
-        },
-        deleteItem() {
+        acceptAlert() {
             axios.post("productSub/delete", {
-                id: this.idSelect,
+                id: this.id,
             }).then((response) => {
                 if (response.data.result) {
-                    this.$Notify({
-                        title: 'สำเร็จ',
-                        duration: 5000,
-                        message: 'ลบข้อมูลสำเร็จ',
-                        type: 'success'
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
                     });
                     this.makePageData();
-                    this.idSelect = null;
-                    $('#delete-dialog').modal('hide');
+                    this.selected = [];
                 } else {
-                    this.$Notify({
+                    this.$vs.notify({
                         title: 'ผิดพลาด',
-                        duration: 5000,
-                        message: 'กรุณาลองใหม่อีกครั้ง',
-                        type: 'warning'
-                    });
-                    $('#delete-dialog').modal('hide');
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+
+                    })
                 }
             });
         },
-        clearItem() {
-            this.idSelect = null;
-            this.mainId = "";
+        productStore(id) {
+            //window.location.href = 'productSub?category_id=' + id;
         }
     }
 });

@@ -3,20 +3,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ProductSubModel extends CI_Model
 {
-    public function getDataPerpage($clinicId, $condition)
+
+    public function getDataPerpage($clinicId, $condition, $sort, $page, $perPage)
     {
-        
         $query = $this->db->query(
             '
-            SELECT * FROM tbsubcategory as sub
-            inner join tbproductcategory as main on main.CategoryID = sub.CategoryID
-            where sub.CLINICID = "' . $clinicId . '" '.$condition.'
-            order by main.CategoryName ASC
-          '
+            SELECT *
+            FROM tbsubcategory as sub
+            LEFT JOIN tbproductcategory AS main ON main.CategoryID =  sub.CategoryID
+            WHERE sub.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
+            LIMIT '.$page.','.$perPage
+          
         );
 
         if ($query->num_rows() > 0) {
             return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function total($clinicId, $condition){
+       
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW FROM tbsubcategory  as sub
+            LEFT JOIN tbproductcategory AS main ON main.CategoryID =  sub.CategoryID
+            WHERE   sub.CLINICID = "' . $clinicId . '" '.$condition
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
         } else {
             return array();
         }

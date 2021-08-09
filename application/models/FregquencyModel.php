@@ -45,6 +45,4 @@ class FregquencyModel extends CI_Model{
         return true;
     }
 }
-
-
 ?>

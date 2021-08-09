@@ -4,101 +4,103 @@
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหากลุ่มยารอง</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">ค้นหากลุ่มยารอง</span>
                             <div class="filter-container">
-                                <form>
-                                    <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label>
-                                    <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา"></at-input>
-                                </form>
+                                <vs-input class="inputx" placeholder="ระบุคำที่ต้องการค้นหา" v-model="search" />
                             </div>
                         </div>
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">เงื่อนไขการค้นหา</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">เงื่อนไขการค้นหา</span>
                             <div class="filter-container">
-                                <label class="control-label">โปรดเลือกเงื่อนไข</label>
-                                <form>
-                                    <at-select v-model="conditionType" size="large" @on-change="makePageData">
-                                        <at-option value="1">รหัสกลุ่มยารอง</at-option>
-                                        <at-option value="2">ชื่อกลุ่มยารอง</at-option>
-                                        <at-option value="3">ชื่อกลุ่มยาหลัก</at-option>
-                                    </at-select>
-                                </form>
+                                <vs-select class="selectExample" label="" v-model="typeSearch">
+                                    <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                        v-for="item,index in optionTypeSearch" />
+                                </vs-select>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="card-body">
                 <div class="noSwipe">
                     <div class="row">
                         <div class="col-md-12 text-right mt-3 mb-3 pr-5">
-                            <at-button type="primary" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</at-button>
+                            <vs-button color="primary" type="border" icon="add" style="float:right" @click="add()">
+                                เพิ่มข้อมูล
+                            </vs-button>
                         </div>
                     </div>
                     <div>
-                        <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
+
+                        <vs-table :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
+                            :max-items="perPage" :data="recordData">
+                            <template slot="thead">
+                                <vs-th sort-key="SubIDs">
+                                    รหัสกลุ่มยารอง
+                                </vs-th>
+                                <vs-th sort-key="SubName">
+                                    ชื่อกลุ่มยารอง
+                                </vs-th>
+                                <vs-th class="centerx">
+                                    จัดการ
+                                </vs-th>
+                            </template>
+                            <template slot-scope="{data}">
+                                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                                    <vs-td :data="data[indextr].SubIDs">
+                                        {{data[indextr].SubIDs}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].SubName">
+                                        {{data[indextr].SubName}}
+                                        <p class="sub-text">กลุ่มยาหลัก : {{data[indextr].CategoryName}}</p>
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].SubIDs">
+                                        <div class="centerx">
+                                            <vs-tooltip text="คลังยา">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled"
+                                                    icon="format_list_bulleted"
+                                                    @click="productStore(data[indextr].SubIDs)"></vs-button></a>
+                                            </vs-tooltip>
+                                            <vs-tooltip text="แก้ไขข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled"
+                                                    icon="drive_file_rename_outline"
+                                                    @click="popupActive=true,action='update'"></vs-button>
+                                            </vs-tooltip>
+                                            <vs-tooltip text="ลบข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete"
+                                                    @click="openConfirm()"></vs-button>
+                                            </vs-tooltip>
+                                        </div>
+                                    </vs-td>
+                                </vs-tr>
+                            </template>
+                        </vs-table>
+                        <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page"></vs-pagination>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="edit-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">กลุ่มยารอง</h3>
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="form-group pt-2">
-                            <label for="inputCode">กลุ่มยาหลัก</label>
-                            <at-select v-model="mainId" size="large" style="width: 100%">
-                                <at-option  v-for="item in productMain" v-bind:value="item.CategoryID">
-                                    {{ item.CategoryName }}
-                                </at-option>
-                            </at-select>
-                        </div>
-                        <div class="form-group pt-2">
-                            <label for="inputCode">รหัสกลุ่มยารอง</label>
-                            <input class="form-control" id="inputCode" type="text" v-model="code" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputName">ชื่อกลุ่มยารอง</label>
-                            <input class="form-control" id="inputName" type="text" v-model="name">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
-                    <button class="btn btn-success" type="button" v-on:click="saveItem">บันทึกข้อมูล</button>
-                </div>
+    <vs-popup class="holamundo" title="กลุ่มยารอง" :active.sync="popupActive">
+        <div class="row">
+            <div class="col-12">
+                <vs-select class="selectExample" label="" v-model="field.CategoryID">
+                    <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="item,index in category"
+                        size="large" />
+                </vs-select>
             </div>
         </div>
-    </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <vs-input label-placeholder="ชื่อกลุ่มยารอง" type="text" v-model="field.SubName" size="large" />
+            </div>
+        </div>
 
-    <div class="modal fade" id="delete-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="text-danger"><span class="modal-main-icon mdi mdi-close-circle-o"></span></div>
-                        <h3>ยืนยันการลบข้อมูล!</h3>
-                        <p>ต้องการลบข้อมูลกลุ่มยารองหรือไม่</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
-                    <button class="btn btn-danger" type="button" v-on:click="deleteItem">ลบข้อมูล</button>
-                </div>
-            </div>
+        <div class="centex mt-3">
+            <vs-button type="relief" @click=save size="large">บันทึกข้อมูล</vs-button>
         </div>
-    </div>
+    </vs-popup>
 </div>
-
-
-
