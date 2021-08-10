@@ -152,4 +152,44 @@ class Patient extends CI_Controller
         $this->load->view('template/footer');
     }
 
+    public function getQueueToday()
+    {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
+        $condition = '';
+        $sort = '';
+
+        // if (!empty($this->input->get('search'))) {
+        //     $search = $this->input->get('search');
+        //     if ($this->input->get('type') == '1') {
+        //         $condition .= ' AND tbproductcategory.CategoryIDs like "%'.$search.'%"';
+        //     }
+        //     if ($this->input->get('type') == '2') {
+        //         $condition .= ' AND tbproductcategory.CategoryName like "%'.$search.'%"';
+        //     }
+        // }
+
+        // if (!empty($this->input->get('sortBy'))) {
+        //     $sort .= 'ORDER BY "tbproductcategory.'.$sortBy.'" '.$sortType;
+        // }
+
+        $booking = $this->BookingModel->getDataQueueTodayPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->BookingModel->totalToday($this->session->userdata('id'), $condition);
+       
+        header('Content-Type: application/json');
+
+        if ($booking) {
+            echo json_encode([
+                'result'=> true,
+                'data' => $booking,
+                'total' => $total->NUM_OF_ROW
+                ]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
 }

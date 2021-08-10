@@ -32,6 +32,41 @@ class BookingModel extends CI_Model
         }
     }
 
+    public function getDataQueueTodayPerpage($clinicId, $condition, $sort, $page, $perPage)
+    {
+        $query = $this->db->query(
+            '
+            SELECT * FROM tbbooking as booking
+            INNER join tbmembers as member on member.MEMBERIDCARD = booking.MEMBERIDCARD OR member.IDCARD = booking.IDCARD
+            WHERE booking.BOOKDATE = "'.date('Y-m-d').'"  AND booking.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
+           
+            LIMIT '.$page.','.$perPage
+          
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function totalToday($clinicId, $condition){
+       
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW FROM tbbooking  as booking
+            INNER join tbmembers as member on member.MEMBERIDCARD = booking.MEMBERIDCARD OR member.IDCARD = booking.IDCARD
+            WHERE booking.BOOKDATE = "'.date('Y-m-d').'" AND booking.CLINICID = "' . $clinicId . '" '.$condition
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
+        } else {
+            return array();
+        }
+    }
+
     public function find_with_page($param)
     {
         $keyword = $param['keyword'];
