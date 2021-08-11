@@ -103,7 +103,9 @@
                                     </vs-td>
                                     <vs-td :data="data[indextr].QUES" class="text-center">
                                         {{data[indextr].QUES}}
-                                        <p class="sub-text"> {{data[indextr].BOOK_ON}}</p>
+                                        <p class="sub-text">
+                                            {{data[indextr].BOOK_ON.charAt(0).toUpperCase() + data[indextr].BOOK_ON.substring(1).toLowerCase()}}
+                                        </p>
                                     </vs-td>
                                     <vs-td :data="data[indextr].BOOKTIME">
                                         {{data[indextr].BOOKTIME}}
