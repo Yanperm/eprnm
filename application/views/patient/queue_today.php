@@ -93,7 +93,8 @@
                             <template slot-scope="{data}">
                                 <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
                                     <vs-td :data="data[indextr].CUSTOMERNAME">
-                                        {{data[indextr].CUSTOMERNAME}}
+                                        <p @click="recordPatient(data[indextr].MEMBERIDCARD, data[indextr].BOOKINGID)">
+                                            {{data[indextr].CUSTOMERNAME}}</p>
                                     </vs-td>
                                     <vs-td :data="data[indextr].DETAIL">
                                         {{data[indextr].DETAIL}}
@@ -226,7 +227,13 @@ const app = new Vue({
                 console.log(this.recordData);
             });
         },
-
+        recordPatient(memberId, bookingId) {
+            console.log('xvsdf');
+            setTimeout(function() {
+                window.open('<?php echo base_url('recordInformation?id=');?>' + memberId +
+                    '&booking_id=' + bookingId, '_blank');
+            }, 500);
+        }
     }
 });
 </script>
