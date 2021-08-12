@@ -73,8 +73,15 @@ class Patient extends CI_Controller
 
     public function getQueue()
     {
-        $date = date('Y-m-d');
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+        $condition = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
@@ -87,6 +94,11 @@ class Patient extends CI_Controller
                 $condition .= ' AND member.PHONE like "%'.$search.'%"';
             }
         }
+
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY "'.$sortBy.'" '.$sortType;
+        }
+
 
         if (!empty($this->input->get('date'))) {
             $form = date('Y-m-d', strtotime( substr($this->input->get('date')[0],1,11) . " +1 days"));
@@ -108,11 +120,17 @@ class Patient extends CI_Controller
             $condition .= ' AND booking.CHECKIN = 1 AND booking.ACCEPT = 1 AND booking.CALLED != 0 ';
         }
 
-        $queue = $this->BookingModel->getDataPerpage($this->session->userdata('id'), '', $condition);
+        $queue = $this->BookingModel->getDataPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->BookingModel->total($this->session->userdata('id'), $condition);
+       
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode([
+                'result'=> true,
+                'data' => $queue,
+                'total' => $total->NUM_OF_ROW
+            ]);
         } else {
             echo json_encode(['result'=> false]);
         }
@@ -134,6 +152,25 @@ class Patient extends CI_Controller
             } else {
                 echo json_encode(['result'=> false]);
             }
+        }
+    }
+
+    public function cancel()
+    {
+        $_POST = json_decode(file_get_contents("php://input"), true);
+
+        if (!empty($this->input->post('id'))) {
+            $booking = $this->BookingModel->getDataById($this->input->post('id'));
+
+            if ($booking->TYPE == 0) {
+                $this->BookingModel->delete($this->input->post('id'));
+            } else {
+                $this->BookingModel->cancel($this->input->post('id'));
+            }
+
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
         }
     }
 
@@ -161,20 +198,6 @@ class Patient extends CI_Controller
 
         $condition = '';
         $sort = '';
-
-        // if (!empty($this->input->get('search'))) {
-        //     $search = $this->input->get('search');
-        //     if ($this->input->get('type') == '1') {
-        //         $condition .= ' AND tbproductcategory.CategoryIDs like "%'.$search.'%"';
-        //     }
-        //     if ($this->input->get('type') == '2') {
-        //         $condition .= ' AND tbproductcategory.CategoryName like "%'.$search.'%"';
-        //     }
-        // }
-
-        // if (!empty($this->input->get('sortBy'))) {
-        //     $sort .= 'ORDER BY "tbproductcategory.'.$sortBy.'" '.$sortType;
-        // }
 
         $booking = $this->BookingModel->getDataQueueTodayPerpage($this->session->userdata('id'), $condition, $sort, $page, $perPage);
         $total = $this->BookingModel->totalToday($this->session->userdata('id'), $condition);

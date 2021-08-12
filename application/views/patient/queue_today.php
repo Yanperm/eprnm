@@ -185,11 +185,6 @@ const app = new Vue({
         search: function(val) {
             this.makePageData();
         },
-        selected: function(val) {
-            this.id = val.CategoryID;
-            this.field.CategoryIDs = val.CategoryIDs;
-            this.field.CategoryName = val.CategoryName;
-        },
         typeSearch: function(val) {
             this.makePageData();
         },
