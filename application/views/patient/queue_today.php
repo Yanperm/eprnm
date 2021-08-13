@@ -39,11 +39,13 @@
                             หรือ กด
                             Reset all เพื่อเรียกคิวใหม่ทั้งหมด</font>
                     </p>
-                    <a class="btn btn-success" href="#"><i class="icon icon-left mdi mdi-plus"></i>เพิ่มคิว</a> &nbsp;
-                    &nbsp; &nbsp;
-                    <a class="btn btn-primary" href="#"> <i class="icon icon-left mdi mdi-notifications-none"></i>
+                    <a class="btn btn-success" href="javascript:void(0)" @click="popupAddQueue=true"><i
+                            class="icon icon-left mdi mdi-plus"></i>เพิ่มคิว</a> &nbsp;
+
+                    <a class="btn btn-primary" href=""> <i class="icon icon-left mdi mdi-notifications-none"></i>
                         ประกาศคิว</a>
-                    <a class="btn btn-warning" href="#"> <i class="icon icon-left mdi mdi-refresh"></i> Reset all</a>
+                    <a class="btn btn-warning" href="javascript:void(0)"> <i class="icon icon-left mdi mdi-refresh"></i>
+                        Reset all</a>
                 </div>
             </div>
         </div>
@@ -135,6 +137,10 @@
             </div>
         </div>
     </div>
+    <vs-popup classContent="popup-example" title="เพิ่มคิว" :active.sync="popupAddQueue">
+
+
+    </vs-popup>
 </div>
 
 <style>
@@ -148,6 +154,8 @@ const app = new Vue({
     el: '#vue-root',
     data() {
         return {
+            active: false,
+            popupAddQueue: false,
             optionTypeSearch: [{
                     text: 'รหัสกลุ่มยาหลัก',
                     value: 1
