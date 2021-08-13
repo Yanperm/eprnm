@@ -93,8 +93,11 @@
                             <template slot-scope="{data}">
                                 <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
                                     <vs-td :data="data[indextr].CUSTOMERNAME">
-                                        <p @click="recordPatient(data[indextr].MEMBERIDCARD, data[indextr].BOOKINGID)">
-                                            {{data[indextr].CUSTOMERNAME}}</p>
+                                        <p style="display:flex"
+                                            @click="recordPatient(data[indextr].MEMBERIDCARD, data[indextr].BOOKINGID)">
+                                            <vs-avatar></vs-avatar> <span
+                                                style="margin-top: 11px;">{{data[indextr].CUSTOMERNAME}}</span>
+                                        </p>
                                     </vs-td>
                                     <vs-td :data="data[indextr].DETAIL">
                                         {{data[indextr].DETAIL}}

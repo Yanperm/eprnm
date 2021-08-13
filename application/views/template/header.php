@@ -10,11 +10,14 @@
     <link rel="shortcut icon" href="<?php echo base_url();?>assets/img/logo-fav.png">
     <title>Nutmor - Electronic Patient Record</title>
 
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/perfect-scrollbar/css/perfect-scrollbar.css" />
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url();?>assets/lib/perfect-scrollbar/css/perfect-scrollbar.css" />
 
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/jquery.vectormap/jquery-jvectormap-1.2.2.css" />
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url();?>assets/lib/jquery.vectormap/jquery-jvectormap-1.2.2.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/jqvmap/jqvmap.min.css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url();?>assets/lib/datetimepicker/css/bootstrap-datetimepicker.min.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/select2/css/select2.min.css" />
 
 
@@ -44,7 +47,8 @@
 
 
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/app.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/lib/material-design-icons/css/material-design-iconic-font.min.css" />
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url();?>assets/lib/material-design-icons/css/material-design-iconic-font.min.css" />
 
 
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
@@ -52,194 +56,198 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-        .icon {
-            font-family: 'Material Icons', 'feather' !important;
-            speak: none;
-            font-style: normal;
-            font-weight: normal;
-            font-variant: normal;
-            text-transform: none;
-            line-height: 1;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-        
-        .active_menu {
-            color: #4285f4 !important;
-        }
-        
-        .at-table {
-            position: relative;
-            color: #3F536E;
-            font-size: 14px;
-        }
-        
-        .at-btn__text {
-            font-size: 15px;
-        }
-        
-        .at-btn__icon,
-        .at-btn__loading {
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        .table-filter-title {
-            font-size: 15px;
-        }
-        
-        label {
-            font-size: 1.1rem;
-        }
-        
-        .vs-input--input.hasValue+.vs-placeholder-label,
-        .vs-input--input:focus+.vs-placeholder-label {
-            font-size: 13px;
-        }
-        
-        .vs-input--placeholder {
-            font-size: 13px;
-        }
-        
-        .con-select {
-            width: auto;
-            clear: both;
-        }
-        
-        .vs-con-input-label {
-            width: 100%;
-        }
-        
-        .vs-con-textarea h4 {
-            font-size: 14px;
-        }
-        
-        .vs-textarea {
-            color: rgb(78 67 67 / 80%);
-            font-size: 13px;
-        }
-        
-        .user-display-bg img {
-            height: 78px;
-        }
-        
-        .centex {
-            display: -ms-flexbox;
-            display: -webkit-box;
-            display: flex;
-            -ms-flex-align: center;
-            -webkit-box-align: center;
-            align-items: center;
-            -ms-flex-pack: center;
-            -webkit-box-pack: center;
-            justify-content: center;
-        }
-        
-        .vs-button,
-        .vs-switch {
-            margin: 3px;
-        }
-        
-        .con-text-noti h3,
-        .con-text-noti p {
-            color: #ffffff;
-            padding-top: 3px;
-            padding-bottom: 1px;
-            margin-bottom: 3px;
-            margin-top: 7px;
-        }
-        
-        th,
-        .vs-table--search-input,
-        .vs-table--search i {
-            font-size: 14px;
-        }
-        
-        .vs-con-table table {
-            font-size: 13px;
-        }
-        
-        ol,
-        ul,
-        dl {
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        
-        .vs-table--pagination .item-pagination {
-            font-size: 13px;
-        }
-        
-        .centerx,
-        .con-notifications,
-        .con-notifications-position {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            -ms-flex-wrap: wrap;
-            flex-wrap: wrap;
-        }
-        
-        .con-vs-dialog .vs-dialog .vs-dialog-text {
-            padding: 10px;
-            font-size: 14px;
-            -webkit-transition: all .23s ease .1s;
-            transition: all .23s ease .1s;
-        }
-        
-        .breadcrumb {
-            background-color: #eeeeee;
-            margin-bottom: 18px;
-            padding: 7px 0px 6px;
-            line-height: 16px;
-        }
-        
-        .page-head-title {
-            color: #313030;
-        }
-        
-        .card {
-            border-radius: 8px;
-            padding: 10px;
-        }
-        
-        .vs-table--tbody-table .tr-values td {
-            padding: 10px;
-            font-size: 14px;
-        }
-        
-        .sub-text {
-            color: rgb(144, 145, 146);
-            font-size: 12px;
-        }
-        
-        th .sort-th,
-        th .vs-table-text {
-            display: block;
-        }
-        
-        .vs-input--input.large {
-            font-size: 14px;
-        }
-        
-        table .material-icons {
-            font-size: 16px;
-            color: #000000 !important;
-            font-weight: 900;
-        }
+    .icon {
+        font-family: 'Material Icons', 'feather' !important;
+        speak: none;
+        font-style: normal;
+        font-weight: normal;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .active_menu {
+        color: #4285f4 !important;
+    }
+
+    .at-table {
+        position: relative;
+        color: #3F536E;
+        font-size: 14px;
+    }
+
+    .at-btn__text {
+        font-size: 15px;
+    }
+
+    .at-btn__icon,
+    .at-btn__loading {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .table-filter-title {
+        font-size: 15px;
+    }
+
+    label {
+        font-size: 1.1rem;
+    }
+
+    .vs-input--input.hasValue+.vs-placeholder-label,
+    .vs-input--input:focus+.vs-placeholder-label {
+        font-size: 13px;
+    }
+
+    .vs-input--placeholder {
+        font-size: 13px;
+    }
+
+    .con-select {
+        width: auto;
+        clear: both;
+    }
+
+    .vs-con-input-label {
+        width: 100%;
+    }
+
+    .vs-con-textarea h4 {
+        font-size: 14px;
+    }
+
+    .vs-textarea {
+        color: rgb(78 67 67 / 80%);
+        font-size: 13px;
+    }
+
+    .user-display-bg img {
+        height: 78px;
+    }
+
+    .centex {
+        display: -ms-flexbox;
+        display: -webkit-box;
+        display: flex;
+        -ms-flex-align: center;
+        -webkit-box-align: center;
+        align-items: center;
+        -ms-flex-pack: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+
+    .vs-button,
+    .vs-switch {
+        margin: 3px;
+    }
+
+    .con-text-noti h3,
+    .con-text-noti p {
+        color: #ffffff;
+        padding-top: 3px;
+        padding-bottom: 1px;
+        margin-bottom: 3px;
+        margin-top: 7px;
+    }
+
+    th,
+    .vs-table--search-input,
+    .vs-table--search i {
+        font-size: 14px;
+    }
+
+    .vs-con-table table {
+        font-size: 13px;
+    }
+
+    ol,
+    ul,
+    dl {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .vs-table--pagination .item-pagination {
+        font-size: 13px;
+    }
+
+    .centerx,
+    .con-notifications,
+    .con-notifications-position {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+
+    .con-vs-dialog .vs-dialog .vs-dialog-text {
+        padding: 10px;
+        font-size: 14px;
+        -webkit-transition: all .23s ease .1s;
+        transition: all .23s ease .1s;
+    }
+
+    .breadcrumb {
+        background-color: #eeeeee;
+        margin-bottom: 18px;
+        padding: 7px 0px 6px;
+        line-height: 16px;
+    }
+
+    .page-head-title {
+        color: #313030;
+    }
+
+    .card {
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .vs-table--tbody-table .tr-values td {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .sub-text {
+        color: rgb(144, 145, 146);
+        font-size: 12px;
+    }
+
+    th .sort-th,
+    th .vs-table-text {
+        display: block;
+    }
+
+    .vs-input--input.large {
+        font-size: 14px;
+    }
+
+    table .material-icons {
+        font-size: 16px;
+        color: #000000 !important;
+        font-weight: 900;
+    }
+
+    .mdrp__panel.dropdown-menu {
+        z-index: 999 !important;
+    }
     </style>
 
     <?php
     if (!empty($css)):
         foreach ($css as $item):?>
-        <link rel="stylesheet" href="<?php echo $item;?>" type="text/css" />
-        <?php endforeach;
+    <link rel="stylesheet" href="<?php echo $item;?>" type="text/css" />
+    <?php endforeach;
     endif;
     ?>
 </head>
@@ -254,7 +262,8 @@
                 <div class="page-title"><span>Electronic Patient Record</span></div>
                 <div class="be-right-navbar">
                     <ul class="nav navbar-nav float-right be-user-nav">
-                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><img
+                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+                                data-toggle="dropdown" role="button" aria-expanded="false"><img
                                     src="<?php echo base_url();?>assets/img/avatar.png" alt="Avatar"><span
                                     class="user-name">Túpac Amaru</span></a>
                             <div class="dropdown-menu" role="menu">
@@ -262,15 +271,18 @@
                                     <div class="user-name">Túpac Amaru</div>
                                     <div class="user-position online">Available</div>
                                 </div><a class="dropdown-item" href="pages-profile.html"><span
-                                        class="icon mdi mdi-face"></span>Account</a><a class="dropdown-item" href="#"><span class="icon mdi mdi-settings"></span>Settings</a>
+                                        class="icon mdi mdi-face"></span>Account</a><a class="dropdown-item"
+                                    href="#"><span class="icon mdi mdi-settings"></span>Settings</a>
                                 <a class="dropdown-item" href="<?php echo base_url('logout')?>"><span
                                         class="icon mdi mdi-power"></span>Logout</a>
                             </div>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav float-right be-icons-nav">
-                        <li class="nav-item dropdown"><a class="nav-link be-toggle-right-sidebar" href="#" role="button" aria-expanded="false"><span class="icon mdi mdi-settings"></span></a></li>
-                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span
+                        <li class="nav-item dropdown"><a class="nav-link be-toggle-right-sidebar" href="#" role="button"
+                                aria-expanded="false"><span class="icon mdi mdi-settings"></span></a></li>
+                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+                                data-toggle="dropdown" role="button" aria-expanded="false"><span
                                     class="icon mdi mdi-notifications"></span><span class="indicator"></span></a>
                             <ul class="dropdown-menu be-notifications">
                                 <li>
@@ -281,25 +293,33 @@
                                                 <ul>
                                                     <li class="notification notification-unread">
                                                         <a href="#">
-                                                            <div class="image"><img src="<?php echo base_url();?>assets/img/avatar2.png" alt="Avatar"></div>
+                                                            <div class="image"><img
+                                                                    src="<?php echo base_url();?>assets/img/avatar2.png"
+                                                                    alt="Avatar"></div>
                                                             <div class="notification-info">
                                                                 <div class="text"><span class="user-name">Jessica
-                                                                        Caruso</span> accepted your invitation to join the team.</div><span class="date">2 min ago</span>
+                                                                        Caruso</span> accepted your invitation to join
+                                                                    the team.</div><span class="date">2 min ago</span>
                                                             </div>
                                                         </a>
                                                     </li>
                                                     <li class="notification">
                                                         <a href="#">
-                                                            <div class="image"><img src="<?php echo base_url();?>assets/img/avatar3.png" alt="Avatar"></div>
+                                                            <div class="image"><img
+                                                                    src="<?php echo base_url();?>assets/img/avatar3.png"
+                                                                    alt="Avatar"></div>
                                                             <div class="notification-info">
                                                                 <div class="text"><span class="user-name">Joel
-                                                                        King</span> is now following you</div><span class="date">2 days ago</span>
+                                                                        King</span> is now following you</div><span
+                                                                    class="date">2 days ago</span>
                                                             </div>
                                                         </a>
                                                     </li>
                                                     <li class="notification">
                                                         <a href="#">
-                                                            <div class="image"><img src="<?php echo base_url();?>assets/img/avatar4.png" alt="Avatar"></div>
+                                                            <div class="image"><img
+                                                                    src="<?php echo base_url();?>assets/img/avatar4.png"
+                                                                    alt="Avatar"></div>
                                                             <div class="notification-info">
                                                                 <div class="text"><span class="user-name">John
                                                                         Doe</span> is watching your main repository
@@ -309,9 +329,12 @@
                                                     </li>
                                                     <li class="notification">
                                                         <a href="#">
-                                                            <div class="image"><img src="<?php echo base_url();?>assets/img/avatar5.png" alt="Avatar"></div>
+                                                            <div class="image"><img
+                                                                    src="<?php echo base_url();?>assets/img/avatar5.png"
+                                                                    alt="Avatar"></div>
                                                             <div class="notification-info"><span class="text"><span
-                                                                        class="user-name">Emily Carter</span> is now following you</span><span class="date">5 days
+                                                                        class="user-name">Emily Carter</span> is now
+                                                                    following you</span><span class="date">5 days
                                                                     ago</span></div>
                                                         </a>
                                                     </li>
@@ -323,7 +346,8 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false"><span
+                        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#"
+                                data-toggle="dropdown" role="button" aria-expanded="false"><span
                                     class="icon mdi mdi-apps"></span></a>
                             <ul class="dropdown-menu be-connections">
                                 <li>
@@ -376,7 +400,8 @@
                                 </li>
                                 <li class="parent"><a href="#"><i class="icon mdi mdi-face"></i><span>ผู้ป่วย</span></a>
                                     <ul class="sub-menu">
-                                        <li><a class="nav-link" href="<?php echo base_url('patient/manage-queue');?>">การจัดการนัดหมาย</a>
+                                        <li><a class="nav-link"
+                                                href="<?php echo base_url('patient/manage-queue');?>">การจัดการนัดหมาย</a>
                                         </li>
                                         <li><a href="<?php echo base_url('patient/queue');?>">เรียกคิว</a>
                                         </li>
@@ -582,7 +607,8 @@
                                     </ul>
                                 </li>
 
-                                <li class="parent"><a href="#"><i class="icon mdi mdi-check"></i><span>จัดการ SEO</span></a>
+                                <li class="parent"><a href="#"><i class="icon mdi mdi-check"></i><span>จัดการ
+                                            SEO</span></a>
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('seoClinic');?>">จัดการ SEO</a>
                                         </li>

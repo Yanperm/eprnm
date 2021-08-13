@@ -98,8 +98,11 @@
                         <template slot-scope="{data}">
                             <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
                                 <vs-td :data="data[indextr].CUSTOMERNAME">
-                                    <p @click="recordPatient(data[indextr].MEMBERIDCARD, data[indextr].BOOKINGID)">
-                                        {{data[indextr].CUSTOMERNAME}}</p>
+                                    <p style="display:flex"
+                                        @click="recordPatient(data[indextr].MEMBERIDCARD, data[indextr].BOOKINGID)">
+                                        <vs-avatar></vs-avatar> <span
+                                            style="margin-top: 11px;">{{data[indextr].CUSTOMERNAME}}</span>
+                                    </p>
                                 </vs-td>
                                 <vs-td :data="data[indextr].DETAIL">
                                     {{data[indextr].DETAIL}}
@@ -218,6 +221,7 @@ const app = new Vue({
     data() {
 
         return {
+            descriptionItems: [3, 5, 15],
             optionsTypeSearch: [{
                     text: 'ชื่อผู้ป่วย',
                     value: 1
@@ -244,7 +248,6 @@ const app = new Vue({
             conditionType: '1',
             id: null,
             page: 1,
-            perPage: 100,
             record: [],
             search: '',
             sortBy: '',
@@ -267,6 +270,10 @@ const app = new Vue({
         selected: function(val) {
             this.id = val.BOOKINGID
         },
+        page: function(val) {
+            this.makePageData();
+            this.page = val;
+        }
     },
     mounted() {
         this.record = this.makePageData();
@@ -327,6 +334,7 @@ const app = new Vue({
                     } else {
                         this.pagination.last_page = 0;
                     }
+
                     this.totalItems = pageData.length;
                     this.recordData = pageData;
                 }, (response) => {
