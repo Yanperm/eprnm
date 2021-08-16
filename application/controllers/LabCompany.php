@@ -33,7 +33,14 @@ class LabCompany extends CI_Controller {
 
 	public function getLabCompany()
     {
+        $sortBy = $this->input->get('sortBy');
+        $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
@@ -44,11 +51,21 @@ class LabCompany extends CI_Controller {
             }
         }
 
-        $queue = $this->LabCompanyModel->getDataPerpage($this->session->userdata('id'), $condition);
+        if (!empty($this->input->get('sortBy'))) {
+            $sort .= 'ORDER BY "tbproductcategory.'.$sortBy.'" '.$sortType;
+        }
+
+        $queue = $this->LabCompanyModel->getDataPerpage($this->session->userdata('id'), $condition,$sort, $page, $perPage);
+        $total = $this->LabCompanyModel->total($this->session->userdata('id'), $condition);
+
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode([
+                'result'=> true,
+                'data' => $queue,
+                'total' => $total->NUM_OF_ROW
+            ]);
         } else {
             echo json_encode(['result'=> false]);
         }
@@ -56,11 +73,10 @@ class LabCompany extends CI_Controller {
 
     public function getLabCompanyById(){
         $id = $_GET["id"];
-        
+      
         if(!empty($id)){
             $labCompany = $this->LabCompanyModel->getDataById($id);
             header('Content-Type: application/json');
-
             if ($labCompany) {
                 echo json_encode(['result'=> true, 'data' => $labCompany]);
             } else {

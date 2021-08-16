@@ -3,6 +3,25 @@ const app = new Vue({
     data() {
 
         return {
+            optionTypeSearch: [
+                { text: 'รหัสบริษัทที่รับตรวจแล็บ', value: 1 },
+                { text: 'ชื่อบริษัทที่รับตรวจแล็บ', value: 2 },
+            ],
+            typeSearch: 1,
+            popupActive: false,
+            field: {
+                LCID: null,
+                LabCName: null,
+            },
+            id: null,
+            totalItems: 0,
+            recordData: [],
+            selected: [],
+            sortBy: '',
+            sortType: '',
+            pagination: {
+                last_page: 0,
+            },
             isTable: false,
             idSelect: null,
             action: null,
@@ -13,69 +32,45 @@ const app = new Vue({
             record: [],
             search: '',
             conditionType: '1',
-            data3: [],
-            columns1: [{
-                title: 'รหัสบริษัทที่รับตรวจแล็บ',
-                key: 'LCID',
-            }, {
-                title: "ชื่อบริษัทที่รับตรวจแล็บ",
-                key: 'LabCName',
-                sortType: 'normal',
-
-            }, {
-                title: 'จัดการ',
-                key: 'operation',
-                render: (h, params) => {
-
-                    return h('div', [h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'warning',
-                                icon: 'icon-edit'
-                            },
-
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.editDialog(params.item.LabCID);
-                                }
-                            }
-                        }, ''),
-                        h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'error',
-                                icon: 'icon-trash-2'
-                            },
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.deleteDialog(params.item.LabCID);
-                                }
-                            }
-                        }, ''),
-                    ])
-
-                },
-
-            }, ],
+           
         }
+    },
+    watch: {
+        page: function(val) {
+            this.page = val;
+            this.makePageData();
+        },
+        search: function(val) {
+            this.makePageData();
+        },
+        selected: function(val) {
+            this.id = val.LabCID;
+            this.field.LCID = val.LCID;
+            this.field.LabCName = val.LabCName;
+        },
+        typeSearch: function(val) {
+            this.makePageData();
+        },
     },
     mounted() {
         this.record = this.makePageData();
     },
     methods: {
+        handleSort(key, active) {
+            this.sortBy = key;
+            this.sortType = active;
+            this.makePageData();
+        },
         makePageData() {
             axios.get("labCompany/getLabCompany", {
                 params: {
                     search: this.search,
-                    type: this.conditionType,
+                    //type: this.conditionType,
+                    type: this. typeSearch,
+                    sortBy: this.sortBy,
+                    sortType: this.sortType,
+                    page: this.page,
+                    perPage: this.perPage,
                 }
             }).then((response) => {
                 let pageData = [];
@@ -85,9 +80,13 @@ const app = new Vue({
                     for (let i = 0; i < response.data.data.length; i++) {
                         pageData = pageData.concat(response.data.data[i])
                     }
-                }
 
-                this.data3 = pageData;
+                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } else {
+                    this.pagination.last_page = 0;
+                }
+                this.totalItems = pageData.length;
+                this.recordData = pageData;
             });
         },
         saveItem() {
@@ -98,48 +97,55 @@ const app = new Vue({
                     name: this.name
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
+                            color: 'success',
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลสำเร็จ',
+                            type: 'success',
+                            icon: 'check',
+                            position: ' top-right',
                         });
                         this.makePageData();
                         this.code = null;
                         this.name = null;
+                        this.popupActive = false;
                         $('#edit-dialog').modal("hide");
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            type: 'warning',
+                            icon: 'warning_amber',
+                            position: ' top-right',
                         });
                     }
                 });
             } else if (this.action == 'update') {
                 axios.post("labCompany/update", {
-                    id: this.idSelect,
+                    id: this.id,
                     code: this.code,
                     name: this.name
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
+                            color: 'success',
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลสำเร็จ',
+                            type: 'success',
+                            icon: 'check',
+                            position: ' top-right',
                         });
                         this.makePageData();
                         this.code = null;
                         this.name = null;
-                        $('#edit-dialog').modal("hide");
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            type: 'warning',
+                            icon: 'warning_amber',
+                            position: ' top-right',
                         });
                     }
                 });
@@ -152,6 +158,7 @@ const app = new Vue({
                 .then((response) => {
                     if (response.data.result) {
                         this.code = "CL" + ('000' + (response.data.maxId + 1)).slice(-4);
+                        this.popupActive = true;
                     }
                 });
             $('#edit-dialog').modal("show");
@@ -159,44 +166,54 @@ const app = new Vue({
         editDialog(id) {
             this.action = "update";
             this.idSelect = id;
+            //console.log(id);
             axios.get("labCompany/getLabCompanyById", {
                 params: {
                     id: id,
                 }
             }).then((response) => {
+                //console.log(response.data.result);
                 if (response.data.result) {
                     this.code = response.data.data.LCID;
                     this.name = response.data.data.LabCName;
-                    $('#edit-dialog').modal("show");
+                    this.popupActive = true;
                 }
             });
         },
-        deleteDialog(id) {
-            this.idSelect = id;
-            $('#delete-dialog').modal('show');
+        openConfirm() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
         },
-        deleteItem() {
+        acceptAlert() {
             axios.post("labCompany/delete", {
-                id: this.idSelect,
+                id: this.id,
             }).then((response) => {
                 if (response.data.result) {
-                    this.$Notify({
-                        title: 'สำเร็จ',
-                        duration: 5000,
-                        message: 'ลบข้อมูลสำเร็จ',
-                        type: 'success'
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
                     });
                     this.makePageData();
-                    this.idSelect = null;
-                    $('#delete-dialog').modal('hide');
+                    this.selected = [];
                 } else {
-                    this.$Notify({
+                    this.$vs.notify({
                         title: 'ผิดพลาด',
-                        duration: 5000,
-                        message: 'กรุณาลองใหม่อีกครั้ง',
-                        type: 'warning'
-                    });
-                    $('#delete-dialog').modal('hide');
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+
+                    })
                 }
             });
         },

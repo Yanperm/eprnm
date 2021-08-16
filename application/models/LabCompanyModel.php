@@ -3,19 +3,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class LabCompanyModel extends CI_Model
 {
-    public function getDataPerpage($clinicId, $condition)
+    public function getDataPerpage($clinicId, $condition,$sort, $page, $perPage)
     {
         
         $query = $this->db->query(
             '
             SELECT * FROM tblabscompany 
-            where CLINICID = "' . $clinicId . '" '.$condition.'
-            order by LabCName ASC
-          '
+            where CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.' 
+            order by LabCName ASC 
+            LIMIT '.$page.','.$perPage.' '
+          
         );
 
         if ($query->num_rows() > 0) {
             return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function total($clinicId, $condition){
+       
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW 
+            FROM tblabscompany 
+            WHERE CLINICID = "' . $clinicId . '" '.$condition
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
         } else {
             return array();
         }
