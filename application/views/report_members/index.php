@@ -102,6 +102,66 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <!-- <style>
+                body{
+                    width: 550px;
+                    margin: 3rem auto;
+                }
+                .chart-container{
+                    width: 100%;
+                    height: auto;
+                }
+            </style> -->
+
+            <body>
+            <br><br>
+            <div class="chart-container">
+                <h3 style="text-align:center" >รายงานยอดคนไข้คลินิกรายเดือน</h3>
+                <canvas id="graphCanvas" ></canvas>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.0/chart.min.js"></script>
+            
+            <script>
+            $(document).ready(
+                function(){
+                    showGraph();
+                }
+            );
+
+            function showGraph(){
+                $.post("reportMembers/getChart", function(data){
+                   // console.log(data);
+
+                   let color=["#5DADE2","#F4D03F","#196F3D"];
+                  
+                    let chartdata = {
+                        labels: data.data[0],
+                        datasets: [{ backgroundColor: color,
+                            borderColor: color,
+                            hoverBackgroundColor:'#cccccc',
+                            hoverBorderColor: '#666666',
+                            data: data.data[1],}],
+                    };
+                    
+                   // console.log(chartdata)
+                    let graphTarget = $("#graphCanvas");
+                    let barGraph = new Chart(graphTarget,{
+                        type: 'bar',
+                        data: chartdata,
+                    });
+                   
+                })
+            }
+
+            </script>
+            </body>
+
+
         </div>
     </div>
 

@@ -79,6 +79,20 @@ class ReportMembers extends CI_Controller{
         }
     }
 
+    public function getChart(){
+        
+            $getchart =$this->ReportMembersModel->getChart($this->session->userdata('id'));
+    
+            header('Content-Type: application/json');
+    
+            if($getchart){
+                echo json_encode(['result'=>true,'data'=>$getchart]);
+            }else{
+                echo json_encode(['result' => false]);
+            }
+        
+    }
+
     
 }
 ?>
