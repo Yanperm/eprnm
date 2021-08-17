@@ -1,7 +1,6 @@
 const app = new Vue({
     el: '#vue-root',
     data() {
-
         return {
             optionTypeSearch: [
                 { text: 'รหัสบริษัทที่รับตรวจแล็บ', value: 1 },
