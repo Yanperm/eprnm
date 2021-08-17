@@ -99,7 +99,7 @@
         </div>
     </div>
 
-    <vs-popup class="holamundo" title="ผู้รับตรวจ" :active.sync="popupActive">
+    <vs-popup class="holamundo" title="แผนกส่งตรวจ" :active.sync="popupActive">
 
         <label>บริษัทที่รับตรวจแล็บ</label>
         <div class="form-group pt-2">

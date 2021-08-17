@@ -10,17 +10,10 @@ const app = new Vue({
             ],
             typeSearch: 1,
             popupActive: false,
-            field: {
-                DID: null,
-                DepName: null,
-                LabCName: null,
-            },
             id: null,
             totalItems: 0,
             recordData: [],
             selected: [],
-            //sortBy: '',
-            //sortType: '',
             pagination: {
                 last_page: 0,
             },
@@ -50,9 +43,9 @@ const app = new Vue({
         },
         selected: function(val) {
             this.id = val.DepID;
-            this.field.DID = val.DID;
-            this.field.DepName = val.DepName;
-            this.field.LabCName = val.LabCName;
+            // this.field.DID = val.DID;
+            // this.field.DepName = val.DepName;
+            // this.field.LabCName = val.LabCName;
         },
         typeSearch: function(val) {
             this.makePageData();
@@ -80,8 +73,6 @@ const app = new Vue({
                     search: this.search,
                     type: this.conditionType,
                     type: this. typeSearch,
-                    //sortBy: this.sortBy,
-                    //sortType: this.sortType,
                     page: this.page,
                     perPage: this.perPage,
                 }
@@ -123,11 +114,12 @@ const app = new Vue({
                         this.name = null;
                         this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            type: 'warning',
+                            icon: 'warning_amber',
+                            position: ' top-right',
                         });
                     }
                 });
@@ -153,11 +145,12 @@ const app = new Vue({
                         this.mainId = null;
                         this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            type: 'warning',
+                            icon: 'warning_amber',
+                            position: ' top-right',
                         });
                     }
                 });
