@@ -111,12 +111,12 @@
         </div>
 
         <v-row>
-            <label for="">บริษัทที่รับตรวจแล็บ</label>
+            <label for="">รหัสแผนกส่งตรวจ</label>
             <vs-input label-placeholder="" type="text" v-model="code" size="large" readonly />
         </v-row>
         <br>
         <v-row>
-            <label for="">บริษัทที่รับตรวจแล็บ</label>
+            <label for="">ชื่อแผนกส่งตรวจ</label>
             <vs-input label-placeholder="" type="text" v-model="name" size="large" />
         </v-row>
         <div class="centex mt-3">
