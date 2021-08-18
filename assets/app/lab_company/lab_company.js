@@ -8,20 +8,14 @@ const app = new Vue({
             ],
             typeSearch: 1,
             popupActive: false,
-            field: {
-                LCID: null,
-                LabCName: null,
-            },
             id: null,
             totalItems: 0,
             recordData: [],
             selected: [],
-            sortBy: '',
-            sortType: '',
             pagination: {
                 last_page: 0,
             },
-            isTable: false,
+            //isTable: false,
             idSelect: null,
             action: null,
             code: null,
@@ -44,8 +38,8 @@ const app = new Vue({
         },
         selected: function(val) {
             this.id = val.LabCID;
-            this.field.LCID = val.LCID;
-            this.field.LabCName = val.LabCName;
+            // this.field.LCID = val.LCID;
+            // this.field.LabCName = val.LabCName;
         },
         typeSearch: function(val) {
             this.makePageData();
@@ -66,8 +60,6 @@ const app = new Vue({
                     search: this.search,
                     //type: this.conditionType,
                     type: this. typeSearch,
-                    sortBy: this.sortBy,
-                    sortType: this.sortType,
                     page: this.page,
                     perPage: this.perPage,
                 }
@@ -108,7 +100,7 @@ const app = new Vue({
                         this.code = null;
                         this.name = null;
                         this.popupActive = false;
-                        $('#edit-dialog').modal("hide");
+
                     } else {
                         this.$vs.notify({
                             title: 'ผิดพลาด',
@@ -160,7 +152,6 @@ const app = new Vue({
                         this.popupActive = true;
                     }
                 });
-            $('#edit-dialog').modal("show");
         },
         editDialog(id) {
             this.action = "update";

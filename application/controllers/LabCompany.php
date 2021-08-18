@@ -33,8 +33,8 @@ class LabCompany extends CI_Controller {
 
 	public function getLabCompany()
     {
-        $sortBy = $this->input->get('sortBy');
-        $sortType = $this->input->get('sortType');
+        // $sortBy = $this->input->get('sortBy');
+        // $sortType = $this->input->get('sortType');
         $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
         $perPage = $this->input->get('perPage');
 
@@ -51,9 +51,6 @@ class LabCompany extends CI_Controller {
             }
         }
 
-        if (!empty($this->input->get('sortBy'))) {
-            $sort .= 'ORDER BY "tbproductcategory.'.$sortBy.'" '.$sortType;
-        }
 
         $queue = $this->LabCompanyModel->getDataPerpage($this->session->userdata('id'), $condition,$sort, $page, $perPage);
         $total = $this->LabCompanyModel->total($this->session->userdata('id'), $condition);
