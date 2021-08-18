@@ -35,7 +35,54 @@
                         </div>
                     </div>
                     <div>
-                        <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
+                        <!-- <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table> -->
+
+                        <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
+                            :max-items="perPage" :data="recordData">
+                            <template slot="thead">
+                                <vs-th sort-key="ProcedureIDs">
+                                    รหัสรายการหัตถการ
+                                </vs-th>
+                                <vs-th sort-key="ProcedureName">
+                                    ชื่อรายการหัตถการ
+                                </vs-th>
+                                <vs-th sort-key="ProcedurePrice">
+                                    ค่าใช้จ่าย
+                                </vs-th>
+                                <vs-th class="centerx">
+                                    จัดการ
+                                </vs-th>
+                            </template>
+
+                            <template slot-scope="{data}">
+                                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                                    <vs-td :data="data[indextr].ProcedureIDs">
+                                        {{data[indextr].ProcedureIDs}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].ProcedureName">
+                                        {{data[indextr].ProcedureName}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].ProcedurePrice">
+                                        {{data[indextr].ProcedurePrice}}
+                                    </vs-td>
+
+                                    <vs-td :data="data[indextr].ProcedureIDs">
+                                        <div class="centerx">
+                                            <vs-tooltip text="แก้ไขข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled"
+                                                    icon="drive_file_rename_outline"
+                                                    @click="editDialog(data[indextr].ProcedureID)"></vs-button>
+                                            </vs-tooltip>
+                                            <vs-tooltip text="ลบข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete"
+                                                    @click="deleteDialog(data[indextr].ProcedureID)"></vs-button>
+                                            </vs-tooltip>
+                                        </div>
+                                    </vs-td>
+                                </vs-tr>
+                            </template>
+                        </vs-table>
+                        <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page"></vs-pagination>
                     </div>
 
                 </div>

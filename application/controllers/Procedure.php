@@ -33,7 +33,13 @@ class Procedure extends CI_Controller {
 
 	public function getProcedure()
     {
+
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
@@ -44,11 +50,17 @@ class Procedure extends CI_Controller {
             }
         }
 
-        $queue = $this->ProcedureModel->getDataPerpage($this->session->userdata('id'), $condition);
+        $queue = $this->ProcedureModel->getDataPerpage($this->session->userdata('id'), $condition,$sort, $page, $perPage);
+        $total = $this->ProcedureModel->total($this->session->userdata('id'), $condition);
+
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode([
+                'result'=> true,
+                'data' => $queue,
+                'total' => $total->NUM_OF_ROW
+            ]);
         } else {
             echo json_encode(['result'=> false]);
         }

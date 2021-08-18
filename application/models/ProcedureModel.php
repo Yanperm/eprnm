@@ -3,18 +3,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ProcedureModel extends CI_Model
 {
-    public function getDataPerpage($clinicId, $condition)
+    public function getDataPerpage($clinicId, $condition,$sort, $page, $perPage)
     {
         $query = $this->db->query(
             '
             SELECT * FROM tbProcedure 
-            where CLINICID = "' . $clinicId . '" '.$condition.'
+            where CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.' 
             order by ProcedureIDs ASC
+            LIMIT '.$page.','.$perPage.'
           '
         );
 
         if ($query->num_rows() > 0) {
             return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function total($clinicId, $condition){
+       
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW 
+            FROM tbProcedure 
+            WHERE CLINICID = "' . $clinicId . '" '.$condition
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
         } else {
             return array();
         }
