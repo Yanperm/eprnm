@@ -70,8 +70,8 @@
             <div class="card-body">
                 <div class="noSwipe">
 
-                    <vs-table :sst="true" @sort="handleSort" v-model="selected" :total="totalItems" :max-items="perPage"
-                        :data="recordData">
+                    <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
+                        :max-items="perPage" :data="recordData">
                         <template slot="thead">
                             <vs-th sort-key="member.CUSTOMERNAME">
                                 ผู้ป่วย

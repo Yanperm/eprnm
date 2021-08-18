@@ -241,6 +241,10 @@
     .mdrp__panel.dropdown-menu {
         z-index: 999 !important;
     }
+
+    .vs-con-table.stripe .tr-values:nth-child(2n) {
+        background: #f5f5f5 !important;
+    }
     </style>
 
     <?php
