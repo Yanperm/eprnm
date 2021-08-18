@@ -3,7 +3,25 @@ const app = new Vue({
     data() {
 
         return {
-            isTable: false,
+            optionTypeSearch: [
+                { text: 'รหัสการทดสอบ', value: 1 },
+                { text: 'ชื่อการทดสอบ', value: 2 },
+                { text: 'บริษัทที่รับตรวจแล็บ', value: 3 },
+                { text: 'แผนกส่งตรวจ', value: 4 },
+            ],
+            typeSearch: 1,
+            popupActive: false,
+            id: null,
+            totalItems: 0,
+            recordData: [],
+            selected: [],
+            sortBy: '',
+            sortType: '',
+            pagination: {
+                last_page: 0,
+            },
+
+            //isTable: false,
             idSelect: null,
             action: null,
             code: null,
@@ -19,79 +37,23 @@ const app = new Vue({
             record: [],
             search: '',
             conditionType: '1',
-            data3: [],
-            columns1: [{
-                title: 'รหัสรายการส่งตรวจ',
-                key: 'SPID',
-                sortType: 'normal',
-            }, {
-                title: "ชื่อการทดสอบ",
-                key: 'STESTNAME',
-                sortType: 'normal',
-
-            }, {
-                title: "แผนกส่งตรวจ",
-                key: 'DepName',
-                sortType: 'normal',
-
-            }, {
-                title: "บริษัทที่รับตรวจแล็บ",
-                key: 'LabCName',
-                sortType: 'normal',
-
-            }, {
-                title: "ต้นทุน",
-                key: 'Price',
-                sortType: 'normal',
-
-            }, {
-                title: "ราคา",
-                key: 'PriceSale',
-                sortType: 'normal',
-
-            }, {
-                title: 'จัดการ',
-                key: 'operation',
-                render: (h, params) => {
-
-                    return h('div', [h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'warning',
-                                icon: 'icon-edit'
-                            },
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.editDialog(params.item.SID);
-                                }
-                            }
-                        }, ''),
-                        h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'error',
-                                icon: 'icon-trash-2'
-                            },
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.deleteDialog(params.item.SID)
-                                }
-                            }
-                        }, ''),
-                    ])
-
-                },
-
-            }, ],
+           
         }
+    },
+    watch: {
+        page: function(val) {
+            this.page = val;
+            this.makePageData();
+        },
+        search: function(val) {
+            this.makePageData();
+        },
+        selected: function(val) {
+            this.id = val.SID;
+        },
+        typeSearch: function(val) {
+            this.makePageData();
+        },
     },
     mounted() {
         this.record = this.makePageData();
@@ -118,11 +80,19 @@ const app = new Vue({
                     this.department = response.data.data;
                 });
         },
+        handleSort(key, active) {
+            this.sortBy = key;
+            this.sortType = active;
+            this.makePageData();
+        },
         makePageData() {
             axios.get("checkList/getCheckList", {
                 params: {
                     search: this.search,
-                    type: this.conditionType,
+                    //type: this.conditionType,
+                    type: this. typeSearch,
+                    page: this.page,
+                    perPage: this.perPage
                 }
             }).then((response) => {
                 let pageData = [];
@@ -132,8 +102,13 @@ const app = new Vue({
                     for (let i = 0; i < response.data.data.length; i++) {
                         pageData = pageData.concat(response.data.data[i])
                     }
+
+                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } else {
+                    this.pagination.last_page = 0;
                 }
-                this.data3 = pageData;
+                this.totalItems = pageData.length;
+                this.recordData = pageData;
             });
         },
         saveItem() {
@@ -147,22 +122,25 @@ const app = new Vue({
                     price: this.price
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
+                            color: 'success',
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลสำเร็จ',
+                            type: 'success',
+                            icon: 'check',
+                            position: ' top-right',
                         });
                         this.makePageData();
                         this.code = null;
                         this.name = null;
-                        $('#edit-dialog').modal("hide");
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            type: 'warning',
+                            icon: 'warning_amber',
+                            position: ' top-right',
                         });
                     }
                 });
@@ -177,24 +155,27 @@ const app = new Vue({
                     price: this.price
                 }).then((response) => {
                     if (response.data.result) {
-                        this.$Notify({
+                        this.$vs.notify({
+                            color: 'success',
                             title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
+                            text: 'บันทึกข้อมูลสำเร็จ',
+                            type: 'success',
+                            icon: 'check',
+                            position: 'top-right',
                         });
                         this.makePageData();
                         this.code = null;
                         this.name = null;
                         this.mainId = null;
                         this.subId = null;
-                        $('#edit-dialog').modal("hide");
+                        this.popupActive = false;
                     } else {
-                        this.$Notify({
+                        this.$vs.notify({
                             title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            type: 'warning',
+                            icon: 'warning_amber',
+                            position: ' top-right',
                         });
                     }
                 });
@@ -212,9 +193,10 @@ const app = new Vue({
                 .then((response) => {
                     if (response.data.result) {
                         this.code = "T" + ('000' + (response.data.maxId + 1)).slice(-4);
+                        this.popupActive = true;
                     }
                 });
-            $('#edit-dialog').modal("show");
+            
         },
         editDialog(id) {
             this.action = "update";
@@ -232,41 +214,49 @@ const app = new Vue({
                     this.cost = result.Price;
                     this.price = result.PriceSale;
                     this.mainId = result.LabCID;
+                    this.popupActive = true;
 
                     setTimeout(function() {
                         this.getDepartment()
                         this.subId = result.DepID;
                     }.bind(this), 1000)
-                    $('#edit-dialog').modal("show");
                 }
             });
         },
-        deleteDialog(id) {
-            this.idSelect = id;
-            $('#delete-dialog').modal('show');
+        openConfirm() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
         },
-        deleteItem() {
+        acceptAlert() {
             axios.post("checkList/delete", {
-                id: this.idSelect,
+                id: this.id,
             }).then((response) => {
                 if (response.data.result) {
-                    this.$Notify({
-                        title: 'สำเร็จ',
-                        duration: 5000,
-                        message: 'ลบข้อมูลสำเร็จ',
-                        type: 'success'
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
                     });
                     this.makePageData();
-                    this.idSelect = null;
-                    $('#delete-dialog').modal('hide');
+                    this.selected = [];
                 } else {
-                    this.$Notify({
+                    this.$vs.notify({
                         title: 'ผิดพลาด',
-                        duration: 5000,
-                        message: 'กรุณาลองใหม่อีกครั้ง',
-                        type: 'warning'
-                    });
-                    $('#delete-dialog').modal('hide');
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+
+                    })
                 }
             });
         },

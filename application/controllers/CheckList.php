@@ -35,14 +35,22 @@ class CheckList extends CI_Controller {
 
 	public function getCheckList()
     {
+
+        // $sortBy = $this->input->get('sortBy');
+        // $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
-                $condition .= ' AND checklist.SPID like "%'.$search.'%"';
+                $condition .= ' AND SPID like "%'.$search.'%"';
             }
             if ($this->input->get('type') == '2') {
-                $condition .= ' AND checklist.STESTNAME like "%'.$search.'%"';
+                $condition .= ' AND STESTNAME like "%'.$search.'%"';
             }
 
             if ($this->input->get('type') == '3') {
@@ -54,11 +62,17 @@ class CheckList extends CI_Controller {
             }
         }
 
-        $queue = $this->CheckListModel->getDataPerpage($this->session->userdata('id'), $condition);
+        $queue = $this->CheckListModel->getDataPerpage($this->session->userdata('id'), $condition,$sort, $page, $perPage);
+        $total = $this->CheckListModel->total($this->session->userdata('id'), $condition);
+
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode([
+                'result'=> true,
+                'data' => $queue,
+                'total' => $total->NUM_OF_ROW
+            ]);
         } else {
             echo json_encode(['result'=> false]);
         }
