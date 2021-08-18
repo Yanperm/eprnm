@@ -3,20 +3,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class DepartmentModel extends CI_Model
 {
-    public function getDataPerpage($clinicId, $condition)
+    public function getDataPerpage($clinicId, $condition,$sort, $page, $perPage)
     {
         
         $query = $this->db->query(
             '
-            SELECT * FROM tbdepartment as dep
-            inner join tblabscompany as company on company.LabCID = dep.LabCID
-            where dep.CLINICID = "' . $clinicId . '" '.$condition.'
-            order by company.LabCName ASC
+            SELECT * FROM tbdepartment as dep 
+            inner join tblabscompany as company on company.LabCID = dep.LabCID 
+            where dep.CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.' 
+            order by company.LabCName ASC 
+            LIMIT '.$page.','.$perPage.' 
           '
         );
 
         if ($query->num_rows() > 0) {
             return $query->result();
+        } else {
+            return array();
+        }
+    }
+
+    public function total($clinicId, $condition){
+       
+        $query = $this->db->query(
+            '
+            SELECT COUNT(*) AS NUM_OF_ROW 
+            FROM tbdepartment 
+            inner join tblabscompany as company on company.LabCID = tbdepartment.LabCID
+            WHERE tbdepartment.CLINICID = "' . $clinicId . '" '.$condition
+        );
+
+        if ($query->num_rows() > 0) {
+            return $query->row();
         } else {
             return array();
         }

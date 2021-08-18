@@ -5,7 +5,6 @@ class ShowUserModel extends CI_Model {
 
     public function getDataPerpage($clinicId, $condition, $sort, $page, $perPage)
     {
-        
         $query = $this->db->query(
             '
             SELECT * FROM tbuser
@@ -14,18 +13,19 @@ class ShowUserModel extends CI_Model {
            
         );
 
-        if ($query->num_rows() > 0) {
+        if ($query) {
             return $query->result();
         } else {
             return array();
         }
     }
 
-    public function total($clinicId, $condition){
+    public function total($clinicId,$condition){
        
         $query = $this->db->query(
             '
-            SELECT COUNT(*) AS NUM_OF_ROW FROM tbuser 
+            SELECT COUNT(*) AS NUM_OF_ROW 
+            FROM tbuser 
             '.$condition
         );
 

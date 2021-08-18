@@ -45,7 +45,8 @@ class ShowUser extends CI_Controller{
         //ค้นหา
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
-            $condition .= 'WHERE tbuser.UserName like "%'.$search.'%"'; 
+            $condition .= ' where tbuser.UserName like "%'.$search.'%"';
+            
         }
 
         if (!empty($this->input->get('sortBy'))) {

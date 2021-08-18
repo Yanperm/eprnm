@@ -34,14 +34,22 @@ class Department extends CI_Controller {
 
 	public function getDepartment()
     {
+
+        // $sortBy = $this->input->get('sortBy');
+        // $sortType = $this->input->get('sortType');
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
-                $condition .= ' AND dep.DID like "%'.$search.'%"';
+                $condition .= ' AND DID like "%'.$search.'%"';
             }
             if ($this->input->get('type') == '2') {
-                $condition .= ' AND dep.DepName like "%'.$search.'%"';
+                $condition .= ' AND DepName like "%'.$search.'%"';
             }
 
             if ($this->input->get('type') == '3') {
@@ -49,11 +57,18 @@ class Department extends CI_Controller {
             }
         }
 
-        $queue = $this->DepartmentModel->getDataPerpage($this->session->userdata('id'), $condition);
+
+        $queue = $this->DepartmentModel->getDataPerpage($this->session->userdata('id'), $condition,$sort, $page, $perPage);
+        $total = $this->DepartmentModel->total($this->session->userdata('id'), $condition);
+        
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode([
+                'result'=> true,
+                'data' => $queue,
+                'total' => $total->NUM_OF_ROW
+            ]);
         } else {
             echo json_encode(['result'=> false]);
         }
