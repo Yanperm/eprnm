@@ -245,6 +245,13 @@
     .vs-con-table.stripe .tr-values:nth-child(2n) {
         background: #f5f5f5 !important;
     }
+
+    .vs-table--tbody-table .tr-values:not(.activeEdit):not(.tr-expandedx):not(.hoverFlat):hover {
+        z-index: 200;
+        background: #e8e7e7 !important;
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
+    }
     </style>
 
     <?php
