@@ -252,6 +252,46 @@
         -webkit-transform: translateY(0px);
         transform: translateY(0px);
     }
+
+    .vs-con-table.stripe .tr-values:nth-child(2n) {
+        background: #ffffff !important;
+        border: 1px solid #dfdfdf;
+    }
+
+    .vs-table--tbody-table .tr-values:last-child {
+        border: 1px solid#dfdfdf;
+    }
+
+    .vs-table-primary .is-selected td:first-child {
+        border-left: 1px solid #dfdfdf !important;
+    }
+
+    .card-table tr th:first-child,
+    .card-table tr td:first-child {
+        padding-left: 20px;
+        border-left: 1px solid #dfdfdf;
+    }
+
+    .vs-table--thead {
+
+        border: 1px solid #ececec;
+    }
+
+    thead tr {
+        background: #f7f7f7 !important;
+    }
+
+    .vs-table--tbody-table .tr-values td {
+        padding: 3px;
+        font-size: 14px;
+    }
+
+    .vs-table--tbody-table tr {
+        -webkit-transition: all .3s ease;
+        transition: all .3s ease;
+        background: #fff;
+        border-right: 1px solid #dfdfdf;
+    }
     </style>
 
     <?php
@@ -453,7 +493,7 @@
                                         </li>
                                         <li><a href="<?php echo base_url('productSub');?>">กลุ่มยารอง</a>
                                         </li>
-                                        <li><a href="<?php echo base_url();?>">เพิ่มยาใหม่</a>
+                                        <li><a href="<?php echo base_url('add-product');?>">เพิ่มยาใหม่</a>
                                         </li>
                                         <li><a href="<?php echo base_url('product');?>">คลังยา</a>
                                         </li>
