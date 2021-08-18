@@ -290,7 +290,7 @@
         -webkit-transition: all .3s ease;
         transition: all .3s ease;
         background: #fff;
-        border-right: 1px solid #dfdfdf;
+        border: 1px solid #dfdfdf;
     }
     </style>
 
