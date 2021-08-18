@@ -93,58 +93,49 @@
     <div class="row">
         <!--COMMENT1-->
         <div class="col-12 col-lg-6">
-            <div class="card card-table">
+            <div class="card-table" style="background:#ffffff">
                 <div class="card-header">
+
                     <div class="title">คิวรอนุมัติการจองรายการล่าสุด</div>
                 </div>
                 <div class="card-body table-responsive">
-                    <vs-table :sst="true" v-model="selectedBooking" :data="recordBooking">
-                        <template slot="thead">
-                            <vs-th></vs-th>
-                            <vs-th>
-                                ผู้ป่วย
-                            </vs-th>
-                            <vs-th>
-                                คิวที่
-                            </vs-th>
-                            <vs-th>
-                                วันและเวลา
-                            </vs-th>
-                            <vs-th>
-                                สถานะคิว
-                            </vs-th>
-                        </template>
-
-                        <template slot-scope="{data}">
-                            <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
-                                <vs-td :data="data[indextr].BOOKINGID">
-                                    <vs-avatar v-if="data[indextr].IMAGE == null" :text="data[indextr].CUSTOMERNAME" />
-                                    <vs-avatar v-else :src="data[indextr].IMAGE" />
-                                </vs-td>
-                                <vs-td :data="data[indextr].BOOKINGID">
-                                    {{data[indextr].CUSTOMERNAME}}
-                                </vs-td>
-                                <vs-td :data="data[indextr].QUES">
-                                    {{data[indextr].QUES}}
-                                </vs-td>
-                                <vs-td :data="data[indextr].BOOKDATE">
-                                    <?php print_r(dateFormatThai('{{data[indextr].BOOKDATE}}'));?>
-                                </vs-td>
-                                <vs-td :data="data[indextr].BOOKINGID">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>ผู้ป่วย</th>
+                                <th>คิวที่</th>
+                                <th>วันที่</th>
+                                <th class="actions">จัดการคิว</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in recordBooking" :key="item.BOOKINGID">
+                                <td>
+                                    <vs-avatar v-if="item.IMAGE == null" :text="item.CUSTOMERNAME" />
+                                    <vs-avatar v-else :src="item.IMAGE" />
+                                </td>
+                                <td class="user-avatar">
+                                    {{ item.CUSTOMERNAME }}
+                                </td>
+                                <td>{{ item.QUES }}</td>
+                                <td>{{ item.BOOKDATE }}</td>
+                                <td class="actions">
                                     <div class="centerx">
                                         <vs-tooltip text="ยืนยันการจอง">
                                             <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="check"
-                                                @click="openConfirmAccept(data[indextr].BOOKINGID)"></vs-button>
+                                                @click="openConfirmAccept(item.BOOKINGID)"></vs-button>
                                         </vs-tooltip>
                                         <vs-tooltip text="ยกเลิกการจอง">
                                             <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="close"
-                                                @click="openConfirmCancel(data[indextr].BOOKINGID)"></vs-button>
+                                                @click="openConfirmCancel(item.BOOKINGID)"></vs-button>
                                         </vs-tooltip>
                                     </div>
-                                </vs-td>
-                            </vs-tr>
-                        </template>
-                    </vs-table>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -225,6 +216,18 @@ table .material-icons {
 
 .con-vs-avatar {
     font-size: 18px;
+}
+
+.table-responsive thead tr {
+    background: #ffffff !important;
+    border-top: 1px solid #ffffff;
+}
+
+.table-responsive .table th,
+.table td {
+    padding: 12px 10px;
+    vertical-align: top;
+    border-top: 1px solid #ffffff;
 }
 </style>
 
