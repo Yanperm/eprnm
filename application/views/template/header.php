@@ -292,6 +292,12 @@
         background: #fff;
         border: 1px solid #dfdfdf;
     }
+
+    .vs-popup--content {
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: auto;
+    }
     </style>
 
     <?php
