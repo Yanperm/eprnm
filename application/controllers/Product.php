@@ -33,7 +33,12 @@ class Product extends CI_Controller {
 
 	public function getProduct()
     {
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
         $condition = '';
+        $sort = '';
+
         if (!empty($this->input->get('search'))) {
             $search = $this->input->get('search');
             if ($this->input->get('type') == '1') {
@@ -53,11 +58,13 @@ class Product extends CI_Controller {
             
         }
 
-        $queue = $this->ProductModel->getDataPerpage($this->session->userdata('id'), $condition);
+        $queue = $this->ProductModel->getDataPerpage($this->session->userdata('id'), $condition,$sort, $page, $perPage);
+        $total = $this->ProductModel->total($this->session->userdata('id'), $condition);
+
         header('Content-Type: application/json');
 
         if ($queue) {
-            echo json_encode(['result'=> true,'data' => $queue]);
+            echo json_encode(['result'=> true,'data' => $queue, 'total' => $total->NUM_OF_ROW]);
         } else {
             echo json_encode(['result'=> false]);
         }

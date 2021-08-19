@@ -36,7 +36,59 @@
                         </div>
                     </div>
                     <div>
-                        <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
+                        <!-- <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table> -->
+                        <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
+                            :max-items="perPage" :data="recordData">
+                            <template slot="thead">
+                                <vs-th sort-key="ProID">
+                                    รหัสยา
+                                </vs-th>
+                                <vs-th sort-key="BrandName">
+                                    ชื่อการค้า
+                                </vs-th>
+                                <vs-th sort-key="CommonName">
+                                    ชื่อสามัญ
+                                </vs-th>
+                                <vs-th sort-key="Barcode">
+                                    Barcode
+                                </vs-th>
+                                <vs-th class="centerx">
+                                    จัดการ
+                                </vs-th>
+                            </template>
+
+                            <template slot-scope="{data}">
+                                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                                    <vs-td :data="data[indextr].ProID">
+                                        {{data[indextr].ProID}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].BrandName">
+                                        {{data[indextr].BrandName}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].CommonName">
+                                        {{data[indextr].CommonName}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].Barcode">
+                                        {{data[indextr].Barcode}}
+                                    </vs-td>
+
+                                    <vs-td :data="data[indextr].ProID">
+                                        <div class="centerx">
+                                            <vs-tooltip text="แก้ไขข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled"
+                                                    icon="drive_file_rename_outline"
+                                                    @click="editDialog(data[indextr].ProductID)"></vs-button>
+                                            </vs-tooltip>
+                                            <vs-tooltip text="ลบข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete"
+                                                    @click="deleteDialog(data[indextr].ProductID)"></vs-button>
+                                            </vs-tooltip>
+                                        </div>
+                                    </vs-td>
+                                </vs-tr>
+                            </template>
+                        </vs-table>
+                        <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page"></vs-pagination>
                     </div>
                 </div>
             </div>

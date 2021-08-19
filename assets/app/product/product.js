@@ -3,7 +3,7 @@ const app = new Vue({
     data() {
 
         return {
-            isTable: false,
+            //isTable: false,
             idSelect: null,
             action: null,
             code: null,
@@ -13,79 +13,99 @@ const app = new Vue({
             record: [],
             search: '',
             conditionType: '1',
-            data3: [],
-            columns1: [{
-                title: 'รหัสยา',
-                key: 'ProID',
-            }, {
-                title: "ชื่อการค้า",
-                key: 'BrandName',
-                sortType: 'normal',
+            pagination: {
+                last_page: 0,
+            },
+            totalItems: 0,
+            recordData: [],
+            selected: [],
+            // data3: [],
+            // columns1: [{
+            //     title: 'รหัสยา',
+            //     key: 'ProID',
+            // }, {
+            //     title: "ชื่อการค้า",
+            //     key: 'BrandName',
+            //     sortType: 'normal',
 
-            }, {
-                title: "ชื่อสามัญ",
-                key: 'CommonName',
-                sortType: 'normal',
+            // }, {
+            //     title: "ชื่อสามัญ",
+            //     key: 'CommonName',
+            //     sortType: 'normal',
 
-            }, {
-                title: "Barcode",
-                key: 'Barcode',
-                sortType: 'normal',
+            // }, {
+            //     title: "Barcode",
+            //     key: 'Barcode',
+            //     sortType: 'normal',
 
-            }, {
-                title: 'จัดการ',
-                key: 'operation',
-                render: (h, params) => {
+            // }, {
+            //     title: 'จัดการ',
+            //     key: 'operation',
+            //     render: (h, params) => {
 
-                    return h('div', [h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'warning',
-                                icon: 'icon-edit'
-                            },
+            //         return h('div', [h('AtButton', {
+            //                 props: {
+            //                     size: 'small',
+            //                     hollow: false,
+            //                     type: 'warning',
+            //                     icon: 'icon-edit'
+            //                 },
 
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.editDialog(params.item.ProductID);
-                                }
-                            }
-                        }, ''),
-                        h('AtButton', {
-                            props: {
-                                size: 'small',
-                                hollow: false,
-                                type: 'error',
-                                icon: 'icon-trash-2'
-                            },
-                            style: {
-                                marginRight: '8px'
-                            },
-                            on: {
-                                click: () => {
-                                    this.deleteDialog(params.item.ProductID);
-                                }
-                            }
-                        }, ''),
-                    ])
+            //                 style: {
+            //                     marginRight: '8px'
+            //                 },
+            //                 on: {
+            //                     click: () => {
+            //                         this.editDialog(params.item.ProductID);
+            //                     }
+            //                 }
+            //             }, ''),
+            //             h('AtButton', {
+            //                 props: {
+            //                     size: 'small',
+            //                     hollow: false,
+            //                     type: 'error',
+            //                     icon: 'icon-trash-2'
+            //                 },
+            //                 style: {
+            //                     marginRight: '8px'
+            //                 },
+            //                 on: {
+            //                     click: () => {
+            //                         this.deleteDialog(params.item.ProductID);
+            //                     }
+            //                 }
+            //             }, ''),
+            //         ])
 
-                },
+            //     },
 
-            }, ],
+            // }, ],
         }
+    },
+    watch: {
+        page: function(val) {
+            this.page = val;
+            this.makePageData();
+        },
+        search: function(val) {
+            this.makePageData();
+        },
     },
     mounted() {
         this.record = this.makePageData();
     },
     methods: {
+        handleSort() {
+            this.makePageData();
+        },
         makePageData() {
             axios.get("product/getProduct", {
                 params: {
                     search: this.search,
                     type: this.conditionType,
+                    page: this.page,
+                    perPage: this.perPage,
                 }
             }).then((response) => {
                 let pageData = [];
@@ -95,9 +115,13 @@ const app = new Vue({
                     for (let i = 0; i < response.data.data.length; i++) {
                         pageData = pageData.concat(response.data.data[i])
                     }
-                }
 
-                this.data3 = pageData;
+                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                } else {
+                    this.pagination.last_page = 0;
+                }
+                this.totalItems = pageData.length;
+                this.recordData = pageData;
             });
         },
         saveItem() {
