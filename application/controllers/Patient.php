@@ -8,6 +8,7 @@ class Patient extends CI_Controller
         parent::__construct();
         //  $this->logged_in();
         $this->load->model('BookingModel');
+        $this->load->model('PatientsModel');
         $this->load->model('MemberModel');
         $this->load->library('S3_upload');
         $this->load->library('S3');
@@ -25,6 +26,45 @@ class Patient extends CI_Controller
         $this->load->view('patient/list_data');
         $this->load->view('template/footer');
     }
+
+    public function getListDataMember()
+    {
+
+        $page = (intval($this->input->get('page')) - 1) * $this->input->get('perPage');
+        $perPage = $this->input->get('perPage');
+
+        $condition = '';
+        $sort = '';
+
+        if (!empty($this->input->get('search'))) {
+            $search = $this->input->get('search');
+            if ($this->input->get('type') == '1') {
+                $condition .= ' AND CUSTOMERNAME like "%'.$search.'%"';
+            }
+            if ($this->input->get('type') == '2') {
+                $condition .= ' AND IDCARD like "%'.$search.'%"';
+            }
+            if ($this->input->get('type') == '3') {
+                $condition .= ' AND PHONE like "%'.$search.'%"';
+            }
+        }
+
+        $member = $this->PatientsModel->getDataPerpageListData($this->session->userdata('id'), $condition, $sort, $page, $perPage);
+        $total = $this->PatientsModel->totalListData($this->session->userdata('id'), $condition);
+
+        header('Content-Type: application/json');
+
+        if ($member) {
+            echo json_encode([
+                'result'=> true,
+                'data' => $member,
+                'total' => $total->NUM_OF_ROW
+            ]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
 
     public function getList(){
         $date = date('Y-m-d');

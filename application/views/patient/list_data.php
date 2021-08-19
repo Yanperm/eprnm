@@ -1,9 +1,9 @@
 <div class="page-head">
-    <h2 class="page-head-title">ผู้ป่วย</h2>
+    <h2 class="page-head-title">ฐานข้อมูลผู้ป่วย</h2>
     <nav aria-label="breadcrumb" role="navigation">
         <ol class="breadcrumb page-head-nav">
             <li class="breadcrumb-item"><a href="<?php echo base_url('dashboard') ?>">Dashboard</a></li>
-            <li class="breadcrumb-item active">รายชื่อผู้ป่วย</li>
+            <li class="breadcrumb-item active">ฐานข้อมูลผู้ป่วย</li>
         </ol>
     </nav>
 </div>
@@ -39,7 +39,68 @@
             <div class="card-body">
                 <div class="noSwipe">
                     <div>
-                        <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table>
+                        <!-- <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table> -->
+                        <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
+                            :max-items="perPage" :data="recordData">
+                            <template slot="thead">
+                                <vs-th sort-key="IDCARD">
+                                    เลขบัตรประชาชน
+                                </vs-th>
+                                <vs-th sort-key="CUSTOMERNAME">
+                                    ชื่อ-นามสกุล
+                                </vs-th>
+                                <vs-th sort-key="BIRTHDAY">
+                                    วันเกิด
+                                </vs-th>
+                                <vs-th sort-key="PHONE">
+                                    เบอร์โทรศัพท์
+                                </vs-th>
+                                <vs-th sort-key="LINEID">
+                                    Line ID
+                                </vs-th>
+                                <vs-th sort-key="">
+                                    สถานะสมาชิก
+                                </vs-th>
+                                <vs-th sort-key="">
+                                    Drop Member
+                                </vs-th>
+                            </template>
+
+                            <template slot-scope="{data}">
+                                <vs-tr :data="tr" :key="indextr" v-for="(tr, indextr) in data">
+                                    <vs-td :data="data[indextr].IDCARD">
+                                        {{data[indextr].IDCARD}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].CUSTOMERNAME">
+                                        {{data[indextr].CUSTOMERNAME}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].BIRTHDAY">
+                                        {{data[indextr].BIRTHDAY}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].PHONE">
+                                        {{data[indextr].PHONE}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].LINEID">
+                                        {{data[indextr].LINEID}}
+                                    </vs-td>
+
+                                    <!-- <vs-td :data="data[indextr].ProcedureIDs">
+                                        <div class="centerx">
+                                            <vs-tooltip text="แก้ไขข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled"
+                                                    icon="drive_file_rename_outline"
+                                                    @click="editDialog(data[indextr].ProcedureID)"></vs-button>
+                                            </vs-tooltip>
+                                            <vs-tooltip text="ลบข้อมูล">
+                                                <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete"
+                                                    @click="deleteDialog(data[indextr].ProcedureID)"></vs-button>
+                                            </vs-tooltip>
+                                        </div>
+                                    </vs-td> -->
+                                </vs-tr>
+                            </template>
+                        </vs-table>
+                        <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page"></vs-pagination>
                     </div>
 
                 </div>
@@ -112,210 +173,43 @@
         data() {
 
             return {
-                isTable: false,
                 page: 1,
-                date: [],
                 perPage: 10,
                 record: [],
-                typeSearch1: false,
-                typeSearch2: false,
-                typeSearch3: false,
-                typeSearch4: false,
                 search: '',
                 conditionType: '1',
-                data3: [],
-                columns1: [{
-                    title: 'ผู้ป่วย',
-                    key: 'name',
-                    render: (h, params) => {
-                        return [
-                            h('img', {
-                                attrs: {
-                                    src: params.item.IMAGE || '<?php echo base_url();?>assets/img/avatar6.png',
-                                },
-                                class: 'avatar',
-                            }), h('span', {
-                                style: {
-                                    color: '#4285f4',
-                                    backgroundColor: 'transparent',
-                                }
-                            }, params.item.CUSTOMERNAME)
-                        ];
-                    }
-                }, {
-                    title: "สาเหตุที่มาพบแพทย์",
-                    key: 'DETAIL',
-                    sortType: 'normal',
-                    render: (h, params) => {
-                        return [h('p', params.item.DETAIL),
-                            h('span', {
-                                style: {
-                                    display: 'block',
-                                    fontSize: '0.8462rem',
-                                    color: '#999999'
-                                }
-                            }, params.item.BOOKINGID)
-                        ];
-                    }
-                }, {
-                    title: 'มือถือ/Line',
-                    key: 'PHONE',
-                    render: (h, params) => {
-                        return [h('p', params.item.PHONE),
-                            h('span', {
-                                style: {
-                                    display: 'block',
-                                    fontSize: '0.8462 rem',
-                                    color: '#999999',
-                                }
-                            }, params.item.LINEID)
-                        ];
-                    }
+                totalItems: 0,
+                recordData: [],
+                selected: [],
+                pagination: {
+                last_page: 0,
+                },
 
-                }, {
-                    title: 'คิวที่',
-                    key: 'queue',
-                    render: (h, params) => {
-                        return [
-                            h('span', params.item.QUES),
-                            h('span', {
-                                style: {
-                                    display: 'block',
-                                    fontSize: '0.8462 rem',
-                                    color: '#999999',
-                                }
-                            }, params.item.BOOK_ON)
-                        ];
-                    }
-                }, {
-                    title: 'วันที่นัดหมาย',
-                    key: 'bookdate',
-                    render: (h, params) => {
-                        return [
-                            h('span', params.item.BOOKDATE),
-                            h('span', {
-                                style: {
-                                    display: 'block',
-                                    fontSize: '0.8462rem',
-                                    color: '#999999'
-                                }
-                            }, params.item.BOOKTIME),
-
-                        ];
-                    }
-                }, {
-                    title: 'สถานะ',
-                    key: 'status',
-                    render: (h, params) => {
-                        if (params.item.CHECKIN == 1) {
-                            return [
-                                h('span', {
-                                    class: 'at-tag at-tag--success'
-                                }, [
-                                    h('span', {
-                                        class: 'at-tag__text'
-                                    }, "เช็คอินแล้ว")
-                                ]),
-                            ];
-                        }
-
-                        if (params.item.CHECKIN == 0) {
-                            return [
-                                h('span', {
-                                    class: 'at-tag at-tag--error'
-                                }, [
-                                    h('span', {
-                                        class: 'at-tag__text'
-                                    }, "ยังไม่เช็คอิน")
-                                ]),
-                            ];
-                        }
-                    },
-
-                }, {
-                    title: 'จัดการ',
-                    key: 'operation',
-                    render: (h, params) => {
-                        if (params.item.CHECKIN == 1) {
-                            return h('div', [
-                                h('AtButton', {
-                                    props: {
-                                        size: 'small',
-                                        hollow: false,
-                                        type: 'error',
-                                        icon: 'icon-trash-2'
-                                    },
-
-                                    style: {
-                                        marginRight: '8px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.$Message(params.item.name)
-                                        }
-                                    }
-                                }, 'ยกเลิก'),
-                            ])
-                        }
-
-                        if (params.item.CHECKIN == 0) {
-                            return h('div', [
-                                h('AtButton', {
-                                    props: {
-                                        size: 'small',
-                                        hollow: false,
-                                        type: 'warning',
-                                        icon: 'icon-edit'
-                                    },
-                                    style: {
-                                        marginRight: '8px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.checkin(params.item.BOOKINGID)
-                                        }
-                                    }
-                                }, 'เช็คอินให้'),
-                            ])
-                        }
-                    },
-
-                }, ],
             }
+        },
+        watch: {
+            page: function(val) {
+                this.page = val;
+                this.makePageData();
+            },
+            search: function(val) {
+                this.makePageData();
+            },
         },
         mounted() {
             this.record = this.makePageData();
         },
         methods: {
-            checkin(id) {
-                axios.post("<?php echo base_url('patient/checkin');?>", {
-                        id: id
-                    })
-                    .then((response) => {
-                        this.$Notify({
-                            title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'ทำการเช็คอิน หมายเลขการจอง ' + id + 'สำเร็จ',
-                            type: 'success'
-                        });
-                        this.makePageData()
-
-                    }, (response) => {});
-            },
-            handleChange(values) {
-                this.date = values
-                this.makePageData();
-            },
+            handleSort() {
+            this.makePageData();
+        },
             makePageData() {
-                axios.get("<?php echo base_url('patient/getQueue');?>", {
+                axios.get("<?php echo base_url('patient/getListDataMember');?>", {
                         params: {
                             search: this.search,
                             type: this.conditionType,
-                            typeSearch1: this.typeSearch1,
-                            typeSearch2: this.typeSearch2,
-                            typeSearch3: this.typeSearch3,
-                            typeSearch4: this.typeSearch4,
-                            date: this.date
+                            page: this.page,
+                            perPage: this.perPage,
                         }
                     })
                     .then((response) => {
@@ -326,13 +220,16 @@
                             for (let i = 0; i < response.data.data.length; i++) {
                                 pageData = pageData.concat(response.data.data[i])
                             }
+
+                             this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                        } else {
+                            this.pagination.last_page = 0;
                         }
-
-                        this.data3 = pageData;
-                    }, (response) => {
-
+                        this.totalItems = pageData.length;
+                        this.recordData = pageData;
                     });
             }
         }
     });
+
 </script>
