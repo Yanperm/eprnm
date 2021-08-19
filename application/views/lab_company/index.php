@@ -16,13 +16,15 @@
                         <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
                                 class="table-filter-title">ค้นหาบริษัทที่รับตรวจแล็บ</span>
                             <div class="filter-container">
-                                <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา"></at-input>
+                                <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา">
+                                </at-input>
                             </div>
                         </div>
                         <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
                                 class="table-filter-title">เงื่อนไขการค้นหา</span>
                             <div class="filter-container">
-                                <vs-select class="selectExample" label="" v-model="typeSearch" @on-change="makePageData">
+                                <vs-select class="selectExample" label="" v-model="typeSearch"
+                                    @on-change="makePageData">
                                     <vs-select-item :key="index" :value="item.value" :text="item.text"
                                         v-for="item,index in optionTypeSearch" />
                                 </vs-select>
@@ -47,7 +49,7 @@
             <div class="card-body">
                 <div class="noSwipe">
                     <div>
-                        <vs-table :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
+                        <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
                             :max-items="perPage" :data="recordData">
                             <template slot="thead">
                                 <vs-th sort-key="LCID">
@@ -87,7 +89,7 @@
                             </template>
                         </vs-table>
                         <vs-pagination class="mt-4" :total="pagination.last_page" v-model="page"></vs-pagination>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -106,5 +108,5 @@
         </div>
     </vs-popup>
 
-   
+
 </div>
