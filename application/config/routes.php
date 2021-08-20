@@ -65,6 +65,7 @@ $route['patient/manage-queue'] = 'patient/manageQueue';
 $route['patient/list'] = 'patient/listData';
 $route['patient/profile'] = 'patient/profile';
 
+$route['add-product'] = 'product/create';
 
 $route['close'] = 'time/close';
 $route['rest-day'] = 'time/restDay';

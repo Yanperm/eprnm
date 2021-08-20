@@ -298,6 +298,11 @@
         overflow-x: hidden;
         width: auto;
     }
+
+    .vuesax-app-is-ltr .vs-chip--text {
+        margin-left: 10px;
+        font-size: 12px;
+    }
     </style>
 
     <?php
