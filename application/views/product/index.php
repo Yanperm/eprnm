@@ -15,7 +15,7 @@
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
                         <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
-                                class="table-filter-title">ค้นหาบริษัทที่รับตรวจแล็บ</span>
+                                class="table-filter-title">ค้นหาคลังยา</span>
                             <div class="filter-container">
                                 <form>
                                     <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label>
@@ -46,8 +46,10 @@
                             <v-row vs-justify="right">
                                 <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center"
                                     vs-align="center" vs-w="3">
-                                    <vs-button type="filled" icon="add_circle_outline" @click="addDialog()">เพิ่มข้อมูล
-                                    </vs-button>
+                                    <a href="<?php echo base_url('add-product');?>">
+                                        <vs-button type="filled" icon="add_circle_outline">เพิ่มข้อมูล
+                                        </vs-button>
+                                    </a>
                                 </vs-col>
                             </v-row>
                         </div>

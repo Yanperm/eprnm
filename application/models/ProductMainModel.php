@@ -75,6 +75,19 @@ class ProductMainModel extends CI_Model
         }
     }
 
+    public function getList($clinicId){
+        $query = $this->db->query('
+        SELECT *
+        FROM tbproductcategory 
+        WHERE CLINICID = "'.$clinicId.'"');
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return array();
+        }
+    }
+
     public function insert($data)
     {
         $this->db->insert('tbproductcategory', $data);

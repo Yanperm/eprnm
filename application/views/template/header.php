@@ -302,6 +302,11 @@
         margin-left: 10px;
         font-size: 12px;
     }
+
+    .vuesax-app-is-ltr .vs-select--label {
+        padding-left: 5px;
+        font-size: 13px;
+    }
     </style>
 
     <?php

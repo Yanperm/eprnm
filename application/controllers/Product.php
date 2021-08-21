@@ -8,6 +8,13 @@ class Product extends CI_Controller {
         $this->logged_in();
 
         $this->load->model('ProductModel');
+        $this->load->model('ProductMainModel');
+        $this->load->model('ProductSubModel');
+        $this->load->model('CountUnitModel');
+        $this->load->model('CallingUnitsModel');
+        $this->load->model('FregquencyModel');
+        $this->load->model('MealModel');
+        $this->load->model('SuggestionModel');
     }
     private function logged_in()
     {
@@ -30,6 +37,69 @@ class Product extends CI_Controller {
         $this->load->view('product/index');
         $this->load->view('template/footer', ['js' => $js]);
     }
+
+    public function create()
+    {
+        $maxId = $this->ProductModel->getMaxId($this->session->userdata('id'));
+
+        $data = [
+            'id' => $maxId->max_id + 1
+        ];
+
+        $this->load->view('template/header');
+        $this->load->view('product/create', $data);
+        $this->load->view('template/footer');
+    }
+
+    public function getProductMain(){
+        $productMain = $this->ProductMainModel->getList($this->session->userdata('id'));
+        
+        header('Content-Type: application/json');
+
+        if ($productMain) {
+            echo json_encode(['result'=> true,'data' => $productMain]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function getProductSub(){
+        $productSub = $this->ProductSubModel->getList($_GET['mainId'], $this->session->userdata('id'));
+        
+        header('Content-Type: application/json');
+
+        if ($productSub) {
+            echo json_encode(['result'=> true,'data' => $productSub]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    public function getOptions(){
+        $countUnit = $this->CountUnitModel->getAllData();
+        $callingUnit = $this->CallingUnitsModel->getDataAll();
+        $frequency = $this->FregquencyModel->getAllData();
+        $meal = $this->MealModel->getAllData();
+        $suggestion = $this->SuggestionModel->getAllData();
+        
+        $data = [
+            'countUnit' => $countUnit,
+            'callingUnit' => $callingUnit,
+            'frequency' => $frequency,
+            'meal' => $meal,
+            'suggestion' => $suggestion
+        ];
+        
+        header('Content-Type: application/json');
+
+        if ($data != '') {
+            echo json_encode(['result'=> true,'data' => $data]);
+        } else {
+            echo json_encode(['result'=> false]);
+        }
+    }
+
+    
 
 	public function getProduct()
     {
@@ -96,13 +166,26 @@ class Product extends CI_Controller {
 
     public function insert(){
         $_POST = json_decode(file_get_contents("php://input"),true);
-        $code = $_POST["code"];
-        $name = $_POST["name"];
-      
+       
         $data = [
-            'LabCID' => time(),
-            'LCID' => $code,
-            'LabCName' => $name,
+            'ProductID' => time(),
+            'ProID' => $_POST["id"],
+            'CommonName' => $_POST["nameCommon"],
+            'Barcode' => $_POST['barcode'],
+            'CategoryID' => $_POST['productMain'],
+            'SubID' => $_POST['productSub'],
+            'PregCat' => $_POST['pregCat'],
+            'PriceBuy' => $_POST['cost'],
+            'PriceSale' => $_POST['price'],
+            'Digit' => $_POST['numOfUnit'],
+            'Unit' =>$_POST['unit'],
+            'BrandName' => $_POST['brandName'],
+            'Indication' => $_POST['indication'],
+            'CountUnit' => $_POST['countUnit'],
+            'CallingUnit' => $_POST['callingUnit'],
+            'Frequency' => $_POST['frequency'],
+            'Meal' => $_POST['meal'],
+            'Suggestion' => $_POST['suggestion'],
             'CLINICID' => $this->session->userdata('id')
         ];
 
