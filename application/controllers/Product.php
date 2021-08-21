@@ -200,13 +200,25 @@ class Product extends CI_Controller {
 
     public function update(){
         $_POST = json_decode(file_get_contents("php://input"),true);
-        $id = $_POST["id"];
-        $code = $_POST["code"];
-        $name = $_POST["name"];
-
+        $id = $_POST["productId"];
+       
         $data = [
-            'LCID' => $code,
-            'LabCName' => $name,
+            'CommonName' => $_POST["nameCommon"],
+            'Barcode' => $_POST['barcode'],
+            'CategoryID' => $_POST['productMain'],
+            'SubID' => $_POST['productSub'],
+            'PregCat' => $_POST['pregCat'],
+            'PriceBuy' => $_POST['cost'],
+            'PriceSale' => $_POST['price'],
+            'Digit' => $_POST['numOfUnit'],
+            'Unit' =>$_POST['unit'],
+            'BrandName' => $_POST['brandName'],
+            'Indication' => $_POST['indication'],
+            'CountUnit' => $_POST['countUnit'],
+            'CallingUnit' => $_POST['callingUnit'],
+            'Frequency' => $_POST['frequency'],
+            'Meal' => $_POST['meal'],
+            'Suggestion' => $_POST['suggestion'],
         ];
       
         $result = $this->ProductModel->update($data, $id);

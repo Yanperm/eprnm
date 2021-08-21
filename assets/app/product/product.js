@@ -3,7 +3,7 @@ const app = new Vue({
     data() {
 
         return {
-            //isTable: false,
+            popupEdit: false,
             idSelect: null,
             action: null,
             code: null,
@@ -19,68 +19,50 @@ const app = new Vue({
             totalItems: 0,
             recordData: [],
             selected: [],
-            // data3: [],
-            // columns1: [{
-            //     title: 'รหัสยา',
-            //     key: 'ProID',
-            // }, {
-            //     title: "ชื่อการค้า",
-            //     key: 'BrandName',
-            //     sortType: 'normal',
+            id: '',
+            nameCommon: '',
+            barcode: '',
+            price: '',
+            cost: '',
+            numOfUnit: '',
+            unit: '',
+            pregCat: '',
+            productMain: '',
+            productSub: '',
+            brandName: '',
+            indication: '',
+            countUnit: '',
+            callingUnit: '',
+            frequency: '',
+            meal: '',
+            suggestion: '',
+            productMainOptions: [],
+            productSubOptions: [],
+            countUnitOptions: [],
+            callingUnitOptions: [],
+            frequencyOptions: [],
+            mealOptions: [],
+            suggestionOptions: [],
+            pregCatOptions: [{
+                text: 'ไม่ระบุ',
+                value: ''
+            }, {
+                text: 'A',
+                value: 'A'
+            }, {
+                text: 'B',
+                value: 'B'
+            }, {
+                text: 'C',
+                value: 'C'
+            }, {
+                text: 'D',
+                value: 'D'
+            }, {
+                text: 'X',
+                value: 'X'
+            }, ],
 
-            // }, {
-            //     title: "ชื่อสามัญ",
-            //     key: 'CommonName',
-            //     sortType: 'normal',
-
-            // }, {
-            //     title: "Barcode",
-            //     key: 'Barcode',
-            //     sortType: 'normal',
-
-            // }, {
-            //     title: 'จัดการ',
-            //     key: 'operation',
-            //     render: (h, params) => {
-
-            //         return h('div', [h('AtButton', {
-            //                 props: {
-            //                     size: 'small',
-            //                     hollow: false,
-            //                     type: 'warning',
-            //                     icon: 'icon-edit'
-            //                 },
-
-            //                 style: {
-            //                     marginRight: '8px'
-            //                 },
-            //                 on: {
-            //                     click: () => {
-            //                         this.editDialog(params.item.ProductID);
-            //                     }
-            //                 }
-            //             }, ''),
-            //             h('AtButton', {
-            //                 props: {
-            //                     size: 'small',
-            //                     hollow: false,
-            //                     type: 'error',
-            //                     icon: 'icon-trash-2'
-            //                 },
-            //                 style: {
-            //                     marginRight: '8px'
-            //                 },
-            //                 on: {
-            //                     click: () => {
-            //                         this.deleteDialog(params.item.ProductID);
-            //                     }
-            //                 }
-            //             }, ''),
-            //         ])
-
-            //     },
-
-            // }, ],
         }
     },
     watch: {
@@ -91,9 +73,32 @@ const app = new Vue({
         search: function(val) {
             this.makePageData();
         },
+        selected: function(val) {
+            this.idSelect = val.ProductID;
+            this.id = val.ProID;
+            this.nameCommon = val.CommonName;
+            this.barcode = val.Barcode;
+            this.price = val.PriceSale;
+            this.cost = val.PriceBuy;
+            this.numOfUnit = val.Digit;
+            this.unit = val.Unit;
+            this.pregCat = val.PregCat;
+            this.productMain = val.CategoryID;
+            this.getProductSub();
+            this.productSub = val.SubID;
+            this.brandName = val.BrandName;
+            this.indication = val.Indication;
+            this.countUnit = val.CountUnit;
+            this.callingUnit = val.CallingUnit;
+            this.frequency = val.Frequency;
+            this.meal = val.Meal;
+            this.suggestion = val.Suggestion;
+        },
     },
     mounted() {
         this.record = this.makePageData();
+        this.getProductMain();
+        this.getDataOption();
     },
     methods: {
         handleSort() {
@@ -124,84 +129,147 @@ const app = new Vue({
                 this.recordData = pageData;
             });
         },
-        saveItem() {
+        getDataOption() {
+            axios.get("product/getOptions").then((response) => {
 
-            if (this.action == 'insert') {
-                axios.post("labCompany/insert", {
-                    code: this.code,
-                    name: this.name
-                }).then((response) => {
-                    if (response.data.result) {
-                        this.$Notify({
-                            title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
-                        });
-                        this.makePageData();
-                        this.code = null;
-                        this.name = null;
-                        $('#edit-dialog').modal("hide");
-                    } else {
-                        this.$Notify({
-                            title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
-                        });
+                if (response.data.result) {
+
+                    let data = response.data.data;
+
+                    this.countUnitOptions = [];
+                    for (let i = 0; i < data.countUnit.length; i++) {
+                        this.countUnitOptions.push({
+                            text: data.countUnit[i].detail,
+                            value: data.countUnit[i].detail
+                        })
                     }
-                });
-            } else if (this.action == 'update') {
-                axios.post("labCompany/update", {
-                    id: this.idSelect,
-                    code: this.code,
-                    name: this.name
-                }).then((response) => {
-                    if (response.data.result) {
-                        this.$Notify({
-                            title: 'สำเร็จ',
-                            duration: 5000,
-                            message: 'บันทึกข้อมูลสำเร็จ',
-                            type: 'success'
-                        });
-                        this.makePageData();
-                        this.code = null;
-                        this.name = null;
-                        $('#edit-dialog').modal("hide");
-                    } else {
-                        this.$Notify({
-                            title: 'ผิดพลาด',
-                            duration: 5000,
-                            message: 'กรุณาลองใหม่อีกครั้ง',
-                            type: 'warning'
-                        });
+
+                    this.callingUnitOptions = [];
+                    for (let i = 0; i < data.callingUnit.length; i++) {
+                        this.callingUnitOptions.push({
+                            text: data.callingUnit[i].detail,
+                            value: data.callingUnit[i].detail
+                        })
                     }
-                });
-            }
+
+                    this.frequencyOptions = [];
+                    for (let i = 0; i < data.frequency.length; i++) {
+                        this.frequencyOptions.push({
+                            text: data.frequency[i].detail,
+                            value: data.frequency[i].detail
+                        })
+                    }
+
+                    this.mealOptions = [];
+                    for (let i = 0; i < data.meal.length; i++) {
+                        this.mealOptions.push({
+                            text: data.meal[i].detail,
+                            value: data.meal[i].detail
+                        })
+                    }
+
+                    this.suggestionOptions = [];
+                    for (let i = 0; i < data.suggestion.length; i++) {
+                        this.suggestionOptions.push({
+                            text: data.suggestion[i].detail,
+                            value: data.suggestion[i].detail
+                        })
+                    }
+                }
+            });
         },
-        addDialog() {
-            this.action = "insert";
-            this.name = null;
-            axios.get("labCompany/getMaxId")
-                .then((response) => {
-                    if (response.data.result) {
-                        this.code = "CL" + ('000' + (response.data.maxId + 1)).slice(-4);
+        getProductMain() {
+            axios.get("product/getProductMain").then((response) => {
+
+                if (response.data.result) {
+                    this.productMainOptions = [];
+
+                    let data = response.data.data;
+                    for (let i = 0; i < data.length; i++) {
+                        this.productMainOptions.push({
+                            text: data[i].CategoryName,
+                            value: data[i].CategoryID
+                        })
                     }
-                });
-            $('#edit-dialog').modal("show");
+                }
+            });
         },
-        editDialog(id) {
-            this.action = "update";
-            this.idSelect = id;
-            axios.get("labCompany/getLabCompanyById", {
+        getProductSub() {
+            axios.get("product/getProductSub", {
                 params: {
-                    id: id,
+                    mainId: this.productMain,
                 }
             }).then((response) => {
+
                 if (response.data.result) {
-                    this.code = response.data.data.LCID;
-                    this.name = response.data.data.LabCName;
-                    $('#edit-dialog').modal("show");
+                    this.productSubOptions = [];
+                    let data = response.data.data;
+                    for (let i = 0; i < data.length; i++) {
+                        this.productSubOptions.push({
+                            text: data[i].SubName,
+                            value: data[i].SubID
+                        })
+                    }
+                }
+            });
+        },
+        saveData() {
+            axios.post("product/update", {
+                productId: this.idSelect,
+                id: this.id,
+                nameCommon: this.nameCommon,
+                barcode: this.barcode,
+                price: this.price,
+                cost: this.cost,
+                numOfUnit: this.numOfUnit,
+                unit: this.unit,
+                pregCat: this.pregCat,
+                productMain: this.productMain,
+                productSub: this.productSub,
+                brandName: this.brandName,
+                indication: this.indication,
+                countUnit: this.countUnit,
+                callingUnit: this.callingUnit,
+                frequency: this.frequency,
+                meal: this.meal,
+                suggestion: this.suggestion,
+            }).then((response) => {
+                if (response.data.result) {
+                    this.$vs.notify({
+                        title: 'สำเร็จ',
+                        text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                        color: "success",
+                        icon: 'check',
+                        position: ' top-right',
+
+                    });
+                    this.popupEdit = false;
+                    this.makePageData();
+                    this.id = '';
+                    this.nameCommon = "";
+                    this.barcode = "";
+                    this.price = "";
+                    this.cost = "";
+                    this.numOfUnit = "";
+                    this.unit = "";
+                    this.pregCat = "";
+                    this.productMain = "";
+                    this.productSub = "";
+                    this.brandName = "";
+                    this.indication = "";
+                    this.countUnit = "";
+                    this.callingUnit = "";
+                    this.frequency = "";
+                    this.meal = "";
+                    this.suggestion = "";
+                } else {
+                    this.$vs.notify({
+                        title: 'ผิดพลาด',
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+                    })
                 }
             });
         },
