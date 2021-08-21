@@ -103,7 +103,7 @@
                                             </vs-tooltip>
                                             <vs-tooltip text="ลบข้อมูล">
                                                 <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete"
-                                                    @click="deleteDialog(data[indextr].ProductID)"></vs-button>
+                                                    @click="openConfirm(data[indextr].ProductID)"></vs-button>
                                             </vs-tooltip>
                                         </div>
                                     </vs-td>
@@ -140,29 +140,6 @@
                     <button class="btn btn-secondary" type="button" data-dismiss="modal"
                         v-on:click="clearItem">ยกเลิก</button>
                     <button class="btn btn-success" type="button" v-on:click="saveItem">บันทึกข้อมูล</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="delete-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span
-                            class="mdi mdi-close"></span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="text-danger"><span class="modal-main-icon mdi mdi-close-circle-o"></span></div>
-                        <h3>ยืนยันการลบข้อมูล!</h3>
-                        <p>ต้องการลบข้อมูลผู้รับตรวจหรือไม่</p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal"
-                        v-on:click="clearItem">ยกเลิก</button>
-                    <button class="btn btn-danger" type="button" v-on:click="deleteItem">ลบข้อมูล</button>
                 </div>
             </div>
         </div>

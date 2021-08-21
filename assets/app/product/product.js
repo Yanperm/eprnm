@@ -205,32 +205,41 @@ const app = new Vue({
                 }
             });
         },
-        deleteDialog(id) {
-            this.idSelect = id;
-            $('#delete-dialog').modal('show');
+        openConfirm(id) {
+            this.id = id;
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
         },
-        deleteItem() {
-            axios.post("labCompany/delete", {
-                id: this.idSelect,
+        acceptAlert() {
+            axios.post("product/delete", {
+                id: this.id,
             }).then((response) => {
                 if (response.data.result) {
-                    this.$Notify({
-                        title: 'สำเร็จ',
-                        duration: 5000,
-                        message: 'ลบข้อมูลสำเร็จ',
-                        type: 'success'
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
                     });
                     this.makePageData();
-                    this.idSelect = null;
-                    $('#delete-dialog').modal('hide');
+                    this.selected = [];
                 } else {
-                    this.$Notify({
+                    this.$vs.notify({
                         title: 'ผิดพลาด',
-                        duration: 5000,
-                        message: 'กรุณาลองใหม่อีกครั้ง',
-                        type: 'warning'
-                    });
-                    $('#delete-dialog').modal('hide');
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
+
+                    })
                 }
             });
         },
