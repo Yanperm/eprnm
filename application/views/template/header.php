@@ -54,6 +54,11 @@
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
     <script src="https://unpkg.com/vuesax"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+    
 
     <style>
     .icon {
@@ -606,7 +611,7 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('time');?>">จัดการเวลาเปิดปิด</a>
                                         </li>
-                                        <li><a href="<?php echo base_url('rest-day');?>">วันหยุดคลินิก</a>
+                                        <li><a href="<?php echo base_url('restDay');?>">วันหยุดคลินิก</a>
                                         </li>
                                         <!--
                                     <li><a href="layouts-warning-header.html">Warning Header</a>
