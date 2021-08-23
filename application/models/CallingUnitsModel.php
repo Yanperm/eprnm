@@ -4,9 +4,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class CallingUnitsModel extends CI_Model{
 
     public function getDataAll(){
-        $query = $this->db->get('tbcallingunits');
-
-        if($query->num_rows()>0){
+        $this->db->order_by('id', 'ASC');
+        $query =  $this->db->get('tbCallingUnits');
+       
+        if ($query->num_rows() > 0) {
             return $query->result();
         }else{
             return array();
@@ -14,7 +15,7 @@ class CallingUnitsModel extends CI_Model{
     }
 
     public function getDataByID($id){
-        $query = $this->db->query('SELECT * FROM tbcallingunits WHERE id = "'.$id.'" ');
+        $query = $this->db->query('SELECT * FROM tbCallingUnits WHERE id = "'.$id.'" ');
 
         if($query->num_rows()>0){
             return $query->row();
@@ -24,19 +25,19 @@ class CallingUnitsModel extends CI_Model{
     }
 
     public function insert($data){
-        $this->db->insert('tbcallingunits',$data);
+        $this->db->insert('tbCallingUnits',$data);
         return true;
     }
 
     public function update($data,$id){
         $this->db->where('id',$id);
-        $this->db->update('tbcallingunits',$data);
+        $this->db->update('tbCallingUnits',$data);
         return true;
     }
 
     public function delete($id){
         $this->db->where('id',$id);
-        $this->db->delete('tbcallingunits');
+        $this->db->delete('tbCallingUnits');
         return true;
     }
 }

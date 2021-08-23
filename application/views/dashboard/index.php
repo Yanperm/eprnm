@@ -141,7 +141,7 @@
         </div>
 
         <div class="col-12 col-lg-6 ">
-            <div class="card card-table ">
+            <div class="card-table " style="background:#ffffff">
                 <div class="card-header ">
 
                     <div class="tools" style="font-size: 14px;">

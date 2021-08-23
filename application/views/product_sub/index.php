@@ -1,3 +1,13 @@
+<div>
+    <h2 class="page-head-title">กลุ่มยารอง</h2>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb page-head-nav">
+            <li class="breadcrumb-item"><a href="<?php echo base_url('dashboard');?>">หน้าหลัก</a></li>
+            <li class="breadcrumb-item">ยาและเวชภัณฑ์</li>
+            <li class="breadcrumb-item active">กลุ่มยารอง</li>
+        </ol>
+    </nav>
+</div>
 <div class="row" id="vue-root">
     <div class="col-md-12">
         <div class="card card-table">
@@ -21,17 +31,23 @@
                         </div>
                     </div>
                 </div>
-
+                <div class="col-12 col-lg-12 col-xl-6">
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
+                            <v-row vs-justify="right">
+                                <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center"
+                                    vs-align="center" vs-w="3">
+                                    <vs-button type="filled" icon="add_circle_outline" @click="add()">เพิ่มข้อมูล
+                                    </vs-button>
+                                </vs-col>
+                            </v-row>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="noSwipe">
-                    <div class="row">
-                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
-                            <vs-button color="primary" type="border" icon="add" style="float:right" @click="add()">
-                                เพิ่มข้อมูล
-                            </vs-button>
-                        </div>
-                    </div>
+
                     <div>
 
                         <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"

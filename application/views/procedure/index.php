@@ -1,18 +1,30 @@
+<div>
+    <h2 class="page-head-title">รายการหัตถการ</h2>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb page-head-nav">
+            <li class="breadcrumb-item"><a href="<?php echo base_url('dashboard');?>">หน้าหลัก</a></li>
+            <li class="breadcrumb-item active">รายการหัตถการ</li>
+        </ol>
+    </nav>
+</div>
 <div class="row" id="vue-root">
     <div class="col-md-12">
         <div class="card card-table">
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหากลุ่มยาหลัก</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">ค้นหารายการหัตถการ</span>
                             <div class="filter-container">
                                 <form>
                                     <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label>
-                                    <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา"></at-input>
+                                    <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา">
+                                    </at-input>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">เงื่อนไขการค้นหา</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">เงื่อนไขการค้นหา</span>
                             <div class="filter-container">
                                 <label class="control-label">โปรดเลือกเงื่อนไข</label>
                                 <form>
@@ -25,18 +37,25 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="col-12 col-lg-12 col-xl-6">
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
+                            <v-row vs-justify="right">
+                                <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center"
+                                    vs-align="center" vs-w="3">
+                                    <vs-button type="filled" icon="add_circle_outline" @click="addDialog()">เพิ่มข้อมูล
+                                    </vs-button>
+                                </vs-col>
+                            </v-row>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="card-body">
                 <div class="noSwipe">
-                    <div class="row">
-                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
-                            <at-button type="primary" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</at-button>
-                        </div>
-                    </div>
-                    <div>
-                        <!-- <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table> -->
 
+                    <div>
                         <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
                             :max-items="perPage" :data="recordData">
                             <template slot="thead">
@@ -94,7 +113,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">ผู้รับตรวจ</h3>
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span
+                            class="mdi mdi-close"></span></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
@@ -113,7 +133,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                        v-on:click="clearItem">ยกเลิก</button>
                     <button class="btn btn-success" type="button" v-on:click="saveItem">บันทึกข้อมูล</button>
                 </div>
             </div>
@@ -124,7 +145,8 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span
+                            class="mdi mdi-close"></span></button>
                 </div>
                 <div class="modal-body">
                     <div class="text-center">
@@ -134,7 +156,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal"
+                        v-on:click="clearItem">ยกเลิก</button>
                     <button class="btn btn-danger" type="button" v-on:click="deleteItem">ลบข้อมูล</button>
                 </div>
             </div>

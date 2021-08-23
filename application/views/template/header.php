@@ -47,18 +47,21 @@
 
 
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/app.css" type="text/css" />
-    <link rel="stylesheet" type="text/css"
-        href="<?php echo base_url();?>assets/lib/material-design-icons/css/material-design-iconic-font.min.css" />
 
 
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
     <script src="https://unpkg.com/vuesax"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<<<<<<< HEAD
     
 
     <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
     
+=======
+    <link rel="stylesheet" type="text/css"
+        href="<?php echo base_url();?>assets/lib/material-design-icons/css/material-design-iconic-font.min.css" />
+>>>>>>> main
 
     <style>
     .icon {
@@ -278,7 +281,6 @@
     }
 
     .vs-table--thead {
-
         border: 1px solid #ececec;
     }
 
@@ -302,6 +304,16 @@
         overflow-y: auto;
         overflow-x: hidden;
         width: auto;
+    }
+
+    .vuesax-app-is-ltr .vs-chip--text {
+        margin-left: 10px;
+        font-size: 12px;
+    }
+
+    .vuesax-app-is-ltr .vs-select--label {
+        padding-left: 5px;
+        font-size: 13px;
     }
     </style>
 
@@ -470,30 +482,6 @@
                                         <li><a href="<?php echo base_url('patient/list');?>">ฐานข้อมูลผู้ป่วย</a>
                                         </li>
 
-
-
-                                        <!-- CLEAR
-                                    <li><a href="ui-modals.html">Modals</a>
-                                    </li>
-                                    <li><a href="ui-cards.html"><span class="badge badge-primary float-right">New</span>Cards</a>
-                                    </li>
-                                    <li><a href="ui-notifications.html">Notifications</a>
-                                    </li>
-                                    <li><a href="ui-icons.html">Icons</a>
-                                    </li>
-                                    <li><a href="ui-grid.html">Grid</a>
-                                    </li>
-                                    <li><a href="ui-tabs-accordions.html">Tabs &amp; Accordions</a>
-                                    </li>
-                                    <li><a href="ui-nestable-lists.html">Nestable Lists</a>
-                                    </li>
-                                    <li><a href="ui-typography.html">Typography</a>
-                                    </li>
-                                    <li><a href="ui-dragdrop.html"><span class="badge badge-primary float-right">New</span>Drag &amp; Drop</a>
-                                    </li>
-                                    <li><a href="ui-sweetalert2.html"><span class="badge badge-primary float-right">New</span>Sweetalert 2</a>
-                                    </li>-->
-
                                     </ul>
                                 </li>
 
@@ -520,16 +508,6 @@
                                         <li><a href="<?php echo base_url('checkList');?>">รายการส่งตรวจ</a>
                                         </li>
 
-                                        <!-- CUT OUT
-                                    <li><a href="form-wizard.html">Wizard</a>
-                                    </li>
-                                    <li><a href="form-masks.html">Input Masks</a>
-                                    </li>
-                                    <li><a href="form-wysiwyg.html">WYSIWYG Editor</a>
-                                    </li>
-                                    <li><a href="form-upload.html">Multi Upload</a>
-                                    </li> -->
-
 
                                     </ul>
                                 </li>
@@ -538,11 +516,6 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('procedure');?>">การจัดการหัตถการ</a>
                                         </li>
-
-                                        <!--<li><a href="tables-datatables.html">Data Tables</a>
-                                    </li>
-                                    <li><a href="tables-filters.html"><span class="badge badge-primary float-right">New</span>Table Filters</a>
-                                    </li>-->
 
                                     </ul>
                                 </li>
@@ -553,55 +526,18 @@
                                         </li>
                                         <li><a href="<?php echo base_url('reportMembers');?>">รายงานยอดคนไข้</a></li>
 
-                                        <!--
-                                     <li><a href="pages-blank-header.html">Blank Page Header</a>
-                                     </li>
-                                     <li><a href="pages-login.html">Login</a>
-                                     </li>
-                                     <li><a href="pages-login2.html">Login v2</a>
-                                     </li>
-                                     <li><a href="pages-404.html">404 Page</a>
-                                     </li>
-                                     <li><a href="pages-sign-up.html">Sign Up</a>
-                                     </li>
-                                     <li><a href="pages-forgot-password.html">Forgot Password</a>
-                                     </li>
-                                     <li><a href="pages-profile.html">Profile</a>
-                                     </li>
-                                     <li><a href="pages-pricing-tables.html">Pricing Tables</a>
-                                     </li>
-                                     <li><a href="pages-pricing-tables2.html">Pricing Tables v2</a>
-                                     </li>
-                                     <li><a href="pages-timeline.html">Timeline</a>
-                                     </li>
-                                     <li><a href="pages-timeline2.html">Timeline v2</a>
-                                     </li>
-                                     <li><a href="pages-invoice.html"><span class="badge badge-primary float-right">New</span>Invoice</a>
-                                     </li>
-                                     <li><a href="pages-calendar.html">Calendar</a>
-                                     </li>
-                                     <li><a href="pages-gallery.html">Gallery</a>
-                                     </li>
-                                     <li><a href="pages-code-editor.html"><span class="badge badge-primary float-right">New    </span>Code Editor</a>
-                                     </li>
-                                     <li><a href="pages-booking.html"><span class="badge badge-primary float-right">New</span>Booking</a>
-                                     </li>
-                                     <li><a href="pages-loaders.html"><span class="badge badge-primary float-right">New</span>Loaders</a>
-                                     </li>
-                                     <li><a href="pages-ajax-loader.html"><span class="badge badge-primary float-right">New</span>AJAX Loader</a>
-                                     </li> -->
-
                                     </ul>
                                 </li>
 
                                 <li class="divider">Configuration</li>
                                 <li class="parent"><a href="#"><i
-                                            class="icon mdi mdi-store"></i><span>ข้อมูลคลินิก</span></a>
+                                            class="icon mdi mdi-local-store"></i><span>ข้อมูลคลินิก</span></a>
                                     <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('clinic')?>">จัดการข้อมูลคลินิก</a>
+                                        <li><a href="<?php echo base_url('clinic')?>">ที่อยู่</a>
                                         </li>
-                                        <li><a href="<?php echo base_url('showUser');?>">ผู้ใช้งานระบบ</a>
+                                        <li><a href="<?php echo base_url('seoClinic')?>">จัดการ SEO</a>
                                         </li>
+<<<<<<< HEAD
                                         <!--<li><a href="email-compose.html">Email Compose</a>
                                     </li>-->
                                     </ul>
@@ -612,125 +548,49 @@
                                         <li><a href="<?php echo base_url('time');?>">จัดการเวลาเปิดปิด</a>
                                         </li>
                                         <li><a href="<?php echo base_url('restDay');?>">วันหยุดคลินิก</a>
+=======
+                                        <li><a href="#">Subscription</a>
+>>>>>>> main
                                         </li>
-                                        <!--
-                                    <li><a href="layouts-warning-header.html">Warning Header</a>
-                                    </li>
-                                    <li><a href="layouts-danger-header.html">Danger Header</a>
-                                    </li>
-                                    <li><a href="layouts-search-input.html">Search Input</a>
-                                    </li>
-                                    <li><a href="layouts-offcanvas-menu.html">Off Canvas Menu</a>
-                                    </li>
-                                    <li><a href="layouts-top-menu.html"><span class="badge badge-primary float-right">New</span>Top Menu</a>
-                                    </li>
-                                    <li><a href="layouts-nosidebar-left.html">Without Left Sidebar</a>
-                                    </li>
-                                    <li><a href="layouts-nosidebar-right.html">Without Right Sidebar</a>
-                                    </li>
-                                    <li><a href="layouts-nosidebars.html">Without Both Sidebars</a>
-                                    </li>
-                                    <li><a href="layouts-fixed-sidebar.html">Fixed Left Sidebar</a>
-                                    </li>
-                                    <li><a href="layouts-boxed-layout.html"><span class="badge badge-primary float-right">New</span>Boxed Layout</a>
-                                    </li>
-                                    <li><a href="pages-blank-aside.html">Page Aside</a>
-                                    </li>
-                                    <li><a href="layouts-collapsible-sidebar.html">Collapsible Sidebar</a>
-                                    </li>
-                                    <li><a href="layouts-sub-navigation.html"><span class="badge badge-primary float-right">New</span>Sub Navigation</a>
-                                    </li>
-                                    <li><a href="layouts-mega-menu.html"><span class="badge badge-primary float-right">New</span>Mega Menu</a>
-                                    </li>-->
-                                    </ul>
-                                </li>
-                                <li class="parent"><a href="#"><i
-                                            class="icon mdi mdi-tv-alt-play"></i><span>จอประกาศคิว</span></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="maps-google.html">จัดการจอประกาศคิว</a>
-                                        </li>
-                                        <!-- <li><a href="maps-vector.html">Vector Maps</a>
-                                    </li> -->
-                                    </ul>
-                                </li>
-
-                                <li class="parent"><a href="#"><i class="icon mdi-youtube"></i><span>YouTube</span></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('productYoutube');?>">จัดการ YouTube</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="parent"><a href="#"><i
-                                            class="icon mdi-calendar-check"></i><span>จัดการคิวเต็ม</span></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('queueClode');?>">จัดการคิวเต็ม</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="parent"><a href="#"><i class="icon mdi mdi-check"></i><span>จัดการ
-                                            SEO</span></a>
-                                    <ul class="sub-menu">
-                                        <li><a href="<?php echo base_url('seoClinic');?>">จัดการ SEO</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                <li class="parent"><a href="#"><i class=""></i><span>Like</span></a>
-                                    <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('likeClinic');?>">Like</a>
                                         </li>
                                     </ul>
                                 </li>
 
-                                <!--<li class="parent"><a href="#"><i class="icon mdi mdi-folder"></i><span>Menu Levels</span></a>
-                              <ul class="sub-menu">
-                                <li class="parent"><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 1</span></a>
-                                  <ul class="sub-menu">
-                                    <li><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 2</span></a>
-                                    </li>
-                                    <li class="parent"><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 2</span></a>
-                                      <ul class="sub-menu">
-                                        <li><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 3</span></a>
+                                <li class="parent">
+                                    <a href="#"><i class="icon mdi mdi-calendar-alt"></i><span>วันและเวลา</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('time');?>">ตั้งค่าวันและเวลาเปิดปิด</a>
                                         </li>
-                                        <li><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 3</span></a>
+                                        <li><a href="<?php echo base_url('rest-day');?>">วันหยุดคลินิก</a>
                                         </li>
-                                      </ul>
-                                    </li>
-                                  </ul>
+                                        <li><a href="<?php echo base_url('queueClode');?>">ตั้งค่าคิวเต็ม</a>
+                                        </li>
+                                    </ul>
                                 </li>
-                                <li class="parent"><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 1</span></a>
-                                  <ul class="sub-menu">
-                                    <li><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 2</span></a>
-                                    </li>
-                                    <li class="parent"><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 2</span></a>
-                                      <ul class="sub-menu">
-                                        <li><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 3</span></a>
+                                <li class="parent"><a href="#"><i
+                                            class="icon mdi mdi-assignment-account"></i><span>ผู้ใช้งานระบบ</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('showUser');?>">จัดการผู้ใช้งานระบบ</a>
                                         </li>
-                                        <li><a href="#"><i class="icon mdi mdi-undefined"></i><span>Level 3</span></a>
-                                        </li>
-                                      </ul>
-                                    </li>
-                                  </ul>
+                                    </ul>
                                 </li>
-                              </ul>
-                            </li>-->
-
-
-
-                                <!--<li><a href="documentation.html"><i class="icon mdi mdi-book"></i><span>Documentation</span></a>
-                            </li>-->
-
-
-
+                                <li class="parent"><a href="#"><i
+                                            class="icon mdi mdi-youtube-play"></i><span>จอประกาศคิว</span></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="<?php echo base_url('productYoutube');?>">ตั้งค่าจอประกาศคิว</a>
+                                        </li>
+                                        <li><a href="">จอประกาศคิว</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="progress-widget">
-                    <div class="progress-data"><span class="progress-value">610%</span><span class="name">Current
-                            Project</span></div>
+                    <div class="progress-data"><span class="progress-value">75%</span><i
+                            class="icon mdi mdi-cloud"></i><span class="name">Storage </span></div>
                     <div class="progress">
                         <div class="progress-bar progress-bar-primary" style="width: 60%;"></div>
                     </div>

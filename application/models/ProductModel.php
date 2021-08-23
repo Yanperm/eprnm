@@ -82,8 +82,8 @@ class ProductModel extends CI_Model
 
     public function getMaxId($clinicId){
         $query = $this->db->query('
-            SELECT MAX(LCID) as max_id 
-            FROM tblabscompany 
+            SELECT MAX(ProID) as max_id 
+            FROM tbproducts 
             WHERE CLINICID = "'.$clinicId.'"');
 
         if ($query->num_rows() > 0) {
@@ -95,21 +95,21 @@ class ProductModel extends CI_Model
 
     public function insert($data)
     {
-        $this->db->insert('tblabscompany', $data);
+        $this->db->insert('tbproducts', $data);
         return true;
     }
 
     public function update($data, $id)
     {
-        $this->db->where('LabCID', $id);
-        $this->db->update('tblabscompany', $data);
+        $this->db->where('ProductID', $id);
+        $this->db->update('tbproducts', $data);
         return true;
     }
 
     public function delete($id)
     {
-        $this->db->where('LabCID', $id);
-        $this->db->delete('tblabscompany');
+        $this->db->where('ProductID', $id);
+        $this->db->delete('tbproducts');
         return true;
     }
 }

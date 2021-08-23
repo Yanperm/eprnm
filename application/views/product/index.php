@@ -1,18 +1,31 @@
+<div>
+    <h2 class="page-head-title">คลังยา</h2>
+    <nav aria-label="breadcrumb" role="navigation">
+        <ol class="breadcrumb page-head-nav">
+            <li class="breadcrumb-item"><a href="<?php echo base_url('dashboard');?>">หน้าหลัก</a></li>
+            <li class="breadcrumb-item">ยาและเวชภัณฑ์</li>
+            <li class="breadcrumb-item active">คลังยา</li>
+        </ol>
+    </nav>
+</div>
 <div class="row" id="vue-root">
     <div class="col-md-12">
         <div class="card card-table">
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหาบริษัทที่รับตรวจแล็บ</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">ค้นหาคลังยา</span>
                             <div class="filter-container">
                                 <form>
                                     <label class="control-label">โปรดพิมพ์คำที่ต้องการค้นหา</label>
-                                    <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา"></at-input>
+                                    <at-input v-model="search" size="small" @blur="makePageData" placeholder="ค้นหา">
+                                    </at-input>
                                 </form>
                             </div>
                         </div>
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">เงื่อนไขการค้นหา</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">เงื่อนไขการค้นหา</span>
                             <div class="filter-container">
                                 <label class="control-label">โปรดเลือกเงื่อนไข</label>
                                 <form>
@@ -27,16 +40,25 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-12 col-xl-6">
+                    <div class="row">
+                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
+                            <v-row vs-justify="right">
+                                <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center"
+                                    vs-align="center" vs-w="3">
+                                    <a href="<?php echo base_url('add-product');?>">
+                                        <vs-button type="filled" icon="add_circle_outline">เพิ่มข้อมูล
+                                        </vs-button>
+                                    </a>
+                                </vs-col>
+                            </v-row>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="noSwipe">
-                    <div class="row">
-                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
-                            <at-button type="primary" v-on:click="addDialog"><i class="at-btn__icon icon icon-plus"></i> เพิ่มข้อมูล</at-button>
-                        </div>
-                    </div>
                     <div>
-                        <!-- <at-table v-if="isTable" size="normal" :columns="columns1" :data="data3" pagination :show-page-total=true></at-table> -->
                         <vs-table stripe :sst="true" @sort="handleSort" v-model="selected" :total="totalItems"
                             :max-items="perPage" :data="recordData">
                             <template slot="thead">
@@ -62,11 +84,11 @@
                                     <vs-td :data="data[indextr].ProID">
                                         {{data[indextr].ProID}}
                                     </vs-td>
-                                    <vs-td :data="data[indextr].BrandName">
-                                        {{data[indextr].BrandName}}
-                                    </vs-td>
                                     <vs-td :data="data[indextr].CommonName">
                                         {{data[indextr].CommonName}}
+                                    </vs-td>
+                                    <vs-td :data="data[indextr].BrandName">
+                                        {{data[indextr].BrandName}}
                                     </vs-td>
                                     <vs-td :data="data[indextr].Barcode">
                                         {{data[indextr].Barcode}}
@@ -76,12 +98,12 @@
                                         <div class="centerx">
                                             <vs-tooltip text="แก้ไขข้อมูล">
                                                 <vs-button color="rgba(112, 128, 144, 0.25)" type="filled"
-                                                    icon="drive_file_rename_outline"
-                                                    @click="editDialog(data[indextr].ProductID)"></vs-button>
+                                                    icon="drive_file_rename_outline" @click="popupEdit=true">
+                                                </vs-button>
                                             </vs-tooltip>
                                             <vs-tooltip text="ลบข้อมูล">
                                                 <vs-button color="rgba(112, 128, 144, 0.25)" type="filled" icon="delete"
-                                                    @click="deleteDialog(data[indextr].ProductID)"></vs-button>
+                                                    @click="openConfirm(data[indextr].ProductID)"></vs-button>
                                             </vs-tooltip>
                                         </div>
                                     </vs-td>
@@ -94,51 +116,122 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="edit-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title">ผู้รับตรวจ</h3>
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="form-group pt-2">
-                            <label for="inputCode">รหัสผู้รับตรวจ</label>
-                            <input class="form-control" id="inputCode" type="text" v-model="code" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputName">ชื่อผู้รับตรวจ</label>
-                            <input class="form-control" id="inputName" type="text" v-model="name">
-                        </div>
+    <vs-popup fullscreen title="แก้ไขคลังยา" :active.sync="popupEdit">
+        <div class="row">
+            <div class="col-md-6">
+                <vs-list>
+                    <vs-list-header title="เพิ่มยาใหม่"></vs-list-header>
+                </vs-list>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="รหัสยา *" size="large" disabled v-model="id" />
+                    </div>
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="ชื่อสามัญ *" size="large" v-model="nameCommon" />
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
-                    <button class="btn btn-success" type="button" v-on:click="saveItem">บันทึกข้อมูล</button>
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <vs-input label-placeholder="Barcode *" size="large" v-model="barcode" />
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="กลุ่มยาหลัก *" v-model="productMain">
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in productMainOptions" />
+                        </vs-select>
+                    </div>
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="กลุ่มยารอง *" v-model="productSub">
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in productSubOptions" />
+                        </vs-select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="Preg Cat *" v-model="pregCat">
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in pregCatOptions" />
+                        </vs-select>
+                    </div>
 
-    <div class="modal fade" id="delete-dialog" tabindex="-1" role="dialog">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true"><span class="mdi mdi-close"></span></button>
                 </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="text-danger"><span class="modal-main-icon mdi mdi-close-circle-o"></span></div>
-                        <h3>ยืนยันการลบข้อมูล!</h3>
-                        <p>ต้องการลบข้อมูลผู้รับตรวจหรือไม่</p>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="ราคาทุน *" size="large" v-model="cost" />
+                    </div>
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="ราคาขาย *" size="large" v-model="price" />
+                    </div>
+
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="จำนวนหน่วย *" size="large" v-model="numOfUnit" />
+                    </div>
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="หน่วย *" size="large" v-model="unit" />
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal" v-on:click="clearItem">ยกเลิก</button>
-                    <button class="btn btn-danger" type="button" v-on:click="deleteItem">ลบข้อมูล</button>
+            </div>
+            <div class="col-md-6">
+                <vs-list>
+                    <vs-list-header title="รายละเอียดยา" size="large"></vs-list-header>
+                </vs-list>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="ชื่อการค้า *" size="large" v-model="brandName" />
+                    </div>
+                    <div class="col-md-6">
+                        <vs-input label-placeholder="ข้อบ่งใช้ *" size="large" v-model="indication" />
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="ครั้งล่ะ *" v-model="countUnit" autocomplete>
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in countUnitOptions" />
+                        </vs-select>
+                    </div>
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="หน่วย" v-model="callingUnit" autocomplete>
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in callingUnitOptions" />
+                        </vs-select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="ความถี่ *" v-model="frequency" autocomplete>
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in frequencyOptions" />
+                        </vs-select>
+                    </div>
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="มื้ออาหาร" v-model="meal" autocomplete>
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in mealOptions" />
+                        </vs-select>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <vs-select class="selectExample" label="ข้อแนะนำ *" v-model="suggestion" autocomplete>
+                            <vs-select-item :key="index" :value="item.value" :text="item.text"
+                                v-for="item,index in suggestionOptions" />
+                        </vs-select>
+                    </div>
+
                 </div>
             </div>
+
         </div>
-    </div>
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <vs-button color="primary" type="filled" @click="saveData">บันทึกข้อมูล</vs-button>
+            </div>
+        </div>
+    </vs-popup>
 </div>
