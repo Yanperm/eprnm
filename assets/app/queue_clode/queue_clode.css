@@ -1,4 +1,3 @@
-
 table .material-icons {
     font-size: 16px;
     color: #000000 !important;
@@ -6,5 +5,16 @@ table .material-icons {
 }
 
 .resizedTextbox {
-    width: 250px; height: 20px
+    width: 250px;
+    height: 20px
+}
+
+.vs-button--icon {
+    margin-top: 9px;
+}
+
+.vs-button {
+    position: absolute;
+    bottom: 0px;
+    color: #6f6e6e;
 }
