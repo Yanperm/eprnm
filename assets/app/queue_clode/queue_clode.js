@@ -6,6 +6,7 @@ const app = new Vue({
             action: null,
             field: {
                 CLOSEDATE: null,
+                holiday : null,
             },
             id: null,
             page: 1,
@@ -34,7 +35,7 @@ const app = new Vue({
         },
         selected: function(val) {
             this.id = val.colseid;
-            this.field.CLOSEDATE = val.CLOSEDATE;
+            //this.field.CLOSEDATE = val.CLOSEDATE;
         },
     },
     mounted() {
@@ -74,7 +75,7 @@ const app = new Vue({
         },
         save() {
 
-            if (this.action == 'insert') {
+            if (this.field.CLOSEDATE != null) {
                 axios.post("queueClode/insert", {
                     CloseDate: this.field.CLOSEDATE
                 }).then((response) => {
@@ -100,77 +101,36 @@ const app = new Vue({
                         })
                     }
                 });
-            } 
-            // else if (this.action == 'update') {
-            //     axios.post("productYoutube/update", {
-            //         id: this.id,
-            //         link: this.field.LINK,
-            //     }).then((response) => {
-            //         if (response.data.result) {
-            //             this.$vs.notify({
-            //                 title: 'สำเร็จ',
-            //                 text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-            //                 color: "success",
-            //                 icon: 'check',
-            //                 position: 'top-right',
+            }
 
-            //             });
-            //             this.makePageData();
-            //             this.field.LINK = null;
-            //             this.popupActive = false;
-            //         } else {
-            //             this.$vs.notify({
-            //                 title: 'ผิดพลาด',
-            //                 text: 'กรุณาลองใหม่อีกครั้ง',
-            //                 color: "warning",
-            //                 icon: 'warning_amber',
-            //                 position: 'top-right',
-            //             })
-            //         }
-            //     });
-            // }
-        },
-        add() {
+            if (this.field.holiday != null) {
+                axios.post("queueClode/inserttbclose", {
+                    holiday: this.field.holiday
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            title: 'สำเร็จ',
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: 'top-right',
 
-            this.action = 'insert';
-            this.popupActive = true;
+                        });
+                        this.makePageData();
+                        this.field.holiday = null;
+                        this.popupActive = false;
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: 'top-right',
+                        })
+                    }
+                });
+            }
         },
-        openConfirm() {
-            this.$vs.dialog({
-                type: 'confirm',
-                color: 'danger',
-                title: `ยืนยันการลบข้อมูล`,
-                text: 'ต้องการลบข้อมูลหรือไม่',
-                acceptText: 'ตกลง',
-                cancelText: 'ยกเลิก',
-                accept: this.acceptAlert
-            })
-        },
-        acceptAlert() {
-            axios.post("queueClode/delete", {
-                id: this.id,
-            }).then((response) => {
-                if (response.data.result) {
-                    this.$vs.notify({
-                        color: 'success',
-                        title: 'ลบข้อมูลสำเร็จ',
-                        text: 'ทำการลบข้อมูลสำเร็จ',
-                        icon: 'check',
-                        position: ' top-right',
-                    });
-                    this.makePageData();
-                    this.selected = [];
-                } else {
-                    this.$vs.notify({
-                        title: 'ผิดพลาด',
-                        text: 'กรุณาลองใหม่อีกครั้ง',
-                        color: "warning",
-                        icon: 'warning_amber',
-                        position: ' top-right',
 
-                    })
-                }
-            });
-        },
     }
 });
