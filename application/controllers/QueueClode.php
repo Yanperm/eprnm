@@ -107,15 +107,17 @@ class QueueClode extends CI_Controller {
         $_POST = json_decode(file_get_contents("php://input"),true);
 
         $holiday = $_POST["holiday"];
+        $result = false;
         
-      
-        $data = [
-            'closeid' => 'C'.time(),
-            'CLOSEDATE' => $holiday,
-            'CLINICID' => $this->session->userdata('id'),
-        ];
-
-        $result = $this->QueueClodeModel->inserttbclose($data);
+        foreach($holiday as $key => $item){     
+            $data = [
+                'closeid' => 'C'.time().$key,
+                'CLOSEDATE' => $item,
+                'CLINICID' => $this->session->userdata('id'),
+            ];
+    
+            $result = $this->QueueClodeModel->inserttbclose($data);
+        }
 
         if($result){
             echo json_encode(['result'=> true]);

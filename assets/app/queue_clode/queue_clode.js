@@ -4,9 +4,10 @@ const app = new Vue({
         return {
             popupActive: false,
             action: null,
+            numOfHoliday: 1,
             field: {
                 CLOSEDATE: null,
-                holiday : null,
+                holiday: [],
             },
             id: null,
             page: 1,
@@ -74,36 +75,37 @@ const app = new Vue({
             });
         },
         save() {
+            console.log(this.field.holiday);
 
-            if (this.field.CLOSEDATE != null) {
-                axios.post("queueClode/insert", {
-                    CloseDate: this.field.CLOSEDATE
-                }).then((response) => {
-                    if (response.data.result) {
-                        this.$vs.notify({
-                            title: 'สำเร็จ',
-                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-                            color: "success",
-                            icon: 'check',
-                            position: 'top-right',
+            // if (this.field.CLOSEDATE != null) {
+            //     axios.post("queueClode/insert", {
+            //         CloseDate: this.field.CLOSEDATE
+            //     }).then((response) => {
+            //         if (response.data.result) {
+            //             this.$vs.notify({
+            //                 title: 'สำเร็จ',
+            //                 text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+            //                 color: "success",
+            //                 icon: 'check',
+            //                 position: 'top-right',
 
-                        });
-                        this.makePageData();
-                        this.field.CLOSEDATE = null;
-                        this.popupActive = false;
-                    } else {
-                        this.$vs.notify({
-                            title: 'ผิดพลาด',
-                            text: 'กรุณาลองใหม่อีกครั้ง',
-                            color: "warning",
-                            icon: 'warning_amber',
-                            position: 'top-right',
-                        })
-                    }
-                });
-            }
+            //             });
+            //             this.makePageData();
+            //             this.field.CLOSEDATE = null;
+            //             this.popupActive = false;
+            //         } else {
+            //             this.$vs.notify({
+            //                 title: 'ผิดพลาด',
+            //                 text: 'กรุณาลองใหม่อีกครั้ง',
+            //                 color: "warning",
+            //                 icon: 'warning_amber',
+            //                 position: 'top-right',
+            //             })
+            //         }
+            //     });
+            // }
 
-            if (this.field.holiday != null) {
+            if (this.field.holiday.length > 0) {
                 axios.post("queueClode/inserttbclose", {
                     holiday: this.field.holiday
                 }).then((response) => {
@@ -117,7 +119,12 @@ const app = new Vue({
 
                         });
                         this.makePageData();
-                        this.field.holiday = null;
+
+                        for (let i = 0; i < this.numOfHoliday; i++) {
+                            this.field.holiday[i] = null;
+                        }
+                        this.numOfHoliday = 1;
+
                         this.popupActive = false;
                     } else {
                         this.$vs.notify({

@@ -12,32 +12,44 @@
         <div class="card card-table">
             <div style="background-color:#CCCCFF;">
                 <button type="submit" class="btn  btn-lg" @click="save()">
-                <i class="icon mdi mdi-save"></i> บันทึกข้อมูล</button>
+                    <i class="icon mdi mdi-save"></i> บันทึกข้อมูล</button>
             </div>
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">วันหยุดพิเศษ</span>
+                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">วันหยุดพิเศษ</span>
                             <label>โปรดระบุข้อมูลวันหยุดพิเศษของทางคลินิก</label>
                             <div class="filter-container">
-                                <form>
-                                    <at-input v-model="field.holiday" size="large" type="date" ></at-input>
-                                </form>
-                                <button type="button" class="btn btn-light">Light</button>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <form id="close-form">
+                                            <at-input v-for="(item, index) in numOfHoliday"
+                                                v-model="field.holiday[index]" size="large" type="date" class="mt-1">
+                                            </at-input>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <vs-button type="filled" color="#dfdfdf" icon="add" @click="numOfHoliday++">
+                                        </vs-button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-12 table-filters pb-0 pb-xl-4"><span class="table-filter-title">คิวเต็ม</span>
+                        <div class="col-12 col-lg-12 table-filters pb-0 pb-xl-4"><span
+                                class="table-filter-title">คิวเต็ม</span>
                             <label>กรุณาระบุวันที่ต้องการปิดรับการนัดหมายเนื่องจากคิวเต็ม</label>
-                                <div  class="filter-container">
-                                    <form>
-                                        <at-input v-model="field.CLOSEDATE" size="large" type="date" class="resizedTextbox" ></at-input>
-                                        <!-- <button type="button" class="btn btn-light">Light</button> -->
-                                    </form>
-                                </div>
+                            <div class="filter-container">
+                                <form>
+                                    <at-input v-model="field.CLOSEDATE" size="large" type="date" class="resizedTextbox">
+                                    </at-input>
+                                    <!-- <button type="button" class="btn btn-light">Light</button> -->
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
