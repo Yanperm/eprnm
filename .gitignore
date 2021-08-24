@@ -19,3 +19,4 @@ application/logs/*
 application/.DS_Store
 application/.DS_Store
 .idea/workspace.xml
+application/config/config.php
