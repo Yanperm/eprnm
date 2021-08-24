@@ -4,3 +4,7 @@ table .material-icons {
     color: #000000 !important;
     font-weight: 900;
 }
+
+.resizedTextbox {
+    width: 250px; height: 20px
+}

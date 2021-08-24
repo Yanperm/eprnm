@@ -67,6 +67,12 @@ class QueueClodeModel extends CI_Model{
         $this->db->delete('tbqueueclode');
         return true;
     }
+
+    public function inserttbclose($data)
+    {
+        $this->db->insert('tbclose', $data);
+        return true;
+    }
 }
 
 

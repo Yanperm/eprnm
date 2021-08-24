@@ -102,4 +102,25 @@ class QueueClode extends CI_Controller {
             echo json_encode(['result'=> false]);
         }
     }
+
+    public function inserttbclose(){
+        $_POST = json_decode(file_get_contents("php://input"),true);
+
+        $holiday = $_POST["holiday"];
+        
+      
+        $data = [
+            'closeid' => 'C'.time(),
+            'CLOSEDATE' => $holiday,
+            'CLINICID' => $this->session->userdata('id'),
+        ];
+
+        $result = $this->QueueClodeModel->inserttbclose($data);
+
+        if($result){
+            echo json_encode(['result'=> true]);
+        }else{
+            echo json_encode(['result'=> false]);
+        }
+    }
 }

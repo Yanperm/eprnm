@@ -2,13 +2,13 @@ const app = new Vue({
     el: '#vue-root',
     data() {
         return {
-            popupActive: false,
-            action: null,
-            field: {
-                CLOSEDATE: null,
-                holiday : null,
-            },
             id: null,
+            field: {
+
+                date : null,
+                open : null,
+                close : null,
+            },
             page: 1,
             perPage: 10,
             record: [],
@@ -22,7 +22,6 @@ const app = new Vue({
                 last_page: 0,
             },
             conditionType: '1',
-
         }
     },
     watch: {
@@ -34,8 +33,7 @@ const app = new Vue({
             this.makePageData();
         },
         selected: function(val) {
-            this.id = val.colseid;
-            //this.field.CLOSEDATE = val.CLOSEDATE;
+            this.id = val.id;
         },
     },
     mounted() {
@@ -48,7 +46,7 @@ const app = new Vue({
             this.makePageData();
         },
         makePageData() {
-            axios.get("queueClode/getQueueClode", {
+            axios.get("dateExpress/getDateExpress", {
                 params: {
                     search: this.search,
                     sortBy: this.sortBy,
@@ -61,23 +59,26 @@ const app = new Vue({
                 this.isTable = true;
 
                 if (response.data.result) {
-                    for (let i = 0; i < response.data.main.length; i++) {
-                        pageData = pageData.concat(response.data.main[i])
+                    for (let i = 0; i < response.data.date.length; i++) {
+                        pageData = pageData.concat(response.data.date[i])
                     }
 
-                    this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
+                   this.pagination.last_page = Math.ceil(parseInt(response.data.total) / this.perPage);
                 } else {
-                    this.pagination.last_page = 0;
-                }
-                this.totalItems = pageData.length;
-                this.recordData = pageData;
+                     this.pagination.last_page = 0;
+                 }
+                 this.totalItems = pageData.length;
+                 this.recordData = pageData;
             });
         },
-        save() {
+        insert() {
+                axios.post("dateExpress/insert", {
+                    
+                    open: this.field.open,
+                    close: this.field.close,
+                    date: this.field.date,
 
-            if (this.field.CLOSEDATE != null) {
-                axios.post("queueClode/insert", {
-                    CloseDate: this.field.CLOSEDATE
+
                 }).then((response) => {
                     if (response.data.result) {
                         this.$vs.notify({
@@ -89,7 +90,6 @@ const app = new Vue({
 
                         });
                         this.makePageData();
-                        this.field.CLOSEDATE = null;
                         this.popupActive = false;
                     } else {
                         this.$vs.notify({
@@ -101,36 +101,44 @@ const app = new Vue({
                         })
                     }
                 });
-            }
-
-            if (this.field.holiday != null) {
-                axios.post("queueClode/inserttbclose", {
-                    holiday: this.field.holiday
-                }).then((response) => {
-                    if (response.data.result) {
-                        this.$vs.notify({
-                            title: 'สำเร็จ',
-                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-                            color: "success",
-                            icon: 'check',
-                            position: 'top-right',
-
-                        });
-                        this.makePageData();
-                        this.field.holiday = null;
-                        this.popupActive = false;
-                    } else {
-                        this.$vs.notify({
-                            title: 'ผิดพลาด',
-                            text: 'กรุณาลองใหม่อีกครั้ง',
-                            color: "warning",
-                            icon: 'warning_amber',
-                            position: 'top-right',
-                        })
-                    }
-                });
-            }
         },
+        acceptAlert() {
+            axios.post("dateExpress/delete", {
+                id: this.id,
+            }).then((response) => {
+                if (response.data.result) {
+                    this.$vs.notify({
+                        color: 'success',
+                        title: 'ลบข้อมูลสำเร็จ',
+                        text: 'ทำการลบข้อมูลสำเร็จ',
+                        icon: 'check',
+                        position: ' top-right',
+                    });
+                    this.makePageData();
+                    this.selected = [];
+                } else {
+                    this.$vs.notify({
+                        title: 'ผิดพลาด',
+                        text: 'กรุณาลองใหม่อีกครั้ง',
+                        color: "warning",
+                        icon: 'warning_amber',
+                        position: ' top-right',
 
+                    })
+                }
+            });
+        },
+        openConfirm() {
+            this.$vs.dialog({
+                type: 'confirm',
+                color: 'danger',
+                title: `ยืนยันการลบข้อมูล`,
+                text: 'ต้องการลบข้อมูลหรือไม่',
+                acceptText: 'ตกลง',
+                cancelText: 'ยกเลิก',
+                accept: this.acceptAlert
+            })
+        },
+       
     }
 });

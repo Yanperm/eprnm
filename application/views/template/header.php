@@ -52,6 +52,11 @@
     <link href="https://cdn.jsdelivr.net/npm/vuesax/dist/vuesax.css" rel="stylesheet">
     <script src="https://unpkg.com/vuesax"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.9.0/main.min.js'></script>
+    
     <link rel="stylesheet" type="text/css"
         href="<?php echo base_url();?>assets/lib/material-design-icons/css/material-design-iconic-font.min.css" />
 
@@ -541,9 +546,11 @@
                                     <ul class="sub-menu">
                                         <li><a href="<?php echo base_url('time');?>">ตั้งค่าวันและเวลาเปิดปิด</a>
                                         </li>
-                                        <li><a href="<?php echo base_url('rest-day');?>">วันหยุดคลินิก</a>
+                                        <li><a href="<?php echo base_url('dateExpress');?>">เพิ่มวันเปิดพิเศษ</a>
                                         </li>
-                                        <li><a href="<?php echo base_url('queueClode');?>">ตั้งค่าคิวเต็ม</a>
+                                        <li><a href="<?php echo base_url('restDay');?>">วันหยุดคลินิก</a>
+                                        </li>
+                                        <li><a href="<?php echo base_url('queueClode');?>">วันหยุดพิเศษและคิวเต็ม</a>
                                         </li>
                                     </ul>
                                 </li>
