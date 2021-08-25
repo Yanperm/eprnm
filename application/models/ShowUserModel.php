@@ -7,9 +7,10 @@ class ShowUserModel extends CI_Model {
     {
         $query = $this->db->query(
             '
-            SELECT * FROM tbuser
-            '.$condition.' '.$sort.'
-            LIMIT '.$page.','.$perPage
+            SELECT * 
+            FROM tbuser
+            WHERE CLINICID = "' . $clinicId . '" '.$condition.' '.$sort.'
+            LIMIT '.$page.','.$perPage 
            
         );
 
@@ -26,7 +27,7 @@ class ShowUserModel extends CI_Model {
             '
             SELECT COUNT(*) AS NUM_OF_ROW 
             FROM tbuser 
-            '.$condition
+            WHERE CLINICID = "' . $clinicId . '" '.$condition
         );
 
         if ($query->num_rows() > 0) {

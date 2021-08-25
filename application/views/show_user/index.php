@@ -18,19 +18,6 @@
                 <h3>การจัดการผู้ใช้งาน</h3>
                 <label>เพิ่มและแก้ไขข้อมูลเกี่ยวกับผู้ใช้งานระบบคลินิก</label>
             </div><br>
-            <!-- <div class="row table-filters-container">
-                <div class="col-12 col-lg-12 col-xl-6">
-                    <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span class="table-filter-title">ค้นหาผู้ใช้งานระบบ</span>
-                            <div class="filter-container">
-                                <form>
-                                    <at-input v-model="search" size="large" placeholder="ค้นหา"></at-input>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-            </div> -->
             <div class="card-body">
                 <div class="noSwipe">
 
@@ -71,7 +58,7 @@
                                         {{data[indextr].UserName}}
                                     </vs-td>
                                     <vs-td :data="data[indextr].UserName">
-                                        {{data[indextr].UserName}}
+                                        <!-- {{data[indextr].UserName}} -->
                                     </vs-td>
                                     <vs-td :data="data[indextr].Email">
                                         {{data[indextr].Email}}
