@@ -17,7 +17,7 @@
             <div class="row table-filters-container">
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-6 table-filters pb-0 pb-xl-4"><span
+                        <div class="col-12 col-lg-8 table-filters pb-0 pb-xl-4"><span
                                 class="table-filter-title">วันหยุดพิเศษ</span>
                             <label>โปรดระบุข้อมูลวันหยุดพิเศษของทางคลินิก</label>
                             <div class="filter-container">
@@ -40,15 +40,23 @@
                 </div>
                 <div class="col-12 col-lg-12 col-xl-6">
                     <div class="row">
-                        <div class="col-12 col-lg-12 table-filters pb-0 pb-xl-4"><span
+                        <div class="col-12 col-lg-8 table-filters pb-0 pb-xl-4"><span
                                 class="table-filter-title">คิวเต็ม</span>
                             <label>กรุณาระบุวันที่ต้องการปิดรับการนัดหมายเนื่องจากคิวเต็ม</label>
                             <div class="filter-container">
-                                <form>
-                                    <at-input v-model="field.CLOSEDATE" size="large" type="date" class="resizedTextbox">
-                                    </at-input>
-                                    <!-- <button type="button" class="btn btn-light">Light</button> -->
-                                </form>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <form id="">
+                                            <at-input v-for="(item,index) in numOfClostdate"
+                                                v-model="field.CloseDate[index]" size="large" type="date" class="mt-1">
+                                            </at-input>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <vs-button type="filled" color="#dfdfdf" icon="add" @click="numOfClostdate++">
+                                        </vs-button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

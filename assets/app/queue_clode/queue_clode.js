@@ -5,8 +5,9 @@ const app = new Vue({
             popupActive: false,
             action: null,
             numOfHoliday: 1,
+            numOfClostdate: 1,
             field: {
-                CLOSEDATE: null,
+                CloseDate: [],
                 holiday: [],
             },
             id: null,
@@ -35,7 +36,7 @@ const app = new Vue({
             this.makePageData();
         },
         selected: function(val) {
-            this.id = val.colseid;
+           // this.id = val.colseid;
             //this.field.CLOSEDATE = val.CLOSEDATE;
         },
     },
@@ -77,33 +78,38 @@ const app = new Vue({
         save() {
             console.log(this.field.holiday);
 
-            // if (this.field.CLOSEDATE != null) {
-            //     axios.post("queueClode/insert", {
-            //         CloseDate: this.field.CLOSEDATE
-            //     }).then((response) => {
-            //         if (response.data.result) {
-            //             this.$vs.notify({
-            //                 title: 'สำเร็จ',
-            //                 text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
-            //                 color: "success",
-            //                 icon: 'check',
-            //                 position: 'top-right',
+            if (this.field.CloseDate.length > 0) {
+                axios.post("queueClode/insert", {
+                    CloseDate: this.field.CloseDate
+                }).then((response) => {
+                    if (response.data.result) {
+                        this.$vs.notify({
+                            title: 'สำเร็จ',
+                            text: 'บันทึกข้อมูลข้อมูลสำเร็จ',
+                            color: "success",
+                            icon: 'check',
+                            position: 'top-right',
 
-            //             });
-            //             this.makePageData();
-            //             this.field.CLOSEDATE = null;
-            //             this.popupActive = false;
-            //         } else {
-            //             this.$vs.notify({
-            //                 title: 'ผิดพลาด',
-            //                 text: 'กรุณาลองใหม่อีกครั้ง',
-            //                 color: "warning",
-            //                 icon: 'warning_amber',
-            //                 position: 'top-right',
-            //             })
-            //         }
-            //     });
-            // }
+                        });
+                        this.makePageData();
+                        
+                        for (let i = 0; i < this.numOfClostdate; i++) {
+                            this.field.CloseDate[i] = null;
+                        }
+                        this.numOfClostdate = 1;
+
+                        this.popupActive = false;
+                    } else {
+                        this.$vs.notify({
+                            title: 'ผิดพลาด',
+                            text: 'กรุณาลองใหม่อีกครั้ง',
+                            color: "warning",
+                            icon: 'warning_amber',
+                            position: 'top-right',
+                        })
+                    }
+                });
+            }
 
             if (this.field.holiday.length > 0) {
                 axios.post("queueClode/inserttbclose", {

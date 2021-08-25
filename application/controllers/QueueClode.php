@@ -71,16 +71,19 @@ class QueueClode extends CI_Controller {
 
     public function insert(){
         $_POST = json_decode(file_get_contents("php://input"),true);
-        $CloseDate = $_POST["CloseDate"];
-        
-      
-        $data = [
-            'colseid' => time(),
-            'CLOSEDATE' => $CloseDate,
-            'CLINICID' => $this->session->userdata('id'),
-        ];
 
-        $result = $this->QueueClodeModel->insert($data);
+        $CloseDate = $_POST["CloseDate"];
+        $result = false;
+      
+        foreach($CloseDate as $key => $item){     
+            $data = [
+                'colseid' => time().$key,
+                'CLOSEDATE' => $item,
+                'CLINICID' => $this->session->userdata('id'),
+            ];
+    
+            $result = $this->QueueClodeModel->insert($data);
+        }
 
         if($result){
             echo json_encode(['result'=> true]);
