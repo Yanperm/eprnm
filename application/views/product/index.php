@@ -120,14 +120,14 @@
         <div class="row">
             <div class="col-md-6">
                 <vs-list>
-                    <vs-list-header title="เพิ่มยาใหม่"></vs-list-header>
+                    <vs-list-header title="แก้ไขคลังยา"></vs-list-header>
                 </vs-list>
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <vs-input label-placeholder="รหัสยา *" size="large" disabled v-model="id" />
                     </div>
                     <div class="col-md-6">
-                        <vs-input label-placeholder="ชื่อสามัญ *" size="large" v-model="nameCommon" />
+                        <vs-input label-placeholder="ชื่อสามัญ *" size="large" v-model="brandName" />
                     </div>
                 </div>
                 <div class="row mt-4">
@@ -182,7 +182,7 @@
                 </vs-list>
                 <div class="row mt-4">
                     <div class="col-md-6">
-                        <vs-input label-placeholder="ชื่อการค้า *" size="large" v-model="brandName" />
+                        <vs-input label-placeholder="ชื่อการค้า *" size="large" v-model="nameCommon" />
                     </div>
                     <div class="col-md-6">
                         <vs-input label-placeholder="ข้อบ่งใช้ *" size="large" v-model="indication" />
