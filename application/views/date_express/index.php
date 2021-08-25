@@ -19,44 +19,45 @@
                 <label>โปรดระบุวันเวลาที่ทางคลินิกต้องการเปิดเป็นกรณีพิเศษ ที่นอกเหนือไปจากวันเวลาปกติ</label><br>
                 <label>ระบบจะเปิดให้คนไข้นัดหมายในเวลานี้แทนเวลาในวันทำการปกติ หรือวันหยุด</label>
             </div>
-            <div class="row table-filters-container">
-                <div class="col-12 col-lg-12 col-xl-6">
-                    <div class="row">
-                        <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4">
+            <!-- <div class="row table-filters-container"> -->
+                <!-- <div class="col-12 col-lg-12 col-xl-6"> -->
+                <div class="row">
+                        <div class="col-12 col-lg-8 table-filters pb-0 pb-xl-4"> 
                             <div class="filter-container">
-                                <form>
-                                    <at-input v-model="field.date" size="large" type="date"  ></at-input>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4">
-                            <div class="filter-container">
-                                <form>
-                                    <at-input v-model="field.open" size="large" type="time"  placeholder="" ></at-input>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-4 table-filters pb-0 pb-xl-4">
-                            <div class="filter-container">
-                                <form>
-                                    <at-input v-model="field.close" size="large" type="time"  placeholder="" ></at-input>
-                                </form>
+                                <div class="row">
+                                    <div class="col-md-10" v-for="(item, index) in numOfdate">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <form>
+                                                    <at-input 
+                                                    v-model="field.date[index]" size="large" type="date" class="mt-1"></at-input>
+                                                </form>
+                                            </div>
+                                            <div class="col-4">
+                                                <form>
+                                                    <at-input 
+                                                    v-model="field.open[index]" size="large" type="time" class="mt-1"></at-input>
+                                                </form>
+                                            </div>
+                                            <div class="col-4">
+                                                <form>
+                                                    <at-input 
+                                                    v-model="field.close[index]" size="large" type="time" class="mt-1"></at-input>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <vs-button type="filled" color="#dfdfdf" icon="add" @click="numOfdate++">
+                                        </vs-button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div> 
 
-                <div class="col-12 col-lg-12 col-xl-6">
-                    <div class="row">
-                        <div class="col-md-12 text-right mt-3 mb-3 pr-5">
-                            <v-row vs-justify="right">
-                                <vs-col vs-offset="9" v-tooltip="'col - 1'" vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">
-                                </vs-col>
-                            </v-row>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <!-- </div>  -->
+            <!-- </div> -->
             <div class="card-body">
                 <div class="noSwipe">
                     <div>

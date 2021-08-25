@@ -64,20 +64,24 @@ class DateExpress extends CI_Controller{
         $open = $_POST["open"];
         $close = $_POST["close"];
         $date = $_POST["date"];
-        
-      
-        $data = [
-            'id' => time(),
-            'time_open' => $open,
-            'time_close' =>$close,
-            'CLINICID' => $this->session->userdata('id'),
-            'date' => $date,
-        ];
 
-        $result = $this->DateExpressModel->insert($data);
+        $result = false;
+        
+        for($i = 0; $i < count($open); $i++){
+            $data = [
+                'id' => time().$i,
+                'time_open' => $open[$i],
+                'time_close' =>$close[$i],
+                'CLINICID' => $this->session->userdata('id'),
+                'date' => $date[$i],
+            ];
+    
+            $result = $this->DateExpressModel->insert($data);
+        }
+       
 
         if($result){
-            echo json_encode(['result'=> true]);
+            echo json_encode(['result'=> true,'data' => $data]);
         }else{
             echo json_encode(['result'=> false]);
         }

@@ -3,11 +3,12 @@ const app = new Vue({
     data() {
         return {
             id: null,
+            numOfdate:1,
             field: {
 
-                date : null,
-                open : null,
-                close : null,
+                date : [],
+                open : [],
+                close : [],
             },
             page: 1,
             perPage: 10,
@@ -72,14 +73,21 @@ const app = new Vue({
             });
         },
         insert() {
+
+            console.log(this.field.open);
+            console.log(this.field.close);
+            console.log(this.field.date);
+
+            if(this.field.open.length > 0 && this.field.close.length > 0 && this.field.date.length > 0) {
                 axios.post("dateExpress/insert", {
                     
                     open: this.field.open,
                     close: this.field.close,
-                    date: this.field.date,
+                    date: this.field.date,                       
 
 
                 }).then((response) => {
+                    console.log(response.data.data)
                     if (response.data.result) {
                         this.$vs.notify({
                             title: 'สำเร็จ',
@@ -90,6 +98,12 @@ const app = new Vue({
 
                         });
                         this.makePageData();
+                        for (let i = 0; i < this.numOfdate; i++) {
+                            this.field.open[i] = null;
+                            this.field.close[i] = null;
+                            this.field.date[i] = null;
+                        }
+                        this.numOfdate = 1;
                         this.popupActive = false;
                     } else {
                         this.$vs.notify({
@@ -101,6 +115,8 @@ const app = new Vue({
                         })
                     }
                 });
+            }
+                 
         },
         acceptAlert() {
             axios.post("dateExpress/delete", {
